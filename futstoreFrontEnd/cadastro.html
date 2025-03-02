@@ -5,33 +5,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="./styles.css" type="text/css">
-    <script src="./script.js" defer></script>
+    <link rel="stylesheet" href="./styles/styles.css" type="text/css">
+    <script src="./scripts/script.js" defer></script>
 </head>
 
 <body>
     <div class="container" id="cadastroUsuario">
         <h2>Cadastro de Usuário</h2>
         <form id="formCadastro">
-            <span>Nome: </span><input type="text" id="nomeCadastro" name="nome" required>
-            <span>Email: </span><input type="email" id="emailCadastro" name="email" required>
-            <span>Senha: </span><input type="password" id="senhaCadastro" required oninput="validarSenhas()" name="senha">
-            <span>Senha: </span><input type="password" id="confirmaSenhaCadastro" required
-                placeholder="Confirme a senha" oninput="validarSenhas()" name="confirmaSenha">
-            <div class="erro"><span id="erroSenha"></span></div>
-
-            <span>CPF: </span>
-            <input type="text" id="cpfCadastro" required oninput="formatarCPF(this); validarCPF(this.value)" name="cpf">
-            <div class="erro"><span id="erroCPF"></span></div>
-
-            <span>Grupo: </span>
-            <select name="grupo" id="selectGrupoCadastro" name="grupo">
-                <option value="ADMINISTRADOR">ADMINISTRADOR</option>
-                <option value="ESTOQUISTA">ESTOQUISTA</option>
-            </select><br>
-
-            <button type="submit" class="btn" id="btnCadastro">OK</button>
-            <button type="button" class="btnCancel">Cancelar</button>
+            <form id="formCadastro">
+                <div class="form-group">
+                    <label for="nomeCadastro">Nome:</label>
+                    <input type="text" id="nomeCadastro" name="nome" required>
+                </div>
+            
+                <div class="form-group">
+                    <label for="emailCadastro">Email:</label>
+                    <input type="email" id="emailCadastro" name="email" required>
+                </div>
+            
+                <div class="form-group">
+                    <label for="senhaCadastro">Senha:</label>
+                    <input type="password" id="senhaCadastro" required oninput="validarSenhas()" name="senha">
+                </div>
+            
+                <div class="form-group">
+                    <label for="confirmaSenhaCadastro">Confirme a Senha:</label>
+                    <input type="password" id="confirmaSenhaCadastro" required oninput="validarSenhas()" name="confirmaSenha">
+                </div>
+            
+                <div class="erro"><span id="erroSenha"></span></div>
+            
+                <div class="form-group">
+                    <label for="cpfCadastro">CPF:</label>
+                    <input type="text" id="cpfCadastro" required oninput="formatarCPF(this); validarCPF(this.value)" name="cpf">
+                </div>
+            
+                <div class="erro"><span id="erroCPF"></span></div>
+            
+                <div class="form-group">
+                    <label for="selectGrupoCadastro">Grupo:</label>
+                    <select id="selectGrupoCadastro" name="grupo">
+                        <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                        <option value="ESTOQUISTA">ESTOQUISTA</option>
+                    </select>
+                </div>
+            
+                <button type="submit" class="btn" id="btnCadastro">OK</button>
+                <button type="button" class="btnCancel">Cancelar</button>
+            </form>
+            
         </form>
     </div>
 
@@ -83,9 +106,10 @@
                 erroCPF.innerText = "CPF inválido!";
                 
                 return false;
+            } else {
+                erroCPF.innerText = "";
             }
-
-            erroCPF.innerText = "";
+            
             
             return true;
         }

@@ -1,0 +1,149 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    display: flex;
+
+}
+.container {
+    width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+}
+
+.topo {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.topo input {
+    width: 60%;
+    margin: 5px 0;
+    padding: 8px;
+}
+
+.topo button {
+    width: 20%;
+    margin: 5px 0;
+    padding: 8px;
+}
+
+button {
+    width: 40%;
+    margin: 5px 0;
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    color: white;
+    background-color: #2a52be;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: rgb(2, 12, 39);
+}
+
+.btnCancel {
+    background-color: gray;
+}
+
+input {
+    width: 80%;
+    padding: 8px;
+    margin-top: 5px;
+}
+
+.erro {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    align-items: center;
+    
+    span{
+        margin-left: 165px;
+    }
+}
+
+.containerUsuarios {
+    width: 90%;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+
+    > button{
+        align-self: flex-end;
+        width: 20%;
+        border-radius: 5px;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    font-size: 12px;
+
+    th {
+        background-color: #13338a;
+        color: white;
+        font-weight: 300;
+        padding: 5px;
+    }
+
+    td{
+
+        button{
+            height: 10px;
+        }
+    }
+
+    tr{
+        height: 20px;
+    }
+
+    a:visited{
+        color: black;
+    }
+    
+    a:hover{
+        color: #13338a;
+    }
+    
+
+    
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    width: 30%;
+    text-align: right;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.form-group input, .form-group select {
+    width: 65%;
+    padding: 8px;
+}
+
+#selectGrupoCadastro {
+    width: 69%;
+}
+
