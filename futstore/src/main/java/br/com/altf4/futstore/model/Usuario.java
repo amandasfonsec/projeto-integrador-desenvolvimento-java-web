@@ -12,7 +12,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "usuario")
+@Table(name = "Usuario")
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +37,7 @@ public class Usuario {
 
     @Enumerated(EnumType.STRING) 
     @Column(name = "status", length = 100, nullable = false)
-    private Status status;
+    private Status status = Status.ATIVO;
 
     public Usuario() {}
 
