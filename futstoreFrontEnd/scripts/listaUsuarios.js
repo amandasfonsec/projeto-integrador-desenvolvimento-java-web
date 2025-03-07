@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
     fetchUsuarios();  //Carrega a tabela 
-    setInterval(fetchUsuarios, 1000);  //Atualiza a tabela
+    //setInterval(fetchUsuarios, 1000);  
 });
 
 function fetchUsuarios() {
@@ -14,9 +14,9 @@ function tabela(usuarios) {
     const tabela = document.querySelector("table");
     
     //Limpa a tabela
-    while (tabela.rows.length > 1) {
-        tabela.deleteRow(1);
-    }
+    //while (tabela.rows.length > 1) {
+    //    tabela.deleteRow(1);
+    //} 
 
     usuarios.forEach(usuario => {
         let linha = tabela.insertRow();
