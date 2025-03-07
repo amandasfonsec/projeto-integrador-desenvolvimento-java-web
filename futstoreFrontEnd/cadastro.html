@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
     <link rel="stylesheet" href="./styles/styles.css" type="text/css">
-    <script src="./scripts/script.js" defer></script>
+    <script src="./scripts/cadastro.js" defer></script>
 </head>
 
 <body>
@@ -52,7 +52,7 @@
                 </div>
             
                 <button type="submit" class="btn" id="btnCadastro">OK</button>
-                <button type="button" class="btnCancel">Cancelar</button>
+                <button type="reset" class="btnCancel" id="btnCancel">Cancelar</button>
             </form>
             
         </form>
@@ -143,6 +143,12 @@
             document.getElementById("cadastroUsuario").style.display = "none";
             document.getElementById(screenId).style.display = "block";
         }
+
+        
+        document.getElementById("btnCancel").addEventListener("click", function() {
+            window.location.href = "listaUsuarios.html";
+        });
+        
 
     </script>
     

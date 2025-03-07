@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./scripts/login.js" defer></script>
     <title>Login Backoffice</title>
     <link rel="stylesheet" href="./styles/styles.css" type="text/css">
+    
 </head>
 <body>
-    <div class="container" id="login">
+    <div class="container" id="formLogin">
         <h2>Login de Usuário</h2>
-        <form action="loginForm">
-            <input type="text" placeholder="Usuário">
-            <input type="password" placeholder="Senha">
-            <button class="btn" onclick="showScreen('principal')">OK</button> <br>
-            <button class="btn cancel">Cancelar</button>
+        <form id="loginForm">
+            <input type="text" placeholder="Usuário" id="usuario" required>
+            <input type="password" placeholder="Senha" id="senha" required>
+            <button class="btn" type="submit">OK</button> <br>
+            <button class="btn cancel" type="reset">Cancelar</button>
         </form>    
     </div>
 </body>

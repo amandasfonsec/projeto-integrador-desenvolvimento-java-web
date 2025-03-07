@@ -23,8 +23,15 @@ function cadastrar() {
             grupo: Igrupo.value
         })
     })
-        .then(function (res) { console.log(res) })
-        .catch(function (res) { console.log(res) })
+    .then(function (res) {
+        if (res.ok) {
+            // Se der certo
+            window.location.href = 'listaUsuarios.html'; 
+        }
+    })
+    .catch(function (error) {
+        console.log('Erro na requisição:', error);
+    });
 }
 
 function limpar() {
@@ -51,4 +58,5 @@ formulario.addEventListener('submit', function (event) {
     
     cadastrar();
     limpar();
+
 });

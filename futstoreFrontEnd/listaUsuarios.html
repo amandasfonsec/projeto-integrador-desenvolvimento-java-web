@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./scripts/listaUsuarios.js" defer></script>
     <title>Usuários</title>
     <link rel="stylesheet" href="./styles/styles.css" type="text/css">
 </head>
@@ -12,7 +13,7 @@
         <div class="topo">
             <input type="text" placeholder="Buscar">
             <button class="btn">Buscar</button>
-            <button class="btn">+</button>
+            <button class="btn" id="cadastro">+</button>
         </div>
         <table border="1" width="100%">
             <tr>
@@ -34,5 +35,11 @@
         </table>
         <button class="btn">Voltar</button>
     </div>
+
+    <script>
+        document.getElementById("cadastro").addEventListener("click", function() {
+            window.location.href = "cadastro.html";
+        });
+        </script>
 </body>
 </html>
