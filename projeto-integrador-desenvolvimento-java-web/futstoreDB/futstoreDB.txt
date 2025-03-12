@@ -1,0 +1,13 @@
+create database futstore;
+
+use futstore;
+
+CREATE TABLE Usuario (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(100) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    grupo VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'ATIVO'
+);
