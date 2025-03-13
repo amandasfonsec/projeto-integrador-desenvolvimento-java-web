@@ -60,6 +60,7 @@ public class UsuarioController{
         usuarioService.excluirUsuario(id);
         return ResponseEntity.status(204).build();
     }
+<<<<<<< HEAD
 
     @PostMapping("/login")
     public ResponseEntity<Token> logar(@Valid @RequestBody UsuarioDTO usuario){
@@ -83,4 +84,6 @@ public class UsuarioController{
 
        return erros;
     }
+=======
+>>>>>>> 1181a1e (sprint2-telaseconexaomysql)
 }

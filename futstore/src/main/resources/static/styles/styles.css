@@ -147,3 +147,25 @@ table {
     width: 69%;
 }
 
+.btn-edit {
+    background-color: #f1c40f;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.btn-status {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.btn-view {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
