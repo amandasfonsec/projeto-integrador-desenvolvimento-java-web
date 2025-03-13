@@ -1,5 +1,7 @@
 package br.com.altf4.futstore.security;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -29,6 +31,14 @@ public class SecurityConfig {
                 .requestMatchers("/usuarios").authenticated()
                 .anyRequest().authenticated()
             )
+            .cors(cors -> cors.configurationSource(request -> {
+                var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+                corsConfig.setAllowedOrigins(List.of("http://127.0.0.1:5500")); // ou "*", mas cuidado em produção!
+                corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfig.setAllowedHeaders(List.of("*"));
+                corsConfig.setAllowCredentials(true);
+                return corsConfig;
+            }))
             .addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

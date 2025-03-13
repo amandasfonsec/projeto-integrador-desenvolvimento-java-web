@@ -1,12 +1,15 @@
 package br.com.altf4.futstore.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.altf4.futstore.dto.UsuarioDTO;
+import br.com.altf4.futstore.enums.Status;
 import br.com.altf4.futstore.model.Usuario;
 import br.com.altf4.futstore.repository.IUsuario;
 import br.com.altf4.futstore.security.Token;
@@ -42,13 +45,42 @@ public class UsuarioService {
         return true;
     }
 
-    public Token gerarToken(UsuarioDTO usuarioDTO) {
+    public Map<String, Object> gerarTokenComDados(UsuarioDTO usuarioDTO) {
         Usuario user = repository.findByEmail(usuarioDTO.getEmail());
 
         if (user == null || !passwordEncoder.matches(usuarioDTO.getSenha(), user.getSenha())) {
-            return null; 
+            return null;
         }
 
-        return new Token(TokenUtil.createToken(user));
+        Token token = new Token(TokenUtil.createToken(user));
+
+        Map<String, Object> resposta = new HashMap<>();
+        resposta.put("token", token.getToken());
+        resposta.put("grupo", user.getGrupo());
+        resposta.put("nome", user.getNome());
+
+        return resposta;
     }
+
+    public List<Usuario> buscarPorNome(String nome) {
+        return repository.findByNomeContainingIgnoreCase(nome);
+    }
+
+    public Usuario alterarStatus(Integer id) {
+        Usuario usuario = repository.findById(id).orElse(null);
+    
+        if (usuario != null) {
+            // Alternar entre 'ATIVO' e 'INATIVO' com o enum
+            if (Status.ATIVO.equals(usuario.getStatus())) {
+                usuario.setStatus(Status.INATIVO); // Definindo o status como INATIVO
+            } else {
+                usuario.setStatus(Status.ATIVO); // Definindo o status como ATIVO
+            }
+            repository.save(usuario);  // Salva a alteração no banco de dados
+        }
+    
+        return usuario;
+    }
+    
+
 }
