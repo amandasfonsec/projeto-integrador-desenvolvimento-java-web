@@ -6,4 +6,6 @@ import br.com.altf4.futstore.model.Usuario;
 
 public interface IUsuario extends JpaRepository<Usuario, Integer> {
 
+    public Usuario findByEmail(String email);
+
 }
