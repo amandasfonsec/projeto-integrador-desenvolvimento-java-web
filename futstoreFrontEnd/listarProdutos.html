@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,18 +10,20 @@
     <link rel="stylesheet" href="./styles/header.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <header class="header">
         <h1 class="titulo">Futstore</h1>
         <button id="logoutBtn" class="logout-btn"><i class="fa fa-user"></i> | Logout</button>
     </header>
+    
     <div class="container">
         <h2>Lista de Produtos</h2>
-        
+
         <!-- Campo de busca -->
         <div class="topo">
             <input type="text" id="buscarProduto" placeholder="Buscar produto...">
-            <button class="btn" onclick="carregarProdutos()">Buscar</button>
+            <button class="btn" onclick="buscarProduto()">Buscar</button>
             <button class="btn" id="cadastrar">+</button>
         </div>
 
@@ -40,9 +43,28 @@
                 <!-- Produtos serão inseridos aqui via JS -->
             </tbody>
         </table>
-
+        <button id="verMais" class="btn" onclick="carregarMaisProdutos()" style="display: none;">Ver mais</button>
         <!-- Botão de voltar -->
         <button class="btn" onclick="voltarMenu()">Voltar</button>
     </div>
+
+    <!-- Modal de Detalhes do Produto -->
+    <div id="produtoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2 id="modalNome"></h2>
+            <div class="carousel">
+                <button id="prevBtn" class="btn">❮</button>
+                <img id="modalImagem" src="" alt="Imagem do Produto">
+                <button id="nextBtn" class="btn">❯</button>
+            </div>
+            <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
+            <p><strong>Descrição:</strong> <span id="modalDescricao"></span></p>
+            <p><strong>Preço:</strong> R$ <span id="modalPreco"></span></p>
+            <button id="comprarBtn" class="btn" disabled>Comprar</button>
+        </div>
+    </div>
+
 </body>
+
 </html>

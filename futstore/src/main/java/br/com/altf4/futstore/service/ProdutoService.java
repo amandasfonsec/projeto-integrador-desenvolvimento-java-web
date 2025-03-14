@@ -85,4 +85,8 @@ public class ProdutoService {
 
         return imagemRepository.findByProduto(produto);
     }
+
+    public List<Produto> buscarPorNome(String nome) {
+        return produtoRepository.findByNomeContainingIgnoreCase(nome);
+    }
 }

@@ -114,4 +114,10 @@ public class ProdutoController {
         }
     }
 
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Produto>> buscarProdutos(@RequestParam String nome) {
+        List<Produto> produtos = produtoService.buscarPorNome(nome);
+        return ResponseEntity.ok(produtos);
+    }
+
 }
