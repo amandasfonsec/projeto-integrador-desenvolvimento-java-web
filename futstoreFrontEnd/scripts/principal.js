@@ -56,5 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 });
 
-
+document.getElementById('listarProduto').addEventListener('click', () => {
+    window.location.href = './listarProdutos.html';
+});
     

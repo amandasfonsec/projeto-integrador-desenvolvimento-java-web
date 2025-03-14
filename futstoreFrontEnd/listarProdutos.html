@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listagem de Produtos</title>
+    <link rel="stylesheet" href="./styles/frontProdutos.css">
+    <script src="./scripts/listarProdutos.js" defer></script>
+</head>
+<body>
+    <div class="container">
+        <h2>Lista de Produtos</h2>
+        
+        <!-- Campo de busca -->
+        <div class="topo">
+            <input type="text" id="buscarProduto" placeholder="Buscar produto...">
+            <button class="btn" onclick="carregarProdutos()">Buscar</button>
+            <button class="btn" id="cadastrar">+</button>
+        </div>
+
+        <!-- Tabela de produtos -->
+        <table border="1" width="100%">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nome</th>
+                    <th>Quantidade</th>
+                    <th>Valor</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaProdutos">
+                <!-- Produtos serão inseridos aqui via JS -->
+            </tbody>
+        </table>
+
+        <!-- Botão de voltar -->
+        <button class="btn" onclick="voltarMenu()">Voltar</button>
+    </div>
+</body>
+</html>
