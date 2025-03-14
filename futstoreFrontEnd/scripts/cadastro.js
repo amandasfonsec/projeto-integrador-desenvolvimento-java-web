@@ -1,8 +1,5 @@
-console.log(localStorage.getItem('token'));
-
 class CadastroUsuario {
     constructor() {
-        // Referências aos elementos do formulário
         this.formulario = document.getElementById('formCadastro');
         this.Inome = document.querySelector('#nomeCadastro');
         this.Iemail = document.querySelector('#emailCadastro');
@@ -13,8 +10,6 @@ class CadastroUsuario {
         this.token = localStorage.getItem('token');
     }
 
-    
-    // Verifica se estamos editando ou cadastrando e chama as funções apropriadas
     init() {
         const urlParams = new URLSearchParams(window.location.search);
         const usuarioId = urlParams.get('id');
@@ -24,29 +19,27 @@ class CadastroUsuario {
             this.atualizarTextoModoEdicao();
         }
 
-        this.formulario.addEventListener('submit', (e) => {
+        this.formulario.addEventListener('submit', async (e) => {
             e.preventDefault();
             if (usuarioId) {
                 this.editarUsuario(usuarioId);
             } else {
-                this.criarUsuario();
+                await this.validarCadastro(); // faz a validação antes de criar o usuário
             }
         });
     }
 
-    // Atualiza os textos do formulário quando em modo de edição
     atualizarTextoModoEdicao() {
         document.querySelector('h2').textContent = 'Editar Usuário';
         document.getElementById('btnCadastro').textContent = 'Salvar';
     }
 
-    // Função para carregar os dados do usuário
     carregarUsuario(id) {
         fetch(`http://localhost:8080/usuarios/${id}`, {
             method: 'GET',
             headers: {
-              'accept': 'application/json',
-              'Authorization': `Bearer ${this.token}`
+                'accept': 'application/json',
+                'Authorization': `Bearer ${this.token}`
             }
         })
         .then(response => {
@@ -70,31 +63,45 @@ class CadastroUsuario {
         });
     }
 
-    // Função para editar o usuário
-    editarUsuario(id) {
-        const usuario = this.getDadosFormulario();
-        fetch(`http://localhost:8080/usuarios/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.token}`
-            },
-            body: JSON.stringify(usuario)
-        })
-        .then(response => {
+    // confere no banco se já tem um usuário com o mesmo email ou cpf
+    async validarCadastro() {
+        const email = this.Iemail.value;
+        const cpf = this.Icpf.value;
+
+        try {
+            const response = await fetch(`http://localhost:8080/usuarios/verificar?email=${email}&cpf=${cpf}`, {
+                method: 'GET',
+                headers: {
+                    'accept': 'application/json',
+                    'Authorization': `Bearer ${this.token}`
+                }
+            });
+
             if (!response.ok) {
                 throw new Error(`Erro ${response.status}: ${response.statusText}`);
             }
-            alert('Usuário atualizado com sucesso!');
-            window.location.href = 'listaUsuarios.html';
-        })
-        .catch(error => {
-            console.error("Erro ao editar usuário:", error);
-            alert("Não foi possível editar o usuário.");
-        });
+
+            const data = await response.json();
+
+            if (data.emailExistente) {
+                alert("Já existe um usuário cadastrado com este e-mail.");
+                return;
+            }
+
+            if (data.cpfExistente) {
+                alert("Já existe um usuário cadastrado com este CPF.");
+                return;
+            }
+
+            // cria o usuário se não tiver cpf e email iguais
+            this.criarUsuario();
+
+        } catch (error) {
+            console.error("Erro ao validar usuário:", error);
+            alert("⚠️ Erro ao verificar se o usuário já existe.");
+        }
     }
 
-    // Função para criar o usuário
     criarUsuario() {
         const usuario = this.getDadosFormulario();
         fetch('http://localhost:8080/usuarios', {
@@ -109,7 +116,7 @@ class CadastroUsuario {
             if (!response.ok) {
                 throw new Error(`Erro ${response.status}: ${response.statusText}`);
             }
-            alert('Usuário criado com sucesso!');
+            alert('Usuário cadastrado com sucesso!');
             window.location.href = 'listaUsuarios.html';
         })
         .catch(error => {
@@ -118,7 +125,6 @@ class CadastroUsuario {
         });
     }
 
-    // Função para extrair dados do formulário
     getDadosFormulario() {
         return {
             nome: this.Inome.value,

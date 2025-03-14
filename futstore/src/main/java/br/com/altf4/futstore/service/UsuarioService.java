@@ -52,9 +52,16 @@ public class UsuarioService {
             return null;
         }
 
+        if (user.getStatus() == Status.INATIVO) {
+            Map<String, Object> erro = new HashMap<>();
+            erro.put("erro", "Usuário inativo. Contate o administrador.");
+            return erro;
+        }
+        
         Token token = new Token(TokenUtil.createToken(user));
 
         Map<String, Object> resposta = new HashMap<>();
+        resposta.put("id", user.getId());
         resposta.put("token", token.getToken());
         resposta.put("grupo", user.getGrupo());
         resposta.put("nome", user.getNome());
@@ -80,6 +87,17 @@ public class UsuarioService {
         }
     
         return usuario;
+    }
+
+    public Map<String, Boolean> verificarUsuario(String email, String cpf) {
+        boolean emailExistente = repository.existsByEmail(email);
+        boolean cpfExistente = repository.existsByCpf(cpf);
+
+        Map<String, Boolean> resposta = new HashMap<>();
+        resposta.put("emailExistente", emailExistente);
+        resposta.put("cpfExistente", cpfExistente);
+
+        return resposta;
     }
     
 

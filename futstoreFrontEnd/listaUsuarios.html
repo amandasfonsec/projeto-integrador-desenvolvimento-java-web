@@ -6,8 +6,14 @@
     <script src="./scripts/listaUsuarios.js" defer></script>
     <title>Usuários</title>
     <link rel="stylesheet" href="./styles/styles.css" type="text/css">
+    <link rel="stylesheet" href="./styles/header.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <header class="header">
+        <h1 class="titulo">Futstore</h1>
+        <button id="logoutBtn" class="logout-btn"><i class="fa fa-user"></i> | Logout</button>
+    </header>
     <div class="containerUsuarios" id="listaUsuarios">
         <h2>Lista de Usuários</h2>
         <div class="topo">
@@ -26,12 +32,16 @@
             </tr>
             
         </table>
-        <button class="btn">Voltar</button>
+        <button class="btn" id="voltar">Voltar</button>
     </div>
 
     <script>
         document.getElementById("cadastro").addEventListener("click", function() {
             window.location.href = "cadastro.html";
+        });
+
+        document.getElementById("voltar").addEventListener("click", function() {
+            window.location.href = "principal.html";
         });
         </script>
 </body>

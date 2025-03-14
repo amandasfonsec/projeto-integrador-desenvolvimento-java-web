@@ -13,27 +13,38 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             body: JSON.stringify({ email: email, senha: senha })
         });
 
+        let data;
+        if (response.headers.get("content-type")?.includes("application/json")) {
+            data = await response.json();
+        } else {
+            data = await response.text(); // Captura resposta de erro em texto
+        }
+
         if (!response.ok) {
-            alert("Usuário ou senha inválidos!");
+            alert(data.erro || data || "Usuário ou senha inválidos!");
             return;
         }
 
-        const data = await response.json();
-        const token = data.token; //pega o token
-        const grupo = data.grupo; //pega o grupo
-        const nome = data.nome; //pega o nome
+        if (data.erro) { 
+            alert(data.erro); 
+            return;
+        }
 
-        // Armazena o token e os ouros negócios no localStorage
+        const token = data.token;
+        const grupo = data.grupo;
+        const nome = data.nome;
+        const id = data.id;
+
         localStorage.setItem("token", token);
         localStorage.setItem("grupo", grupo);
         localStorage.setItem("nome", nome);
-
+        localStorage.setItem("id", id);
 
         window.location.href = 'principal.html';
-        
 
     } catch (error) {
         console.error("Erro ao logar:", error);
+        alert("Erro ao conectar ao servidor.");
     }
 });
 
@@ -41,4 +52,5 @@ window.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('token');
     localStorage.removeItem('grupo');
     localStorage.removeItem('nome');
+    localStorage.removeItem('id');
 });

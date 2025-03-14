@@ -1,6 +1,6 @@
-create database futstore;
+CREATE DATABASE IF NOT EXISTS futstore;
 
-use futstore;
+USE futstore;
 
 CREATE TABLE Usuario (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -10,4 +10,30 @@ CREATE TABLE Usuario (
     cpf VARCHAR(14) NOT NULL UNIQUE,
     grupo VARCHAR(50) NOT NULL,
     status VARCHAR(50) NOT NULL DEFAULT 'ATIVO'
+);
+
+CREATE TABLE Produto (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(200) NOT NULL,
+    avaliacao DECIMAL(2,1) CHECK (avaliacao BETWEEN 1.0 AND 5.0),
+    descricao TEXT NOT NULL,  -- Removido (2000), pois TEXT já suporta isso
+    valor DECIMAL(10,2) NOT NULL,  -- Definição correta para valores monetários
+    qtd_estoque INT NOT NULL
+);
+
+CREATE TABLE ProdutoImagem (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    produto_codigo BIGINT NOT NULL,
+    caminho_imagem VARCHAR(255) NOT NULL,
+    imagem_principal BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (produto_id) REFERENCES Produto(id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE ProdutoImagem (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    produto_codigo BIGINT,
+    tipo_arquivo VARCHAR(100),
+    dados LONGBLOB,
+    FOREIGN KEY (produto_codigo) REFERENCES produtos(codigo) ON DELETE CASCADE
 );

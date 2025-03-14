@@ -36,7 +36,7 @@ async function carregarProdutos() {
                 <td>${produto.qtdEstoque}</td>
                 <td>R$ ${produto.valor.toFixed(2)}</td>
                 <td>${produto.ativo ? "Ativo" : "Inativo"}</td>
-                <td>
+                <td class="acoes">
                     <button class="btn-edit" onclick="alterarProduto(${produto.id})">✏️ Editar</button>
                     <button class="btn-status" onclick="alternarStatus(${produto.id}, ${produto.ativo})">
                         ${produto.ativo ? "❌ Inativar" : "✅ Ativar"}
@@ -59,4 +59,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.getElementById('cadastrar').addEventListener('click', () => {
     window.location.href = './cadastroProduto.html';
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+        if (confirm("Tem certeza que deseja sair?")) {
+            // Remover dados do localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("grupo");
+            localStorage.removeItem("nome");
+            localStorage.removeItem("userId");
+
+            // Redirecionar para a página de login
+            window.location.href = "login.html";
+        }
+    });
 });

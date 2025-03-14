@@ -10,4 +10,6 @@ public interface IUsuario extends JpaRepository<Usuario, Integer> {
 
     public Usuario findByEmail(String email);
     List<Usuario> findByNomeContainingIgnoreCase(String nome);
+    boolean existsByEmail(String email);
+    boolean existsByCpf(String cpf);
 }

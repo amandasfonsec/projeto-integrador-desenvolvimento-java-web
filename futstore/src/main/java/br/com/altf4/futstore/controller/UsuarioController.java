@@ -65,11 +65,11 @@ public class UsuarioController {
     public ResponseEntity<?> logar(@Valid @RequestBody UsuarioDTO usuario) {
         Map<String, Object> resposta = usuarioService.gerarTokenComDados(usuario);
 
-        if (resposta != null) {
-            return ResponseEntity.ok(resposta);
+        if (resposta == null || resposta.containsKey("erro")) {
+            return ResponseEntity.status(403).body("Erro: Credenciais inválidas ou usuário inativo.");
         }
 
-        return ResponseEntity.status(403).build();
+        return ResponseEntity.ok(resposta);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -98,6 +98,15 @@ public class UsuarioController {
             return ResponseEntity.ok(usuario);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @GetMapping("/verificar")
+    public ResponseEntity<Map<String, Boolean>> verificarUsuario(
+            @RequestParam String email,
+            @RequestParam String cpf) {
+
+        Map<String, Boolean> resposta = usuarioService.verificarUsuario(email, cpf);
+        return ResponseEntity.ok(resposta);
     }
 
 }

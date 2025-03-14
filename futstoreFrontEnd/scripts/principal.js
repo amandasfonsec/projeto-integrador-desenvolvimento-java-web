@@ -1,4 +1,3 @@
-// Função para validação do token, que precisa em todas as pgs
 function isTokenValid(token) {
     try {
         const pureToken = token.replace('Bearer ', '');
@@ -58,5 +57,20 @@ window.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('listarProduto').addEventListener('click', () => {
     window.location.href = './listarProdutos.html';
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+        if (confirm("Tem certeza que deseja sair?")) {
+            // Remover dados do localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("grupo");
+            localStorage.removeItem("nome");
+            localStorage.removeItem("userId");
+
+            // Redirecionar para a página de login
+            window.location.href = "login.html";
+        }
+    });
 });
     
