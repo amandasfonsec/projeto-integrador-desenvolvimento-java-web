@@ -24,7 +24,7 @@ async function carregarProdutos() {
         let data = await response.json();
         console.log("Produtos recebidos:", data);
 
-        // Ordena os produtos por código de forma decrescente
+        // Ordena produtos por código (decrescente)
         produtosData = data.sort((a, b) => b.codigo - a.codigo);
         
         // Inicia na primeira página
@@ -236,7 +236,7 @@ async function salvarEdicaoProduto() {
         console.error("Erro ao editar produto:", error);
         alert("Erro ao editar produto.");
     }
-}
+};
 
 async function visualizarProduto(id) {
     const token = localStorage.getItem("token");

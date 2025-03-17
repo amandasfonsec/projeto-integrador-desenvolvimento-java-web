@@ -49,22 +49,22 @@
 
     </div>
 
-    <!-- Modal de Detalhes do Produto -->
-    <div id="produtoModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="fecharModal()">&times;</span>
-            <h2 id="modalNome"></h2>
-            <div class="carousel">
-                <button id="prevBtn" class="btn">❮</button>
-                <img id="modalImagem" src="" alt="Imagem do Produto">
-                <button id="nextBtn" class="btn">❯</button>
-            </div>
-            <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
-            <p><strong>Descrição:</strong> <span id="modalDescricao"></span></p>
-            <p><strong>Preço:</strong> R$ <span id="modalPreco"></span></p>
-            <button id="comprarBtn" class="btn" disabled>Comprar</button>
+ <!-- Modal de Detalhes do Produto -->
+<div id="produtoModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+        <h2 id="modalNome"></h2>
+        <div class="carousel">
+            <button id="prevBtn" class="btn">❮</button>
+            <img id="modalImagem" src="placeholder.jpg" alt="Imagem do Produto">
+            <button id="nextBtn" class="btn">❯</button>
         </div>
+        <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
+        <p><strong>Descrição:</strong> <span id="modalDescricao"></span></p>
+        <p><strong>Preço:</strong> R$ <span id="modalPreco"></span></p>
+        <button id="comprarBtn" class="btn">Comprar</button>
     </div>
+</div>
 
 <!-- Modal de Edição de Produto -->
 <div id="modalEditarProduto" class="modal" style="display: none;">
