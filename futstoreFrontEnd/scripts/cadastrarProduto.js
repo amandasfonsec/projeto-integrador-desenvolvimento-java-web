@@ -93,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const data = JSON.parse(text); // Tenta converter para JSON
                 console.log("Produto cadastrado com sucesso:", data);
                 alert("Produto cadastrado com sucesso!");
-                window.location.href = "./listaProdutos.html";
+                window.location.href = "./listarProdutos.html";
             } catch (e) {
                 throw new Error("Resposta não é um JSON válido: " + text);
             }

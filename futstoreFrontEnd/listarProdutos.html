@@ -23,7 +23,7 @@
         <!-- Campo de busca -->
         <div class="topo">
             <input type="text" id="buscarProduto" placeholder="Buscar produto...">
-            <button class="btn" onclick="buscarProduto()">Buscar</button>
+            <button class="btn" onclick="buscarProduto()" id="buscarBtn">Buscar</button>
             <button class="btn" id="cadastrar">+</button>
         </div>
 
@@ -43,9 +43,10 @@
                 <!-- Produtos serão inseridos aqui via JS -->
             </tbody>
         </table>
-        <button id="verMais" class="btn" onclick="carregarMaisProdutos()" style="display: none;">Ver mais</button>
-        <!-- Botão de voltar -->
-        <button class="btn" onclick="voltarMenu()">Voltar</button>
+        <!-- Botões de Paginação -->
+        <button id="paginaAnterior" class="btn" onclick="paginaAnterior()" style="display: none;">⬅ Página Anterior</button>
+        <button id="proximaPagina" class="btn" onclick="proximaPagina()" style="display: none;">Próxima Página ➡</button>
+
     </div>
 
     <!-- Modal de Detalhes do Produto -->
@@ -64,6 +65,139 @@
             <button id="comprarBtn" class="btn" disabled>Comprar</button>
         </div>
     </div>
+
+<!-- Modal de Edição de Produto -->
+<div id="modalEditarProduto" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close" onclick="document.getElementById('modalEditarProduto').style.display='none'">&times;</span>
+        <h2>Editar Produto</h2>
+
+        <input type="hidden" id="editProdutoId">
+        
+        <label for="editNome">Nome:</label>
+        <input type="text" id="editNome" required>
+
+        <label for="editDescricao">Descrição:</label>
+        <textarea id="editDescricao" required></textarea>
+
+        <label for="editValor">Valor:</label>
+        <input type="number" id="editValor" step="0.01" required>
+
+        <label for="editQtdEstoque">Quantidade em Estoque:</label>
+        <input type="number" id="editQtdEstoque" required>
+
+        <!-- Exibição da imagem atual -->
+        <div class="image-preview-container">
+            <img id="editProdutoImagem" src="" alt="Imagem do Produto" class="image-preview">
+        </div>
+
+        <!-- Input para alterar a imagem -->
+        <label for="editImagemProduto">Alterar Imagem:</label>
+        <input type="file" id="editImagemProduto" accept="image/*">
+
+        <button class="btn" onclick="salvarEdicaoProduto()">Salvar</button>
+    </div>
+</div>
+
+
+<style>
+    /* Estilização do fundo do modal */
+.modal {
+    display: none; /* Oculto por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro transparente */
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilização da caixa de conteúdo do modal */
+.modal-content {
+    background-color: #fff;
+    width: 40%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Botão de fechar */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #555;
+}
+
+.close:hover {
+    color: #000;
+}
+
+/* Estilização dos campos de entrada */
+.modal-content input,
+.modal-content textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+/* Ajuste para o textarea */
+.modal-content textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+/* Botão de salvar */
+.modal-content .btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.modal-content .btn:hover {
+    background-color: #218838;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 80%;
+    }
+}
+
+.image-preview-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+/* Imagem de pré-visualização */
+.image-preview {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+</style>
 
 </body>
 

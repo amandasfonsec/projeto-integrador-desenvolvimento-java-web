@@ -31,9 +31,17 @@ public class UsuarioService {
     }
 
     public Usuario criarUsuario(Usuario usuario) {
+        if (repository.existsByEmail(usuario.getEmail())) {
+            throw new RuntimeException("E-mail já cadastrado!");
+        }
+        if (repository.existsByCpf(usuario.getCpf())) {
+            throw new RuntimeException("CPF já cadastrado!");
+        }
+    
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return repository.save(usuario);
     }
+    
 
     public Usuario editarUsuario(Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
@@ -98,6 +106,11 @@ public class UsuarioService {
         resposta.put("cpfExistente", cpfExistente);
 
         return resposta;
+    }
+
+    public Usuario buscarPorId(Integer id) {
+        System.out.println("Procurando usuário no banco com ID: " + id); // Debug
+        return repository.findById(id).orElse(null);
     }
     
 

@@ -7,7 +7,7 @@ class CadastroUsuario {
         this.Isenha2 = document.querySelector('#confirmaSenhaCadastro');
         this.Icpf = document.querySelector('#cpfCadastro');
         this.Igrupo = document.querySelector('#selectGrupoCadastro');
-        this.token = localStorage.getItem('token');
+        this.token = localStorage.getItem('token'); 
     }
 
     init() {
@@ -21,10 +21,12 @@ class CadastroUsuario {
 
         this.formulario.addEventListener('submit', async (e) => {
             e.preventDefault();
+            const usuarioId = new URLSearchParams(window.location.search).get('id');
+
             if (usuarioId) {
                 this.editarUsuario(usuarioId);
             } else {
-                await this.validarCadastro(); // faz a validação antes de criar o usuário
+                await this.validarCadastro();
             }
         });
     }
@@ -35,38 +37,95 @@ class CadastroUsuario {
     }
 
     carregarUsuario(id) {
+        if (!this.token) {
+            alert("Sessão expirada. Faça login novamente.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        console.log("Buscando usuário ID:", id);
+
         fetch(`http://localhost:8080/usuarios/${id}`, {
             method: 'GET',
             headers: {
-                'accept': 'application/json',
+                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.token}`
             }
         })
         .then(response => {
+            if (response.status === 403) {
+                throw new Error("Acesso negado: você não tem permissão para visualizar este usuário.");
+            }
             if (!response.ok) {
                 throw new Error(`Erro ${response.status}: ${response.statusText}`);
             }
             return response.json();
         })
         .then(usuario => {
+            console.log("Usuário carregado:", usuario);
+
             this.Inome.value = usuario.nome;
             this.Iemail.value = usuario.email;
             this.Icpf.value = usuario.cpf;
             this.Igrupo.value = usuario.grupo;
-            this.Isenha.value = '';
-            this.Isenha2.value = '';
+            this.Isenha.value = '';  
+            this.Isenha2.value = ''; 
         })
         .catch(error => {
             console.error("Erro ao buscar usuário:", error);
-            alert("Não foi possível carregar o usuário para edição.");
+            alert(error.message);
             window.location.href = 'listaUsuarios.html';
         });
     }
 
-    // confere no banco se já tem um usuário com o mesmo email ou cpf
+    editarUsuario(id) {
+        if (!this.token) {
+            alert("Sessão expirada. Faça login novamente.");
+            window.location.href = "login.html";
+            return;
+        }
+
+        const usuarioAtualizado = this.getDadosFormulario();
+
+        console.log("Editando usuário ID:", id, usuarioAtualizado);
+
+        fetch(`http://localhost:8080/usuarios/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.token}`
+            },
+            body: JSON.stringify(usuarioAtualizado)
+        })
+        .then(response => {
+           // if (response.status === 403) {
+            //    throw new Error("Você não tem permissão para editar este usuário.");
+            //}
+            if (!response.ok) {
+                throw new Error(`Erro ${response.status}: ${response.statusText}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Usuário atualizado com sucesso:", data);
+            alert('Usuário atualizado com sucesso!');
+            window.location.href = 'listaUsuarios.html';
+        })
+        .catch(error => {
+            console.error("Erro ao editar usuário:", error);
+            alert("Erro ao editar usuário: " + error.message);
+        });
+    }
+
     async validarCadastro() {
         const email = this.Iemail.value;
         const cpf = this.Icpf.value;
+
+        if (!this.token) {
+            alert("Sessão expirada. Faça login novamente.");
+            window.location.href = "login.html";
+            return;
+        }
 
         try {
             const response = await fetch(`http://localhost:8080/usuarios/verificar?email=${email}&cpf=${cpf}`, {
@@ -93,17 +152,24 @@ class CadastroUsuario {
                 return;
             }
 
-            // cria o usuário se não tiver cpf e email iguais
             this.criarUsuario();
 
         } catch (error) {
             console.error("Erro ao validar usuário:", error);
-            alert("⚠️ Erro ao verificar se o usuário já existe.");
+            alert("Erro ao verificar se o usuário já existe.");
         }
     }
 
     criarUsuario() {
+        if (!this.token) {
+            alert("Sessão expirada. Faça login novamente.");
+            window.location.href = "login.html";
+            return;
+        }
+
         const usuario = this.getDadosFormulario();
+        console.log("Enviando dados do usuário:", usuario);
+
         fetch('http://localhost:8080/usuarios', {
             method: 'POST',
             headers: {
@@ -116,21 +182,25 @@ class CadastroUsuario {
             if (!response.ok) {
                 throw new Error(`Erro ${response.status}: ${response.statusText}`);
             }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Usuário cadastrado com sucesso:", data);
             alert('Usuário cadastrado com sucesso!');
             window.location.href = 'listaUsuarios.html';
         })
         .catch(error => {
             console.error("Erro ao criar usuário:", error);
-            alert("Não foi possível criar o usuário.");
+            alert("Erro ao criar usuário: " + error.message);
         });
     }
 
     getDadosFormulario() {
         return {
-            nome: this.Inome.value,
-            email: this.Iemail.value,
-            senha: this.Isenha.value,
-            cpf: this.Icpf.value,
+            nome: this.Inome.value.trim(),
+            email: this.Iemail.value.trim(),
+            senha: this.Isenha.value.trim(),
+            cpf: this.Icpf.value.trim(),
             grupo: this.Igrupo.value
         };
     }

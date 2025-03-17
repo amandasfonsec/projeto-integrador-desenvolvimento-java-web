@@ -50,10 +50,45 @@ public class ProdutoController {
         return ResponseEntity.status(201).body(produtoService.criarProduto(produto));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Produto> editarProduto(@PathVariable Long id, @Valid @RequestBody Produto produto) {
-        return ResponseEntity.ok(produtoService.editarProduto(id, produto));
+    @PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
+    public ResponseEntity<?> editarProduto(
+        @PathVariable Long id,
+        @RequestPart("produto") ProdutoDTO produtoDTO,
+        @RequestPart(value = "imagensProduto", required = false) MultipartFile imagem) {
+
+    try {
+        Produto produto = produtoService.buscarPorId(id);
+        if (produto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        produto.setNome(produtoDTO.getNome());
+        produto.setDescricao(produtoDTO.getDescricao());
+        produto.setValor(produtoDTO.getValor());
+        produto.setQtdEstoque(produtoDTO.getQtdEstoque());
+
+        produtoRepository.save(produto);
+
+        // Se houver uma nova imagem, substituí-la
+        if (imagem != null && !imagem.isEmpty()) {
+            produtoImagemRepository.deleteByProduto(produto);
+            
+            ProdutoImagem novaImagem = new ProdutoImagem();
+            novaImagem.setProduto(produto);
+            novaImagem.setTipoArquivo(imagem.getContentType());
+            novaImagem.setDados(imagem.getBytes());
+            novaImagem.setPrincipal(true);
+            produtoImagemRepository.save(novaImagem);
+        }
+
+        return ResponseEntity.ok(Map.of("mensagem", "Produto atualizado com sucesso!"));
+
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("erro", "Erro ao editar produto: " + e.getMessage()));
     }
+}
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirProduto(@PathVariable Long id) {

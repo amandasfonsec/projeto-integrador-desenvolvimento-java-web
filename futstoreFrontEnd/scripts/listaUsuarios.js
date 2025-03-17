@@ -1,190 +1,92 @@
-let produtosData = []; // Armazena os produtos carregados
-let imagensProduto = []; // Armazena imagens do produto no modal
-let imagemAtual = 0; // Índice da imagem no carrossel
+document.addEventListener("DOMContentLoaded", function () {
+    fetchUsuarios();
 
-// 🔄 Carregar produtos da API
-async function carregarProdutos() {
-    console.log("Carregando produtos...");
+    document.getElementById("buscarBtn").addEventListener("click", function () {
+        const termoBusca = document.getElementById("buscarInput").value;
+        fetchUsuarios(termoBusca);
+    });
+});
 
-    const token = localStorage.getItem("token");
-
-    try {
-        let response = await fetch("http://localhost:8080/produtos", {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro ao carregar produtos: ${response.status}`);
-        }
-
-        let data = await response.json();
-        console.log("Produtos recebidos:", data);
-
-        // Ordena os produtos por código de forma decrescente
-        produtosData = data.sort((a, b) => b.codigo - a.codigo);
-
-        atualizarTabelaProdutos(produtosData);
-
-    } catch (error) {
-        console.error("Erro ao carregar produtos:", error);
-        alert(error.message);
-    }
+function fetchUsuarios(termoBusca = "") {
+    const url = termoBusca ? `http://localhost:8080/usuarios/buscar?nome=${encodeURIComponent(termoBusca)}` : "http://localhost:8080/usuarios";
+    
+    fetch(url, { headers: { 'Authorization': localStorage.getItem('token') } })
+        .then(response => response.json())
+        .then(usuarios => tabela(usuarios))
+        .catch(error => console.error("Erro ao buscar usuários:", error));
 }
 
-// 🔄 Atualiza a tabela com os produtos recebidos
-function atualizarTabelaProdutos(produtos) {
-    let tabela = document.getElementById("tabelaProdutos");
-    tabela.innerHTML = "";
+function tabela(usuarios) {
+    const tabela = document.querySelector("table");
+    const usuarioLogadoId = localStorage.getItem("id");
+    console.log(usuarioLogadoId);
 
-    produtos.forEach(produto => {
-        let row = `<tr>
-            <td>${produto.codigo}</td>
-            <td>${produto.nome}</td>
-            <td>${produto.qtdEstoque}</td>
-            <td>R$ ${produto.valor.toFixed(2)}</td>
-            <td>${produto.ativo ? "Ativo" : "Inativo"}</td>
-            <td class="acoes">
-                <button class="btn-edit">✏️ Editar</button>
-                <button class="btn-status">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>
-                <button class="btn-view" onclick="visualizarProduto(${produto.codigo})">👁️ Visualizar</button>
-            </td>
-        </tr>`;
-        tabela.innerHTML += row;
+    while (tabela.rows.length > 1) {
+        tabela.deleteRow(1);
+    }
+
+    usuarios.forEach(usuario => {
+        let linha = tabela.insertRow();
+
+        linha.insertCell(0).textContent = usuario.nome;
+        linha.insertCell(1).textContent = usuario.email;
+        linha.insertCell(2).textContent = usuario.status;
+        linha.insertCell(3).textContent = usuario.grupo;
+        linha.insertCell(4).innerHTML = `<a href="cadastro.html?id=${usuario.id}">Alterar</a>`;
+
+        let habilitar = linha.insertCell(5);
+        
+        if (usuario.id.toString() === usuarioLogadoId) {
+            habilitar.innerHTML = `<span style="color: gray;">Não permitido</span>`;
+        } else {
+            habilitar.innerHTML = `<a href="#" class="habilitar" data-id="${usuario.id}" data-status="${usuario.status}">
+                ${usuario.status === 'ATIVO' ? 'Desabilitar' : 'Habilitar'}
+            </a>`;
+
+            habilitar.querySelector('a').addEventListener('click', function (event) {
+                event.preventDefault();
+                alterarStatus(event.target);
+            });
+        }
     });
 }
 
-// 🔍 Buscar produto
-async function buscarProduto() {
-    const termoBusca = document.getElementById("buscarProduto").value.trim();
-    if (!termoBusca) {
-        carregarProdutos(); // Se o campo estiver vazio, recarrega todos os produtos
-        return;
-    }
+function alterarStatus(botao) {
+    const idUsuario = botao.getAttribute('data-id');
+    const novoStatus = botao.getAttribute('data-status') === 'ATIVO' ? 'INATIVO' : 'ATIVO';
 
-    console.log(`Buscando produtos com nome: ${termoBusca}`);
-
-    const token = localStorage.getItem("token");
-
-    try {
-        let response = await fetch(`http://localhost:8080/produtos/buscar?nome=${encodeURIComponent(termoBusca)}`, {
-            method: "GET",
+    if (confirm(`Tem certeza que deseja ${novoStatus === 'ATIVO' ? 'habilitar' : 'desabilitar'} este usuário?`)) {
+        fetch(`http://localhost:8080/usuarios/${idUsuario}/status`, {
+            method: 'PUT',
             headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
+                'Authorization': localStorage.getItem('token'),
+                'Content-Type': 'application/json'
             }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar produtos: ${response.status}`);
-        }
-
-        let data = await response.json();
-        console.log("Produtos encontrados:", data);
-
-        atualizarTabelaProdutos(data);
-
-    } catch (error) {
-        console.error("Erro ao buscar produtos:", error);
-        alert(error.message);
-    }
-}
-
-// 🔎 Exibir detalhes do produto no modal
-async function visualizarProduto(id) {
-    const token = localStorage.getItem("token");
-
-    try {
-        let response = await fetch(`http://localhost:8080/produtos/${id}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`Erro ao buscar detalhes do produto: ${response.status}`);
-        }
-
-        let produto = await response.json();
-        console.log("Detalhes do produto:", produto);
-
-        // Atualiza os elementos do modal
-        document.getElementById("modalNome").textContent = produto.nome;
-        document.getElementById("modalAvaliacao").textContent = produto.avaliacao;
-        document.getElementById("modalDescricao").textContent = produto.descricao;
-        document.getElementById("modalPreco").textContent = produto.valor.toFixed(2);
-
-        // Obtém imagens do produto
-        let imgResponse = await fetch(`http://localhost:8080/produtos/${id}/imagens`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        if (imgResponse.ok) {
-            imagensProduto = await imgResponse.json();
-            if (imagensProduto.length > 0) {
-                imagemAtual = 0;
-                document.getElementById("modalImagem").src = `data:${imagensProduto[0].tipoArquivo};base64,${imagensProduto[0].dados}`;
+        })
+        .then(response => {
+            if (response.ok) {
+                botao.textContent = novoStatus === 'ATIVO' ? 'Desabilitar' : 'Habilitar';
+                botao.setAttribute('data-status', novoStatus);
+                botao.closest('tr').cells[2].textContent = novoStatus;
             } else {
-                document.getElementById("modalImagem").src = "placeholder.jpg";
+                console.error('Erro ao atualizar status');
             }
+        })
+        .catch(error => console.error('Erro ao atualizar status:', error));
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+        if (confirm("Tem certeza que deseja sair?")) {
+            // Remover dados do localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("grupo");
+            localStorage.removeItem("nome");
+            localStorage.removeItem("userId");
+
+            // Redirecionar para a página de login
+            window.location.href = "login.html";
         }
-
-        abrirModal(); // Exibe o modal
-
-    } catch (error) {
-        console.error("Erro ao carregar produto:", error);
-        alert("Erro ao carregar detalhes do produto.");
-    }
-}
-
-// 📌 Função para abrir o modal corretamente
-function abrirModal() {
-    const modal = document.getElementById("produtoModal");
-    const overlay = document.getElementById("modalOverlay");
-
-    modal.style.display = "block";
-    overlay.style.display = "block"; // Exibe fundo escuro
-
-    // Centraliza o modal na tela
-    modal.style.top = "50%";
-    modal.style.left = "50%";
-    modal.style.transform = "translate(-50%, -50%)";
-}
-
-// ❌ Função para fechar o modal
-function fecharModal() {
-    document.getElementById("produtoModal").style.display = "none";
-    document.getElementById("modalOverlay").style.display = "none";
-}
-
-// 🏆 Funções do carrossel
-document.getElementById("prevBtn").addEventListener("click", () => {
-    if (imagensProduto.length > 0) {
-        imagemAtual = (imagemAtual - 1 + imagensProduto.length) % imagensProduto.length;
-        document.getElementById("modalImagem").src = `data:${imagensProduto[imagemAtual].tipoArquivo};base64,${imagensProduto[imagemAtual].dados}`;
-    }
-});
-
-document.getElementById("nextBtn").addEventListener("click", () => {
-    if (imagensProduto.length > 0) {
-        imagemAtual = (imagemAtual + 1) % imagensProduto.length;
-        document.getElementById("modalImagem").src = `data:${imagensProduto[imagemAtual].tipoArquivo};base64,${imagensProduto[imagemAtual].dados}`;
-    }
-});
-
-// 🛑 Fechar ao clicar no botão de fechar ou fora do modal
-document.querySelector(".close").addEventListener("click", fecharModal);
-document.getElementById("modalOverlay").addEventListener("click", fecharModal);
-
-// 🔥 Evento de carregamento inicial
-document.addEventListener("DOMContentLoaded", () => {
-    carregarProdutos();
+    });
 });

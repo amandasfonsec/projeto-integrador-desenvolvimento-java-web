@@ -46,8 +46,13 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> criarUsuario(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.status(201).body(usuarioService.criarUsuario(usuario));
+    public ResponseEntity<?> criarUsuario(@Valid @RequestBody Usuario usuario) {
+        try {
+            usuarioService.criarUsuario(usuario);
+            return ResponseEntity.status(HttpStatus.CREATED).body(usuario);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar usuário: " + e.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
@@ -108,5 +113,15 @@ public class UsuarioController {
         Map<String, Boolean> resposta = usuarioService.verificarUsuario(email, cpf);
         return ResponseEntity.ok(resposta);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> buscarUsuarioPorId(@PathVariable Integer id) {
+    Usuario usuario = usuarioService.buscarPorId(id);
+    
+    if (usuario != null) {
+        return ResponseEntity.ok(usuario);
+    }
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
+}
 
 }
