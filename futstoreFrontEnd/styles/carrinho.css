@@ -1,0 +1,23 @@
+.botoesCliente {
+    margin-right: 100px;
+    
+
+    button {
+        cursor: pointer;
+        padding: 8px;
+        border: none;
+        border-radius: 5px;
+        font-size: 12px;
+    }
+
+    button:visited {
+        color: black;
+    }
+
+    button:hover {
+        background-color: rgb(9, 9, 69);
+        color: white;
+    }
+
+
+}

@@ -1,5 +1,8 @@
 let produtosData = []; // Armazena todos os produtos carregados
-let paginaAtual = 0; // Página atual da listagem
+let imagensProduto = []; // Armazena imagens do produto no modal
+let imagemAtual = 0; // Índice da imagem no carrossel
+let paginaAtual = 1;
+let produtosExibidos = 0; // Contador de produtos já exibidos
 const produtosPorPagina = 10; // Quantidade de produtos por página
 
 // 🔄 Carregar produtos da API
@@ -24,11 +27,11 @@ async function carregarProdutos() {
         let data = await response.json();
         console.log("Produtos recebidos:", data);
 
-        // Ordena produtos por código (decrescente)
+        // Ordena os produtos por código de forma decrescente
         produtosData = data.sort((a, b) => b.codigo - a.codigo);
-        
-        // Inicia na primeira página
-        paginaAtual = 0;
+
+        // Reinicia a exibição
+        produtosExibidos = 0;
         atualizarTabelaProdutos();
 
     } catch (error) {
@@ -37,21 +40,24 @@ async function carregarProdutos() {
     }
 }
 
-// 🔄 Atualiza a tabela com os produtos exibindo apenas a página atual
+// 🔄 Atualiza a tabela com os produtos exibindo de forma paginada
 function atualizarTabelaProdutos() {
-    let tabela = document.getElementById("tabelaProdutos");
-    tabela.innerHTML = ""; // Limpa a tabela antes de atualizar
+    const tbody = document.getElementById("tabelaProdutos");
+    tbody.innerHTML = ""; // Limpa o corpo da tabela
 
     const grupoUsuario = localStorage.getItem("grupo");
 
-    let inicio = paginaAtual * produtosPorPagina;
-    let fim = inicio + produtosPorPagina;
-    let produtosPagina = produtosData.slice(inicio, fim);
+    const inicio = (paginaAtual - 1) * produtosPorPagina;
+    const fim = inicio + produtosPorPagina;
+
+    const produtosPagina = produtosData.slice(inicio, fim);
 
     produtosPagina.forEach(produto => {
         let btnVisualizar = `<button class="btn-view" onclick="visualizarProduto(${produto.id || produto.codigo})">👁️ Visualizar</button>`;
 
-        let btnInativar = `<button class="btn-status">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>`;
+        let btnInativar = `<button class="btn-status" onclick="alterarStatusProduto(${produto.codigo}, ${produto.ativo})">
+    ${produto.ativo ? "❌ Inativar" : "✅ Ativar"}
+</button>`;
         let btnEditar = `<button class="btn-edit" onclick="editarProduto(${produto.codigo})">✏️ Editar</button>`;
 
         if (grupoUsuario === "ESTOQUISTA") {
@@ -72,47 +78,50 @@ function atualizarTabelaProdutos() {
             </td>
         </tr>`;
 
-        tabela.innerHTML += row;
+        tbody.innerHTML += row;
     });
 
-    document.getElementById("paginaAnterior").style.display = paginaAtual > 0 ? "inline-block" : "none";
-    document.getElementById("proximaPagina").style.display = fim < produtosData.length ? "inline-block" : "none";
+    atualizarBotoesPaginacao();
 }
 
+function atualizarBotoesPaginacao() {
+    const totalPaginas = Math.ceil(produtosData.length / produtosPorPagina);
 
-// 🔄 Função para avançar para a próxima página
-function proximaPagina() {
-    if ((paginaAtual + 1) * produtosPorPagina < produtosData.length) {
+    document.getElementById("paginaAnterior").disabled = paginaAtual === 1;
+    document.getElementById("proximaPagina").disabled = paginaAtual === totalPaginas || totalPaginas === 0;
+
+    document.getElementById("paginacaoInfo").textContent = `Página ${paginaAtual} de ${totalPaginas}`;
+}
+
+// Botão Próxima Página
+document.getElementById("proximaPagina").addEventListener("click", () => {
+    const totalPaginas = Math.ceil(produtosData.length / produtosPorPagina);
+
+    if (paginaAtual < totalPaginas) {
         paginaAtual++;
         atualizarTabelaProdutos();
     }
-}
+});
 
-// 🔄 Função para voltar para a página anterior
-function paginaAnterior() {
-    if (paginaAtual > 0) {
+// Botão Página Anterior
+document.getElementById("paginaAnterior").addEventListener("click", () => {
+    if (paginaAtual > 1) {
         paginaAtual--;
         atualizarTabelaProdutos();
     }
-}
+});
 
-// 🔥 Evento de carregamento inicial
+// Evento inicial de carregamento da página
 document.addEventListener("DOMContentLoaded", () => {
     carregarProdutos();
 });
 
-// 📌 Redirecionamento para cadastrar produto
-document.getElementById("cadastrar").addEventListener("click", function(){
-    window.location.href = "./cadastroProduto.html";
-});
-
-// 🔍 Filtro de produtos em tempo real
 document.getElementById("buscarProduto").addEventListener("input", function () {
     let termoBusca = this.value.trim().toLowerCase();
     buscarProduto(termoBusca);
 });
 
-// 🔍 Função para buscar produtos (tanto pelo input quanto pelo botão)
+// 🔍 Buscar produto
 function buscarProduto(termoBusca = null) {
     let tabela = document.getElementById("tabelaProdutos");
     tabela.innerHTML = ""; // Limpa a tabela
@@ -147,10 +156,99 @@ function buscarProduto(termoBusca = null) {
     }
 }
 
-// 🔄 Evento para o botão de busca
-document.getElementById("buscarBtn").addEventListener("click", function () {
-    buscarProduto();
+
+// 🔎 Exibir detalhes do produto no modal
+async function visualizarProduto(id) {
+    const token = localStorage.getItem("token");
+
+    try {
+        let response = await fetch(`http://localhost:8080/produtos/${id}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Erro ao buscar detalhes do produto: ${response.status}`);
+        }
+
+        let produto = await response.json();
+        console.log("Detalhes do produto:", produto);
+
+        // Atualiza os elementos do modal
+        document.getElementById("modalNome").textContent = produto.nome;
+        document.getElementById("modalAvaliacao").textContent = produto.avaliacao;
+        document.getElementById("modalDescricao").textContent = produto.descricao;
+        document.getElementById("modalPreco").textContent = `R$ ${produto.valor.toFixed(2)}`;
+
+        // Obtém imagens do produto
+        let imgResponse = await fetch(`http://localhost:8080/produtos/${id}/imagens`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+
+        if (imgResponse.ok) {
+            imagensProduto = await imgResponse.json();
+            if (imagensProduto.length > 0) {
+                imagemAtual = 0;
+                atualizarCarrossel();
+            } else {
+                document.getElementById("modalImagem").src = "placeholder.jpg";
+            }
+        }
+
+        // Exibe o modal
+        document.getElementById("produtoModal").style.display = "flex";
+
+    } catch (error) {
+        console.error("Erro ao carregar produto:", error);
+        alert("Erro ao carregar detalhes do produto.");
+    }
+}
+
+// 🔄 Atualiza a imagem no carrossel
+function atualizarCarrossel() {
+    document.getElementById("modalImagem").src = `data:${imagensProduto[imagemAtual].tipoArquivo};base64,${imagensProduto[imagemAtual].dados}`;
+}
+
+// 🏆 Funções do carrossel
+document.getElementById("prevBtn").addEventListener("click", () => {
+    if (imagensProduto.length > 0) {
+        imagemAtual = (imagemAtual - 1 + imagensProduto.length) % imagensProduto.length;
+        atualizarCarrossel();
+    }
 });
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+    if (imagensProduto.length > 0) {
+        imagemAtual = (imagemAtual + 1) % imagensProduto.length;
+        atualizarCarrossel();
+    }
+});
+
+// ❌ Fechar o modal
+document.querySelector(".close").addEventListener("click", () => {
+    document.getElementById("produtoModal").style.display = "none";
+});
+
+// 🔥 Evento de carregamento inicial
+document.addEventListener("DOMContentLoaded", () => {
+    carregarProdutos();
+});
+
+// 📌 "Ver mais" - Exibir mais produtos
+function carregarMaisProdutos() {
+    atualizarTabelaProdutos();
+}
+
+document.getElementById("cadastrar").addEventListener("click", function () {
+    window.location.href = "./cadastroProduto.html";
+})
+
 
 async function editarProduto(id) {
     const token = localStorage.getItem("token");
@@ -171,13 +269,19 @@ async function editarProduto(id) {
         let produto = await response.json();
         console.log("Editando produto:", produto);
 
-        // ✅ Garante que o ID do produto é salvo corretamente
+        // Atualiza o campo de ID
         document.getElementById("editProdutoId").value = produto.id || produto.codigo;
-
         document.getElementById("editNome").value = produto.nome;
         document.getElementById("editDescricao").value = produto.descricao;
         document.getElementById("editValor").value = produto.valor;
         document.getElementById("editQtdEstoque").value = produto.qtdEstoque;
+
+        // Exibir a imagem do produto, se existir
+        if (produto.imagem) {
+            document.getElementById("editProdutoImagem").src = `data:${produto.imagem.tipo};base64,${produto.imagem.dados}`;
+        } else {
+            document.getElementById("editProdutoImagem").src = "default_image.jpg"; // Imagem padrão caso não exista
+        }
 
         // Exibir o modal de edição
         document.getElementById("modalEditarProduto").style.display = "flex";
@@ -187,6 +291,7 @@ async function editarProduto(id) {
         alert("Erro ao carregar produto para edição.");
     }
 }
+
 
 
 
@@ -238,21 +343,19 @@ async function salvarEdicaoProduto() {
     }
 };
 
-async function visualizarProduto(id) {
+function fecharModal() {
+    document.getElementById("produtoModal").style.display = "none";
+}
+
+async function alterarStatusProduto(id, statusAtual) {
     const token = localStorage.getItem("token");
 
-    // 🔴 Verificar se o ID está correto antes da requisição
-    if (!id) {
-        console.error("Erro: ID do produto não foi passado corretamente.");
-        alert("Erro: Produto inválido.");
-        return;
-    }
-
-    console.log("Visualizando produto ID:", id);
+    const novoStatus = !statusAtual; // Inverte o status atual
+    console.log(novoStatus); 
 
     try {
-        let response = await fetch(`http://localhost:8080/produtos/${id}`, {
-            method: "GET",
+        const response = await fetch(`http://localhost:8080/produtos/${id}/status?status=${novoStatus ? 'true' : 'false'}`, {
+            method: "PATCH",
             headers: {
                 "Authorization": `Bearer ${token}`,
                 "Content-Type": "application/json"
@@ -260,45 +363,32 @@ async function visualizarProduto(id) {
         });
 
         if (!response.ok) {
-            throw new Error(`Erro ao buscar detalhes do produto: ${response.status}`);
+            throw new Error(`Erro ao alterar status do produto: ${response.status}`);
         }
 
-        let produto = await response.json();
-        console.log("Detalhes do produto:", produto);
+        alert(`Produto ${novoStatus ? "ativado" : "inativado"} com sucesso!`);
 
-        // Atualizar os dados no modal de visualização
-        document.getElementById("modalNome").textContent = produto.nome;
-        document.getElementById("modalAvaliacao").textContent = produto.avaliacao || "N/A";
-        document.getElementById("modalDescricao").textContent = produto.descricao;
-        document.getElementById("modalPreco").textContent = `R$ ${produto.valor.toFixed(2)}`;
-
-        // Buscar imagem do produto
-        let imgResponse = await fetch(`http://localhost:8080/produtos/${id}/imagens`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
-
-        if (imgResponse.ok) {
-            let imagensProduto = await imgResponse.json();
-            if (imagensProduto.length > 0) {
-                document.getElementById("modalImagem").src = `data:${imagensProduto[0].tipoArquivo};base64,${imagensProduto[0].dados}`;
-            } else {
-                document.getElementById("modalImagem").src = "placeholder.jpg";
-            }
-        }
-
-        // Exibir o modal de visualização
-        document.getElementById("produtoModal").style.display = "flex";
+        // Atualiza a lista de produtos para refletir o novo status
+        carregarProdutos();
 
     } catch (error) {
-        console.error("Erro ao buscar produto:", error);
-        alert("Erro ao carregar detalhes do produto.");
+        console.error("Erro ao alterar status do produto:", error);
+        alert("Erro ao alterar status do produto.");
     }
 }
 
-function fecharModal() {
-    document.getElementById("produtoModal").style.display = "none";
-}
 
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("logoutBtn").addEventListener("click", function () {
+        if (confirm("Tem certeza que deseja sair?")) {
+            // Remover dados do localStorage
+            localStorage.removeItem("token");
+            localStorage.removeItem("grupo");
+            localStorage.removeItem("nome");
+            localStorage.removeItem("userId");
+
+            // Redirecionar para a página de login
+            window.location.href = "login.html";
+        }
+    });
+});

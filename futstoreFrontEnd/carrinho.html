@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho</title>
+    <link rel="icon" href="./assets/iconPage.png">
+    <link rel="stylesheet" href="./styles/carrinho.css">
+    <link rel="stylesheet" href="./styles/header.css" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
+        <div class="botoesCliente">
+            <button id="loginBtn" class="login-btn"><i class="fa fa-user"></i> | Faça login ou cadastre-se</button>
+            <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho</button>
+        </div>
+        
+    </header>
+
+    <script>
+        document.getElementById('carrinhoBtn').addEventListener("click", function(){
+            window.location.href = 'carrinho.html';
+        })
+    </script>
+</body>
+</html>

@@ -27,9 +27,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/usuarios/login").permitAll()
-                .requestMatchers("/usuarios").authenticated()
-                .anyRequest().authenticated()
+                .requestMatchers("/usuarios/login").permitAll() // Permite acesso público ao login
+                .requestMatchers("/produtos/**").permitAll() // Permite acesso público à listagem de produtos
+                .requestMatchers("/usuarios").authenticated() // Exige autenticação para acessar usuários
+                .anyRequest().authenticated() // Requer autenticação para qualquer outro endpoint
             )
             .cors(cors -> cors.configurationSource(request -> {
                 var corsConfig = new org.springframework.web.cors.CorsConfiguration();
@@ -39,7 +40,7 @@ public class SecurityConfig {
                 corsConfig.setAllowCredentials(true);
                 return corsConfig;
             }))
-            .addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class); // Adiciona seu filtro de segurança
 
         return http.build();
     }

@@ -13,10 +13,10 @@
 
 <body>
     <header class="header">
-        <h1 class="titulo">Futstore</h1>
+        <img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore">
         <button id="logoutBtn" class="logout-btn"><i class="fa fa-user"></i> | Logout</button>
     </header>
-    
+
     <div class="container">
         <h2>Lista de Produtos</h2>
 
@@ -43,30 +43,32 @@
                 <!-- Produtos serão inseridos aqui via JS -->
             </tbody>
         </table>
-        <!-- Botões de Paginação -->
-        <button id="paginaAnterior" class="btn" onclick="paginaAnterior()" style="display: none;">⬅ Página Anterior</button>
-        <button id="proximaPagina" class="btn" onclick="proximaPagina()" style="display: none;">Próxima Página ➡</button>
-
-    </div>
-
- <!-- Modal de Detalhes do Produto -->
-<div id="produtoModal" class="modal">
-    <div class="modal-content">
-        <span id="closeModal" class="close">&times;</span>
-        <h2 id="modalNome"></h2>
-        <div class="carousel">
-            <button id="prevBtn" class="btn">❮</button>
-            <img id="modalImagem" src="placeholder.jpg" alt="Imagem do Produto">
-            <button id="nextBtn" class="btn">❯</button>
+        <div style="margin-top: 10px;">
+            <button id="paginaAnterior">⬅️ Página Anterior</button>
+            <span id="paginacaoInfo"></span>
+            <button id="proximaPagina">➡️ Próxima Página</button>
         </div>
-        <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
-        <p><strong>Descrição:</strong> <span id="modalDescricao"></span></p>
-        <p><strong>Preço:</strong> R$ <span id="modalPreco"></span></p>
-        <button id="comprarBtn" class="btn">Comprar</button>
     </div>
-</div>
 
-<!-- Modal de Edição de Produto -->
+    <!-- Modal de Detalhes do Produto -->
+    <div id="produtoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <h2 id="modalNome"></h2>
+            <div class="carousel">
+                <button id="prevBtn" class="btn">❮</button>
+                <span><img id="modalImagem" src="" alt="Imagem do Produto"></span>
+                <button id="nextBtn" class="btn">❯</button>
+            </div>
+            <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
+            <p><strong>Descrição:</strong> <span id="modalDescricao"></span></p>
+            <p><strong>Preço:</strong> R$ <span id="modalPreco"></span></p>
+            <button id="comprarBtn" class="btn" disabled>Comprar</button>
+        </div>
+    </div>
+
+    
+    <!-- Modal de Edição de Produto -->
 <div id="modalEditarProduto" class="modal" style="display: none;">
     <div class="modal-content">
         <span class="close" onclick="document.getElementById('modalEditarProduto').style.display='none'">&times;</span>
@@ -99,105 +101,6 @@
     </div>
 </div>
 
-
-<style>
-    /* Estilização do fundo do modal */
-.modal {
-    display: none; /* Oculto por padrão */
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundo escuro transparente */
-    justify-content: center;
-    align-items: center;
-}
-
-/* Estilização da caixa de conteúdo do modal */
-.modal-content {
-    background-color: #fff;
-    width: 40%;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Botão de fechar */
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 24px;
-    cursor: pointer;
-    color: #555;
-}
-
-.close:hover {
-    color: #000;
-}
-
-/* Estilização dos campos de entrada */
-.modal-content input,
-.modal-content textarea {
-    width: 100%;
-    padding: 8px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-}
-
-/* Ajuste para o textarea */
-.modal-content textarea {
-    height: 80px;
-    resize: vertical;
-}
-
-/* Botão de salvar */
-.modal-content .btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 4px;
-    margin-top: 10px;
-    transition: background-color 0.3s ease;
-}
-
-.modal-content .btn:hover {
-    background-color: #218838;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 80%;
-    }
-}
-
-.image-preview-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-}
-
-/* Imagem de pré-visualização */
-.image-preview {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-}
-
-</style>
 
 </body>
 

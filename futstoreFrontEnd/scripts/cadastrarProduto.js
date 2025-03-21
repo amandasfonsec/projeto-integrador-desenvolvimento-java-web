@@ -110,3 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "./listarProdutos.html";
     });
 });
+
+// Função para lidar com a pré-visualização das imagens
+

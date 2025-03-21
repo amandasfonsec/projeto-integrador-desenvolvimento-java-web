@@ -14,6 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,6 +92,18 @@ public class ProdutoController {
     }
 }
 
+@PatchMapping("/{id}/status")
+    public ResponseEntity<?> alterarStatusProduto(
+            @PathVariable Long id, 
+            @RequestParam boolean status) {  // Recebe o status como um valor booleano
+        try {
+            Produto produtoAtualizado = produtoService.alterarStatusProduto(id, status);
+            return ResponseEntity.ok(produtoAtualizado);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Erro ao alterar status do produto: " + e.getMessage()));
+        }
+    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirProduto(@PathVariable Long id) {
@@ -108,9 +123,24 @@ public class ProdutoController {
 
     // Listar imagens do produto
     @GetMapping("/{id}/imagens")
-    public ResponseEntity<List<ProdutoImagem>> listarImagensDoProduto(@PathVariable Long id) {
-        return ResponseEntity.ok(produtoService.listarImagensDoProduto(id));
+public ResponseEntity<List<Map<String, String>>> listarImagensDoProduto(@PathVariable Long id) {
+    try {
+        List<ProdutoImagem> imagens = produtoService.listarImagensDoProduto(id);
+
+        List<Map<String, String>> imagensBase64 = new ArrayList<>();
+        for (ProdutoImagem imagem : imagens) {
+            Map<String, String> imagemInfo = new HashMap<>();
+            imagemInfo.put("tipo", imagem.getTipoArquivo());
+            imagemInfo.put("imagem", "data:" + imagem.getTipoArquivo() + ";base64," + Base64.getEncoder().encodeToString(imagem.getDados()));
+            imagensBase64.add(imagemInfo);
+        }
+
+        return ResponseEntity.ok(imagensBase64);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of(Map.of("erro", "Erro ao listar imagens do produto: " + e.getMessage())));
     }
+}
+
 
     @PostMapping(consumes = { "multipart/form-data" })
     public ResponseEntity<?> cadastrarProduto(

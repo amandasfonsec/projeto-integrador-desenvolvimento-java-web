@@ -10,7 +10,7 @@ public class FutstoreApplication {
 
 	public static void main(String[] args) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String senhaCriptografada = encoder.encode("123"); // Altere para a senha desejada
+        String senhaCriptografada = encoder.encode("123"); 
         System.out.println("Senha criptografada: " + senhaCriptografada);
 		SpringApplication.run(FutstoreApplication.class, args);
 	}

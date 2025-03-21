@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Produto</title>
-    <link rel="stylesheet" href="./styles/frontProdutos.css" type="text/css">
+    <link rel="icon" href="./assets/iconPage.png">
+    <link rel="stylesheet" href="./styles/frontCadastroProdutos.css" type="text/css">
     <script src="./scripts/cadastrarProduto.js" defer></script>
 </head>
 <body>
@@ -42,11 +43,12 @@
             </div>
 
             <!-- Imagens do Produto -->
-            <div class="form-group">
+            <div class="form-group" id="imgs">
                 <label for="imagensProduto">Imagens do Produto:</label>
                 <input type="file" id="imagensProduto" name="imagensProduto[]" multiple accept="image/*">
-                <div id="previewImagens"></div>
+                
             </div>
+            <div id="previewImagens"></div>
 
             <!-- Imagem Principal -->
             <div class="form-group">
@@ -57,8 +59,10 @@
             </div>
 
             <!-- Botões de Ação -->
+            <div class="btnAcoes">
             <button type="submit" class="btn" id="btnSalvarProduto">Salvar</button>
             <button type="button" class="btnCancel" id="btnCancelarProduto">Cancelar</button>
+            </div>
         </form>
     </div>
 
