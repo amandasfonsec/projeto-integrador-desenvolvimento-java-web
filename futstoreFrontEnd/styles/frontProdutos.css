@@ -75,9 +75,6 @@ th {
     font-weight: 600;
 }
 
-tr:hover {
-    background-color: #f1f1f1;
-}
 
 /* Ações dentro da tabela */
 .acoes {
@@ -158,15 +155,33 @@ tr:hover {
     align-items: center;
 }
 
-/* Estilização da caixa de conteúdo do modal */
+#modalEditarProduto {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 10%; /* Ajuste a posição para 10% de distância do topo */
+    transform: translateX(-50%); /* Centraliza horizontalmente */
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh; /* Limita a altura máxima */
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+    overflow-y: auto; /* Permite rolagem se necessário */
+}
+
+
+
 .modal-content {
     background-color: #fff;
-    width: 80%;
     padding: 20px;
     border-radius: 8px;
     position: relative;
     display: flex;
     flex-direction: column;
+     
 }
 
 /* Estilização dos campos de entrada */
@@ -234,4 +249,21 @@ tr:hover {
 .carousel button:hover {
     color: #000;
 }
+
+#editProdutoImagemContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.produto-imagem {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+}
+
+
+
 

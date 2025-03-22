@@ -57,7 +57,7 @@
             <h2 id="modalNome"></h2>
             <div class="carousel">
                 <button id="prevBtn" class="btn">❮</button>
-                <span><img id="modalImagem" src="" alt="Imagem do Produto"></span>
+                <img id="modalImagem" src="" alt="Imagem do Produto">
                 <button id="nextBtn" class="btn">❯</button>
             </div>
             <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
@@ -89,9 +89,10 @@
         <input type="number" id="editQtdEstoque" required>
 
         <!-- Exibição da imagem atual -->
-        <div class="image-preview-container">
-            <img id="editProdutoImagem" src="" alt="Imagem do Produto" class="image-preview">
+        <div id="editProdutoImagemContainer">
+            <!-- As imagens serão adicionadas aqui dinamicamente -->
         </div>
+        
 
         <!-- Input para alterar a imagem -->
         <label for="editImagemProduto">Alterar Imagem:</label>

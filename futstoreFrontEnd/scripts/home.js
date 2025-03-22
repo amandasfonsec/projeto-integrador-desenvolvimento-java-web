@@ -28,16 +28,27 @@ async function carregarProdutos() {
             const imagens = await imagensResponse.json();
 
             let imagemSrc = '';
-            if (imagens.length > 0) {
-                imagemSrc = imagens[0].imagem; // Pega a primeira imagem, se houver
+
+            let imagemPrincipal = null;
+
+            for (let i = 0; i < imagens.length; i++) {
+                const imagem = imagens[i];
+
+                if (imagem.principal === "true") {
+                    imagemPrincipal = imagem;
+                    break; // Para o loop, já achou
+                }
             }
 
+            console.log(imagemPrincipal);
+
+            // Certifique-se de acessar a propriedade correta (imagem) no src
             produtoCard.innerHTML = `
-                <img src="${imagemSrc}" alt="${produto.nome}" class="produto-imagem">
-                <h3 class="produto-nome">${produto.nome}</h3>
-                <p class="produto-preco">R$ ${produto.valor}</p>
-                <button class="produto-btn">Exibir detalhes</button>
-            `;
+    <img src="${imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png'}" alt="${produto.nome}" class="produto-imagem">
+    <h3 class="produto-nome">${produto.nome}</h3>
+    <p class="produto-preco">R$ ${produto.valor}</p>
+    <button class="produto-btn">Exibir detalhes</button>
+`;
 
             container.appendChild(produtoCard);
         }
@@ -47,3 +58,4 @@ async function carregarProdutos() {
 }
 
 window.onload = carregarProdutos;
+

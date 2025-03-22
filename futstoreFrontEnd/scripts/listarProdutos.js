@@ -197,7 +197,7 @@ async function visualizarProduto(id) {
                 imagemAtual = 0;
                 atualizarCarrossel();
             } else {
-                document.getElementById("modalImagem").src = "placeholder.jpg";
+                document.getElementById("modalImagem").src = imagem.imagem;
             }
         }
 
@@ -212,8 +212,18 @@ async function visualizarProduto(id) {
 
 // 🔄 Atualiza a imagem no carrossel
 function atualizarCarrossel() {
-    document.getElementById("modalImagem").src = `data:${imagensProduto[imagemAtual].tipoArquivo};base64,${imagensProduto[imagemAtual].dados}`;
+    const imagem = imagensProduto[imagemAtual];
+
+    if (!imagem || !imagem.imagem) {
+        console.warn("Imagem inválida no carrossel:", imagem);
+        document.getElementById("modalImagem").src = "placeholder.jpg"; // cuidado com esse 404, vou falar disso já já!
+        return;
+    }
+
+    document.getElementById("modalImagem").src = imagem.imagem;
 }
+
+
 
 // 🏆 Funções do carrossel
 document.getElementById("prevBtn").addEventListener("click", () => {
@@ -252,6 +262,7 @@ document.getElementById("cadastrar").addEventListener("click", function () {
 
 async function editarProduto(id) {
     const token = localStorage.getItem("token");
+    const grupoUsuario = localStorage.getItem("grupo");
 
     try {
         let response = await fetch(`http://localhost:8080/produtos/${id}`, {
@@ -269,18 +280,35 @@ async function editarProduto(id) {
         let produto = await response.json();
         console.log("Editando produto:", produto);
 
-        // Atualiza o campo de ID
+        // Atualiza os campos do produto
         document.getElementById("editProdutoId").value = produto.id || produto.codigo;
         document.getElementById("editNome").value = produto.nome;
         document.getElementById("editDescricao").value = produto.descricao;
         document.getElementById("editValor").value = produto.valor;
         document.getElementById("editQtdEstoque").value = produto.qtdEstoque;
 
-        // Exibir a imagem do produto, se existir
-        if (produto.imagem) {
-            document.getElementById("editProdutoImagem").src = `data:${produto.imagem.tipo};base64,${produto.imagem.dados}`;
+        // Carregar as imagens do produto
+        buscarImagensProduto(id);
+
+        // Se o grupo do usuário for "ESTOQUISTA", desabilite todos os campos, exceto a quantidade de estoque
+        if (grupoUsuario === "ESTOQUISTA") {
+            document.getElementById("editNome").disabled = true;
+            document.getElementById("editDescricao").disabled = true;
+            document.getElementById("editValor").disabled = true;
+            document.getElementById("editQtdEstoque").disabled = false;
+            document.getElementById("editImagemProduto").disabled = true;
+
+            document.getElementById("editNome").style.cursor = "not-allowed";
+            document.getElementById("editDescricao").style.cursor = "not-allowed";
+            document.getElementById("editValor").style.cursor = "not-allowed";
+            document.getElementById("editQtdEstoque").style.cursor = "default";
+            document.getElementById("editImagemProduto").style.cursor = "not-allowed";
         } else {
-            document.getElementById("editProdutoImagem").src = "default_image.jpg"; // Imagem padrão caso não exista
+            // Se não for "ESTOQUISTA", todos os campos ficam editáveis
+            document.getElementById("editNome").disabled = false;
+            document.getElementById("editDescricao").disabled = false;
+            document.getElementById("editValor").disabled = false;
+            document.getElementById("editQtdEstoque").disabled = false;
         }
 
         // Exibir o modal de edição
@@ -291,9 +319,6 @@ async function editarProduto(id) {
         alert("Erro ao carregar produto para edição.");
     }
 }
-
-
-
 
 async function salvarEdicaoProduto() {
     const token = localStorage.getItem("token");
@@ -376,6 +401,51 @@ async function alterarStatusProduto(id, statusAtual) {
         alert("Erro ao alterar status do produto.");
     }
 }
+
+async function buscarImagensProduto(id) {
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch(`http://localhost:8080/produtos/${id}/imagens`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Erro ao buscar imagens do produto");
+        }
+
+        const imagens = await response.json();
+
+        if (imagens && imagens.length > 0) {
+            // Limpa as imagens antigas
+            const imagemContainer = document.getElementById("editProdutoImagemContainer");
+            imagemContainer.innerHTML = '';
+
+            // Itera sobre as imagens e as adiciona ao container
+            imagens.forEach(imagem => {
+                const imgElement = document.createElement("img");
+                imgElement.src = imagem.imagem;
+                imgElement.alt = "Imagem do produto";
+                imgElement.classList.add("produto-imagem");
+
+                // Adiciona a imagem ao container
+                imagemContainer.appendChild(imgElement);
+            });
+        } else {
+            document.getElementById("editProdutoImagemContainer").innerHTML = "<p>Sem imagens para exibir</p>";
+        }
+
+    } catch (error) {
+        console.error("Erro ao carregar imagens:", error);
+        document.getElementById("editProdutoImagemContainer").innerHTML = "<p>Erro ao carregar imagens</p>";
+    }
+}
+
+
 
 
 document.addEventListener("DOMContentLoaded", function () {

@@ -34,6 +34,7 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log('Grupo:', grupo);
 
     const listarUsuariosLink = document.getElementById('listarUsuariosLink');
+    const listarPedidosLink = document.getElementById('listarPedidos');
 
     if (!listarUsuariosLink) {
         console.error('Elemento listarUsuariosLink não encontrado!');
@@ -41,11 +42,14 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     if (grupo !== 'ADMINISTRADOR') {
-        listarUsuariosLink.style.pointerEvents = 'none';
-        listarUsuariosLink.style.color = 'gray';
+        listarPedidosLink.style.display = 'none';
+        listarUsuariosLink.style.display = 'none';
     } else {
+        //Enquanto a lista de Pedidos não foi criada o style.display do listarPedidos deve ficar invisivel
+        //(por enquanto...)
+        listarPedidosLink.style.display = 'none';
         listarUsuariosLink.style.pointerEvents = 'auto';
-        listarUsuariosLink.style.color = 'black';
+        listarUsuariosLink.style.color = 'dark-blue';
         listarUsuariosLink.addEventListener('click', () => {
             window.location.href = './listaUsuarios.html';
         });
