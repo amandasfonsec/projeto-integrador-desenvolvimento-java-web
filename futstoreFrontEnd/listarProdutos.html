@@ -69,8 +69,8 @@
 
     
     <!-- Modal de Edição de Produto -->
-<div id="modalEditarProduto" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="modalEditarProduto" class="modalProduto" style="display: none;">
+    <div class="modalProduto-content">
         <span class="close" onclick="document.getElementById('modalEditarProduto').style.display='none'">&times;</span>
         <h2>Editar Produto</h2>
 
@@ -80,7 +80,7 @@
         <input type="text" id="editNome" required>
 
         <label for="editDescricao">Descrição:</label>
-        <textarea id="editDescricao" required></textarea>
+        <div class="text-area"><textarea id="editDescricao" required></textarea></div>
 
         <label for="editValor">Valor:</label>
         <input type="number" id="editValor" step="0.01" required>

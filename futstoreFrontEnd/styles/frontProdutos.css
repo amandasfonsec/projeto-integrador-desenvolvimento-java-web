@@ -169,10 +169,36 @@ th {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
     z-index: 1000;
-    overflow-y: auto; /* Permite rolagem se necessário */
+     /* Permite rolagem se necessário */
+    overflow: hidden;
 }
 
+.modalProduto-content{
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    width: 97%;
+   
+    label{
+        margin-top: 15px;
+    }
 
+    #editDescricao{
+        resize: none;
+        width: 98%;
+        height: 70px;
+    }
+
+    #editProdutoImagemContainer{
+        margin-top: 15px;
+    }
+
+    button{
+        margin-top: 15px;
+        
+    }
+
+}
 
 .modal-content {
     background-color: #fff;
