@@ -1,8 +1,8 @@
+
 async function carregarProdutos() {
     try {
-        const token = localStorage.getItem('token'); // Ou onde o token for armazenado
+        const token = localStorage.getItem('token'); 
 
-        // Condicionalmente adiciona o token ao cabeçalho da requisição
         const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
         const response = await fetch('http://localhost:8080/produtos', {
@@ -14,7 +14,7 @@ async function carregarProdutos() {
             throw new Error('Erro ao carregar os produtos');
         }
 
-        const produtos = await response.json(); // Converte a resposta para JSON
+        const produtos = await response.json();
 
         const container = document.querySelector('.produtos-container');
         container.innerHTML = '';
@@ -23,22 +23,24 @@ async function carregarProdutos() {
             const produtoCard = document.createElement('div');
             produtoCard.classList.add('produto-card');
 
-            // Para cada produto, buscar as imagens
             const imagensResponse = await fetch(`http://localhost:8080/produtos/${produto.codigo}/imagens`);
             const imagens = await imagensResponse.json();
 
             let imagemSrc = '';
             if (imagens.length > 0) {
-                imagemSrc = imagens[0].imagem; // Pega a primeira imagem, se houver
+                imagemSrc = imagens[0].imagem;
             }
+
+            produto.imagemPrincipal = imagemSrc;
 
             produtoCard.innerHTML = `
                 <img src="${imagemSrc}" alt="${produto.nome}" class="produto-imagem">
                 <h3 class="produto-nome">${produto.nome}</h3>
                 <p class="produto-preco">R$ ${produto.valor}</p>
                 <button class="produto-btn">Exibir detalhes</button>
+                <button class="carrinho-btn" onclick='adicionarProdutoCarrinho(${JSON.stringify(produto)})'>Comprar</button>
             `;
-
+        
             container.appendChild(produtoCard);
         }
     } catch (error) {
@@ -47,3 +49,9 @@ async function carregarProdutos() {
 }
 
 window.onload = carregarProdutos;
+
+window.adicionarProdutoCarrinho = function(produto) {
+    adicionarAoCarrinho(produto);
+    alert("Produto adicionado ao carrinho!");
+    window.location.href = 'carrinho.html';
+}

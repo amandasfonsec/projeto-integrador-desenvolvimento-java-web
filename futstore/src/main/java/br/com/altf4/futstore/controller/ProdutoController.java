@@ -93,17 +93,16 @@ public class ProdutoController {
 }
 
 @PatchMapping("/{id}/status")
-    public ResponseEntity<?> alterarStatusProduto(
-            @PathVariable Long id, 
-            @RequestParam boolean status) {  // Recebe o status como um valor booleano
-        try {
-            Produto produtoAtualizado = produtoService.alterarStatusProduto(id, status);
-            return ResponseEntity.ok(produtoAtualizado);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(Map.of("erro", "Erro ao alterar status do produto: " + e.getMessage()));
-        }
+public ResponseEntity<?> alterarStatusProduto(@PathVariable Long id) {
+    try {
+        Produto produtoAtualizado = produtoService.alterarStatusProduto(id);
+        return ResponseEntity.ok(produtoAtualizado);
+    } catch (Exception e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("erro", "Erro ao alterar status do produto: " + e.getMessage()));
     }
+}
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> excluirProduto(@PathVariable Long id) {

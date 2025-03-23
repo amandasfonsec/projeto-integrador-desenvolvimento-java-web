@@ -1,3 +1,4 @@
+
 document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
@@ -17,7 +18,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         if (response.headers.get("content-type")?.includes("application/json")) {
             data = await response.json();
         } else {
-            data = await response.text(); // Captura resposta de erro em texto
+            data = await response.text();
         }
 
         if (!response.ok) {
@@ -30,6 +31,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
             return;
         }
 
+        // Token e dados salvos normalmente
         const token = data.token;
         const grupo = data.grupo;
         const nome = data.nome;
