@@ -1,21 +1,25 @@
-let produtosData = []; // Armazena todos os produtos carregados
-let imagensProduto = []; // Armazena imagens do produto no modal
-let imagemAtual = 0; // Índice da imagem no carrossel
-let paginaAtual = 1;
-let produtosExibidos = 0; // Contador de produtos já exibidos
-const produtosPorPagina = 10; // Quantidade de produtos por página
 
-// 🔄 Carregar produtos da API
+// Função utilitária para pegar token sem prefixo duplicado
+function getToken() {
+    let token = localStorage.getItem("token") || '';
+    return token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
+}
+
+let produtosData = [];
+let imagensProduto = [];
+let imagemAtual = 0;
+let paginaAtual = 1;
+let produtosExibidos = 0;
+const produtosPorPagina = 10;
+
 async function carregarProdutos() {
     console.log("Carregando produtos...");
-
-    const token = localStorage.getItem("token");
 
     try {
         let response = await fetch("http://localhost:8080/produtos", {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${getToken()}`,
                 "Content-Type": "application/json"
             }
         });
@@ -26,11 +30,7 @@ async function carregarProdutos() {
 
         let data = await response.json();
         console.log("Produtos recebidos:", data);
-
-        // Ordena os produtos por código de forma decrescente
         produtosData = data.sort((a, b) => b.codigo - a.codigo);
-
-        // Reinicia a exibição
         produtosExibidos = 0;
         atualizarTabelaProdutos();
 
@@ -40,29 +40,26 @@ async function carregarProdutos() {
     }
 }
 
-// 🔄 Atualiza a tabela com os produtos exibindo de forma paginada
 function atualizarTabelaProdutos() {
     const tbody = document.getElementById("tabelaProdutos");
-    tbody.innerHTML = ""; // Limpa o corpo da tabela
+    tbody.innerHTML = "";
 
     const grupoUsuario = localStorage.getItem("grupo");
-
     const inicio = (paginaAtual - 1) * produtosPorPagina;
     const fim = inicio + produtosPorPagina;
 
     const produtosPagina = produtosData.slice(inicio, fim);
 
     produtosPagina.forEach(produto => {
-        let btnVisualizar = `<button class="btn-view" onclick="visualizarProduto(${produto.id || produto.codigo})">👁️ Visualizar</button>`;
-
+        let btnVisualizar = `<button class="btn-view" onclick="visualizarProduto(${produto.codigo})">👁️ Visualizar</button>`;
         let btnInativar = `<button class="btn-status" onclick="alterarStatusProduto(${produto.codigo}, ${produto.ativo})">
     ${produto.ativo ? "❌ Inativar" : "✅ Ativar"}
 </button>`;
         let btnEditar = `<button class="btn-edit" onclick="editarProduto(${produto.codigo})">✏️ Editar</button>`;
 
         if (grupoUsuario === "ESTOQUISTA") {
-            btnVisualizar = `<button class="btn-view disabled" disabled style="background-color: gray; cursor: not-allowed;">👁️ Visualizar</button>`;
-            btnInativar = `<button class="btn-status disabled" disabled style="background-color: gray; cursor: not-allowed;">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>`;
+            btnVisualizar = `<button class="btn-view disabled" disabled style="background-color: gray;">👁️ Visualizar</button>`;
+            btnInativar = `<button class="btn-status disabled" disabled style="background-color: gray;">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>`;
         }
 
         let row = `<tr>
@@ -86,24 +83,19 @@ function atualizarTabelaProdutos() {
 
 function atualizarBotoesPaginacao() {
     const totalPaginas = Math.ceil(produtosData.length / produtosPorPagina);
-
     document.getElementById("paginaAnterior").disabled = paginaAtual === 1;
     document.getElementById("proximaPagina").disabled = paginaAtual === totalPaginas || totalPaginas === 0;
-
     document.getElementById("paginacaoInfo").textContent = `Página ${paginaAtual} de ${totalPaginas}`;
 }
 
-// Botão Próxima Página
 document.getElementById("proximaPagina").addEventListener("click", () => {
     const totalPaginas = Math.ceil(produtosData.length / produtosPorPagina);
-
     if (paginaAtual < totalPaginas) {
         paginaAtual++;
         atualizarTabelaProdutos();
     }
 });
 
-// Botão Página Anterior
 document.getElementById("paginaAnterior").addEventListener("click", () => {
     if (paginaAtual > 1) {
         paginaAtual--;
@@ -111,7 +103,6 @@ document.getElementById("paginaAnterior").addEventListener("click", () => {
     }
 });
 
-// Evento inicial de carregamento da página
 document.addEventListener("DOMContentLoaded", () => {
     carregarProdutos();
 });
@@ -373,32 +364,31 @@ function fecharModal() {
 }
 
 async function alterarStatusProduto(id, statusAtual) {
-    const token = localStorage.getItem("token");
+    const novoStatus = !statusAtual;
 
-    const novoStatus = !statusAtual; // Inverte o status atual
-    console.log(novoStatus); 
+    if (confirm(`Tem certeza que deseja ${novoStatus ? "ativar" : "inativar"} este produto?`)) {
+        try {
+            const response = await fetch(`http://localhost:8080/produtos/${id}/status`, {
+                method: "PATCH",
+                headers: {
+                    "Authorization": `Bearer ${getToken()}`,
+                    "Content-Type": "application/json"
+                }
+            });
 
-    try {
-        const response = await fetch(`http://localhost:8080/produtos/${id}/status?status=${novoStatus ? 'true' : 'false'}`, {
-            method: "PATCH",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
+            if (!response.ok) {
+                const errorMessage = await response.text();
+                console.error("Erro ao alterar status:", errorMessage);
+                throw new Error(`Erro ao alterar status do produto: ${response.status}`);
             }
-        });
 
-        if (!response.ok) {
-            throw new Error(`Erro ao alterar status do produto: ${response.status}`);
+            alert(`Produto ${novoStatus ? "ativado" : "inativado"} com sucesso!`);
+            carregarProdutos();
+
+        } catch (error) {
+            console.error("Erro ao alterar status do produto:", error);
+            alert("Erro ao alterar status do produto.");
         }
-
-        alert(`Produto ${novoStatus ? "ativado" : "inativado"} com sucesso!`);
-
-        // Atualiza a lista de produtos para refletir o novo status
-        carregarProdutos();
-
-    } catch (error) {
-        console.error("Erro ao alterar status do produto:", error);
-        alert("Erro ao alterar status do produto.");
     }
 }
 

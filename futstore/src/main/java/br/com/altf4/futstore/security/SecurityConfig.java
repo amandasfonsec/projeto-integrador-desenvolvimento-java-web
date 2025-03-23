@@ -29,17 +29,18 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/usuarios/login").permitAll() // Permite acesso público ao login
                 .requestMatchers("/produtos/**").permitAll() // Permite acesso público à listagem de produtos
-                .requestMatchers("/usuarios").authenticated() // Exige autenticação para acessar usuários
+                .requestMatchers("/usuarios/**").permitAll()
                 .anyRequest().authenticated() // Requer autenticação para qualquer outro endpoint
             )
             .cors(cors -> cors.configurationSource(request -> {
                 var corsConfig = new org.springframework.web.cors.CorsConfiguration();
-                corsConfig.setAllowedOrigins(List.of("http://127.0.0.1:5500")); // ou "*", mas cuidado em produção!
-                corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                corsConfig.setAllowedOrigins(List.of("http://127.0.0.1:5500", "http://localhost:5500")); // Especifica origem correta
+                corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")); // Inclui PATCH
                 corsConfig.setAllowedHeaders(List.of("*"));
-                corsConfig.setAllowCredentials(true);
+                corsConfig.setAllowCredentials(true); // Como usa token, precisa disso
                 return corsConfig;
             }))
+            
             .addFilterBefore(new SecurityFilter(), UsernamePasswordAuthenticationFilter.class); // Adiciona seu filtro de segurança
 
         return http.build();

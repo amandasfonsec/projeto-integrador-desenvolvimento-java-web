@@ -90,11 +90,11 @@ public class ProdutoService {
         return produtoRepository.findByNomeContainingIgnoreCase(nome);
     }
 
-    @Transactional
-    public Produto alterarStatusProduto(Long id, boolean status) {
+    public Produto alterarStatusProduto(Long id) {
         Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
-        produto.setAtivo(status); // Altera o campo 'ativo' (true ou false)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    
+        produto.setAtivo(!produto.isAtivo()); // Alterna automaticamente
         return produtoRepository.save(produto);
     }
 }

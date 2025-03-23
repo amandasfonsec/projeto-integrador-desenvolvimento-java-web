@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,13 +16,19 @@
         <div class="botoesCliente">
             <button id="loginBtn" class="login-btn"><i class="fa fa-user"></i> | Faça login ou cadastre-se</button>
             <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho</button>
-        </div>      
+        </div>
     </header>
 
-    <script>
-        document.getElementById('carrinhoBtn').addEventListener("click", function(){
-            window.location.href = 'carrinho.html';
-        })
-    </script>
+    <main id="carrinhoContainer">
+        <div id="itensCarrinho"></div>
+        <div id="resumoCarrinho">
+            <h3>Resumo</h3>
+            <p>Total: R$ <span id="totalCarrinho">0,00</span></p>
+            <button id="finalizarCompra">Finalizar Compra</button>
+            <button id="continuarComprando">Continuar Comprando</button>
+        </div>
+    </main>
+
+    <script src="./scripts/carrinho.js"></script>
 </body>
 </html>
