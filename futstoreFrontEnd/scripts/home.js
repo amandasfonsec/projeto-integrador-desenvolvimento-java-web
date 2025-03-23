@@ -51,6 +51,17 @@ async function carregarProdutos() {
 `;
 
             container.appendChild(produtoCard);
+
+            // Seleciona todos os botões dentro do container (ou como preferir)
+            const botoes = container.getElementsByClassName('produto-btn');
+
+            // Percorre cada botão e adiciona o evento de clique
+            for (const btn of botoes) {
+                btn.addEventListener('click', function () {
+                    // Aqui você pode enviar para outra página, passando ID ou o que quiser
+                    window.location.href = "produto.html";
+                });
+            }
         }
     } catch (error) {
         console.error('Erro ao carregar os produtos:', error);
@@ -58,4 +69,3 @@ async function carregarProdutos() {
 }
 
 window.onload = carregarProdutos;
-

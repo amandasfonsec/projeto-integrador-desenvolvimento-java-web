@@ -56,8 +56,17 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> editarUsuario(@Valid @RequestBody Usuario usuario) {
-        return ResponseEntity.status(200).body(usuarioService.editarUsuario(usuario));
+    public ResponseEntity<Usuario> editarUsuario(@PathVariable Integer id, @Valid @RequestBody Usuario usuario) {
+        Usuario usuarioExistente = usuarioService.buscarPorId(id);
+        
+        if (usuarioExistente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    
+        // Lógica para editar o usuário
+        usuario.setId(id);  
+        Usuario usuarioAtualizado = usuarioService.editarUsuario(usuario);
+        return ResponseEntity.status(HttpStatus.OK).body(usuarioAtualizado);
     }
 
     @DeleteMapping("/{id}")

@@ -44,9 +44,27 @@ public class UsuarioService {
     
 
     public Usuario editarUsuario(Usuario usuario) {
+        // Verificar se o usuário existe no banco de dados
+        Usuario usuarioOriginal = repository.findById(usuario.getId())
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+    
+        // Garantir que o e-mail não seja alterado
+        usuario.setEmail(usuarioOriginal.getEmail());
+    
+        // Verifica se o e-mail já existe, mas que não seja o mesmo usuário
+        Usuario usuarioExistente = repository.findByEmail(usuario.getEmail());
+        if (usuarioExistente != null && usuarioExistente.getId() != usuario.getId()) {
+            throw new RuntimeException("E-mail já cadastrado!");
+        }
+    
+        // Codificando a senha antes de salvar
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+    
+        // Salvando o usuário no banco de dados
         return repository.save(usuario);
     }
+    
+
 
     public boolean excluirUsuario(Integer id) {
         repository.deleteById(id);

@@ -105,11 +105,15 @@ class CadastroUsuario {
             window.location.href = "login.html";
             return;
         }
-
+    
         const usuarioAtualizado = this.getDadosFormulario();
-
+    
+        // Garantir que o e-mail não seja alterado
+        const emailOriginal = document.getElementById('emailCadastro').value // Supondo que você tenha o email original armazenado
+        usuarioAtualizado.email = emailOriginal; // Mantém o e-mail original
+    
         console.log("Editando usuário ID:", id, usuarioAtualizado);
-
+    
         fetch(`http://localhost:8080/usuarios/${id}`, {
             method: 'PUT',
             headers: {
@@ -119,9 +123,6 @@ class CadastroUsuario {
             body: JSON.stringify(usuarioAtualizado)
         })
         .then(response => {
-           // if (response.status === 403) {
-            //    throw new Error("Você não tem permissão para editar este usuário.");
-            //}
             if (!response.ok) {
                 throw new Error(`Erro ${response.status}: ${response.statusText}`);
             }
@@ -137,6 +138,8 @@ class CadastroUsuario {
             alert("Erro ao editar usuário: " + error.message);
         });
     }
+    
+    
 
     async validarCadastro() {
         const email = this.Iemail.value;
