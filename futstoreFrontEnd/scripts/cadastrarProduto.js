@@ -59,7 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
             valor: parseFloat(document.getElementById("precoProduto").value),
             qtdEstoque: parseInt(document.getElementById("qtdProduto").value),
             imagemPrincipal: imagemPrincipalSelect.value ? parseInt(imagemPrincipalSelect.value) : null
+            
         };
+        console.log(produto);
 
         // Validações simples
         if (!produto.nome || !produto.descricao || isNaN(produto.valor)) {
@@ -93,6 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const data = JSON.parse(text); // Tenta converter para JSON
                 console.log("Produto cadastrado com sucesso:", data);
                 alert("Produto cadastrado com sucesso!");
+                console.log(produto);
                 window.location.href = "./listarProdutos.html";
             } catch (e) {
                 throw new Error("Resposta não é um JSON válido: " + text);

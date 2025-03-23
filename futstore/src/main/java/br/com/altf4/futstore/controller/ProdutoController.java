@@ -131,6 +131,12 @@ public ResponseEntity<List<Map<String, String>>> listarImagensDoProduto(@PathVar
             Map<String, String> imagemInfo = new HashMap<>();
             imagemInfo.put("tipo", imagem.getTipoArquivo());
             imagemInfo.put("imagem", "data:" + imagem.getTipoArquivo() + ";base64," + Base64.getEncoder().encodeToString(imagem.getDados()));
+            if(imagem.isPrincipal()){
+                imagemInfo.put("principal", "true" );
+            }else{
+                imagemInfo.put("principal","false");
+            }
+            
             imagensBase64.add(imagemInfo);
         }
 

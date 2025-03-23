@@ -50,8 +50,3 @@ async function carregarProdutos() {
 
 window.onload = carregarProdutos;
 
-window.adicionarProdutoCarrinho = function(produto) {
-    adicionarAoCarrinho(produto);
-    alert("Produto adicionado ao carrinho!");
-    window.location.href = 'carrinho.html';
-}

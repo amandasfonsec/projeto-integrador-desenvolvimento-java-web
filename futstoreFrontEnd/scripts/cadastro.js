@@ -1,3 +1,7 @@
+
+const grupo = localStorage.getItem('grupo');
+const token = localStorage.getItem('token');
+const id = localStorage.getItem('id');
 class CadastroUsuario {
     constructor() {
         this.formulario = document.getElementById('formCadastro');
@@ -13,11 +17,28 @@ class CadastroUsuario {
     init() {
         const urlParams = new URLSearchParams(window.location.search);
         const usuarioId = urlParams.get('id');
+        console.log(grupo);
+        console.log(token);
+        console.log(id);
 
         if (usuarioId) {
+
+            if(usuarioId === id){
+                document.getElementById('selectGrupoCadastro').style.cursor = "not-allowed";
+                document.getElementById('selectGrupoCadastro').title = "Você não pode alterar seu próprio grupo";
+                document.getElementById('selectGrupoCadastro').disabled = true;
+            }
+
+            document.getElementById('emailCadastro').style.cursor = "not-allowed";
+            document.getElementById('emailCadastro').disabled = true;
+            document.getElementById('emailCadastro').title = "Não é permitido alterar o e-mail";
+            document.getElementById('emailCadastro').readOnly = true;
+
             this.carregarUsuario(usuarioId);
             this.atualizarTextoModoEdicao();
         }
+
+        
 
         this.formulario.addEventListener('submit', async (e) => {
             e.preventDefault();

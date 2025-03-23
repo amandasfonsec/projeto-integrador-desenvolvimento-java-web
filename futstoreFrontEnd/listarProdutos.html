@@ -57,7 +57,7 @@
             <h2 id="modalNome"></h2>
             <div class="carousel">
                 <button id="prevBtn" class="btn">❮</button>
-                <span><img id="modalImagem" src="" alt="Imagem do Produto"></span>
+                <img id="modalImagem" src="" alt="Imagem do Produto">
                 <button id="nextBtn" class="btn">❯</button>
             </div>
             <p><strong>Avaliação:</strong> <span id="modalAvaliacao"></span> ⭐</p>
@@ -69,8 +69,8 @@
 
     
     <!-- Modal de Edição de Produto -->
-<div id="modalEditarProduto" class="modal" style="display: none;">
-    <div class="modal-content">
+<div id="modalEditarProduto" class="modalProduto" style="display: none;">
+    <div class="modalProduto-content">
         <span class="close" onclick="document.getElementById('modalEditarProduto').style.display='none'">&times;</span>
         <h2>Editar Produto</h2>
 
@@ -80,7 +80,7 @@
         <input type="text" id="editNome" required>
 
         <label for="editDescricao">Descrição:</label>
-        <textarea id="editDescricao" required></textarea>
+        <div class="text-area"><textarea id="editDescricao" required></textarea></div>
 
         <label for="editValor">Valor:</label>
         <input type="number" id="editValor" step="0.01" required>
@@ -89,9 +89,10 @@
         <input type="number" id="editQtdEstoque" required>
 
         <!-- Exibição da imagem atual -->
-        <div class="image-preview-container">
-            <img id="editProdutoImagem" src="" alt="Imagem do Produto" class="image-preview">
+        <div id="editProdutoImagemContainer">
+            <!-- As imagens serão adicionadas aqui dinamicamente -->
         </div>
+        
 
         <!-- Input para alterar a imagem -->
         <label for="editImagemProduto">Alterar Imagem:</label>
