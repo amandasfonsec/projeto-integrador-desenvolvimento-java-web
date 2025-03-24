@@ -1,7 +1,7 @@
 
 async function carregarProdutos() {
     try {
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
 
         const headers = token ? { 'Authorization': `Bearer ${token}` } : {};
 
@@ -31,16 +31,33 @@ async function carregarProdutos() {
                 imagemSrc = imagens[0].imagem;
             }
 
-            produto.imagemPrincipal = imagemSrc;
+            let imagemPrincipal = null;
+
+            // procura pela imagem principal
+            for (let i = 0; i < imagens.length; i++) {
+                const imagem = imagens[i];
+                if (imagem.principal === "true") {
+                    imagemPrincipal = imagem;
+                    break;
+                }
+            }
+
+            if (imagemPrincipal) {
+                console.log("Imagem principal encontrada:", imagemPrincipal);
+            } else if (imagens.length > 0) {
+                imagemPrincipal = imagens[0];
+                console.log("Nenhuma imagem principal encontrada.", imagemPrincipal);
+            } else {
+                console.log("Nenhuma imagem disponível para este produto.");
+            }
 
             produtoCard.innerHTML = `
-                <img src="${imagemSrc}" alt="${produto.nome}" class="produto-imagem">
-                <h3 class="produto-nome">${produto.nome}</h3>
-                <p class="produto-preco">R$ ${produto.valor}</p>
-                <button class="produto-btn">Exibir detalhes</button>
-                <button class="carrinho-btn" onclick='adicionarProdutoCarrinho(${JSON.stringify(produto)})'>Comprar</button>
-            `;
-        
+    <img src="${imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png'}" alt="${produto.nome}" class="produto-imagem">
+    <h3 class="produto-nome">${produto.nome}</h3>
+    <p class="produto-preco">R$ ${produto.valor}</p>
+    <button class="produto-btn">Exibir detalhes</button>
+`;
+
             container.appendChild(produtoCard);
 
             // Seleciona todos os botões dentro do container (ou como preferir)

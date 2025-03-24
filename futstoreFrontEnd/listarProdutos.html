@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Produtos</title>
+    <link rel="icon" href="./assets/iconPage.png">
     <link rel="stylesheet" href="./styles/frontProdutos.css">
     <script src="./scripts/listarProdutos.js" defer></script>
     <link rel="stylesheet" href="./styles/header.css" type="text/css">
@@ -47,6 +48,9 @@
             <button id="paginaAnterior">⬅️ Página Anterior</button>
             <span id="paginacaoInfo"></span>
             <button id="proximaPagina">➡️ Próxima Página</button>
+        </div>
+        <div>
+            <button class="btn" id="voltar">Voltar</button>
         </div>
     </div>
 
@@ -102,7 +106,11 @@
     </div>
 </div>
 
-
+<script>
+    document.getElementById("voltar").addEventListener("click", function() {
+            window.location.href = "principal.html";
+        });
+</script>
 </body>
 
 </html>

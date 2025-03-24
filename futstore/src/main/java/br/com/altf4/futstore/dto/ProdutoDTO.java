@@ -3,8 +3,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
-import br.com.altf4.futstore.enums.Status;
-
 @Data
 public class ProdutoDTO {
     private String nome;

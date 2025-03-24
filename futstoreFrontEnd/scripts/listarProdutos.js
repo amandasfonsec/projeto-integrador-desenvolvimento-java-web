@@ -58,8 +58,8 @@ function atualizarTabelaProdutos() {
         let btnEditar = `<button class="btn-edit" onclick="editarProduto(${produto.codigo})">✏️ Editar</button>`;
 
         if (grupoUsuario === "ESTOQUISTA") {
-            btnVisualizar = `<button class="btn-view disabled" disabled style="background-color: gray;">👁️ Visualizar</button>`;
-            btnInativar = `<button class="btn-status disabled" disabled style="background-color: gray;">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>`;
+            btnVisualizar = `<button class="btn-view disabled" disabled style="background-color: gray; cursor: not-allowed;">👁️ Visualizar</button>`;
+            btnInativar = `<button class="btn-status disabled" disabled style="background-color: gray; cursor: not-allowed;">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>`;
         }
 
         let row = `<tr>
@@ -441,13 +441,10 @@ async function buscarImagensProduto(id) {
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("logoutBtn").addEventListener("click", function () {
         if (confirm("Tem certeza que deseja sair?")) {
-            // Remover dados do localStorage
             localStorage.removeItem("token");
             localStorage.removeItem("grupo");
             localStorage.removeItem("nome");
             localStorage.removeItem("userId");
-
-            // Redirecionar para a página de login
             window.location.href = "login.html";
         }
     });

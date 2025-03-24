@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.altf4.futstore.dto.UsuarioDTO;
 import br.com.altf4.futstore.model.Usuario;
-import br.com.altf4.futstore.security.Token;
 import br.com.altf4.futstore.service.UsuarioService;
 import jakarta.validation.Valid;
 
