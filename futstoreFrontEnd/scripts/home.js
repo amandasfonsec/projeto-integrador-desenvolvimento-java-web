@@ -26,37 +26,29 @@ async function carregarProdutos() {
             const imagensResponse = await fetch(`http://localhost:8080/produtos/${produto.codigo}/imagens`);
             const imagens = await imagensResponse.json();
 
-            let imagemSrc = '';
-            if (imagens.length > 0) {
-                imagemSrc = imagens[0].imagem;
-            }
-
             let imagemPrincipal = null;
 
-            // procura pela imagem principal
+            // Procura pela imagem principal
             for (let i = 0; i < imagens.length; i++) {
                 const imagem = imagens[i];
+
                 if (imagem.principal === "true") {
-                    imagemPrincipal = imagem;
-                    break;
+                    imagemPrincipal = imagem; // Achou a principal
+                    break; // Para o loop
+                } else {
+                    imagemPrincipal = imagens[0];
                 }
             }
 
-            if (imagemPrincipal) {
-                console.log("Imagem principal encontrada:", imagemPrincipal);
-            } else if (imagens.length > 0) {
-                imagemPrincipal = imagens[0];
-                console.log("Nenhuma imagem principal encontrada.", imagemPrincipal);
-            } else {
-                console.log("Nenhuma imagem disponível para este produto.");
-            }
-
             produtoCard.innerHTML = `
-    <img src="${imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png'}" alt="${produto.nome}" class="produto-imagem">
-    <h3 class="produto-nome">${produto.nome}</h3>
-    <p class="produto-preco">R$ ${produto.valor}</p>
-    <button class="produto-btn">Exibir detalhes</button>
-`;
+                 <img src="${imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png'}" 
+         alt="${produto.nome}" 
+         class="produto-imagem">
+                 <h3 class="produto-nome">${produto.nome}</h3>
+                 <p class="produto-preco">R$ ${produto.valor}</p>
+                 <button class="produto-btn">Exibir detalhes</button>
+                 <button class="carrinho-btn" onclick='adicionarAoCarrinho(${JSON.stringify(produto)})'>Comprar</button>
+             `;
 
             container.appendChild(produtoCard);
 
