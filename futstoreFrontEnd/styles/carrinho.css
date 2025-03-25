@@ -73,8 +73,8 @@ body {
     background-color: #2e0b8c;
 }
 
-#resumoCarrinho {
-    width: 30%;
+#resumoCarrinho, #freteContainer {
+    width:100%;
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -82,11 +82,15 @@ body {
     height: fit-content;
 }
 
-#resumoCarrinho h3 {
+#freteContainer{
+    margin-top: 12px;
+}
+
+#resumoCarrinho, #freteContainer h3 {
     margin-bottom: 20px;
 }
 
-#resumoCarrinho p {
+#resumoCarrinho, #freteContainer p {
     margin-bottom: 15px;
     font-size: 16px;
 }
@@ -101,6 +105,53 @@ body {
     border-radius: 5px;
     cursor: pointer;
 }
+
+#freteContainer button{
+    width: 100px;
+    padding: 6px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    background-color: #150358;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#freteContainer button:hover {
+    background-color: #2e0b8c;
+}
+
+.inputFrete{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+}
+
+#freteContainer input{
+    height: 20px;
+}
+
+#resultadoFrete{
+    display: flex;
+    flex-direction: column;
+    margin-top: 8px;
+
+    i{
+        width: 12px;
+        height: 12px;
+    }
+
+    .tipoFrete{
+        margin-bottom: 6px;
+        font-size: 14px;
+    }
+
+    button{
+        padding: 4px;
+    }
+}
+
 
 #resumoCarrinho button:hover {
     background-color: #2e0b8c;

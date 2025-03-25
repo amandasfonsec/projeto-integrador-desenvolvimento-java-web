@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./styles/header.css" type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
     <header class="header">
         <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
@@ -21,14 +22,32 @@
 
     <main id="carrinhoContainer">
         <div id="itensCarrinho"></div>
-        <div id="resumoCarrinho">
-            <h3>Resumo</h3>
-            <p>Total: R$ <span id="totalCarrinho">0,00</span></p>
-            <button id="finalizarCompra">Finalizar Compra</button>
-            <button id="continuarComprando">Continuar Comprando</button>
+        <div class="direita">
+            <div id="resumoCarrinho">
+                <h3>Resumo</h3>
+                <p>Subtotal: R$ <span id="totalCarrinho">0,00</span></p>
+                <p>Frete: R$ <span id="totalfrete">0,00</span></p>
+                <p>Total: R$ <span id="totalCompra">0,00</span></p>
+                <button id="finalizarCompra">Finalizar Compra</button>
+                <button id="continuarComprando">Continuar Comprando</button>
+            </div>
+            <div id="freteContainer">
+                <h3>Frete</h3>
+                <p>Insira seu CEP:</p>
+                <div class="inputFrete"><input type="text" placeholder="Digite seu CEP"><button>Calcular</button></div>
+                <div id="resultadoFrete">
+                    <span class="tipoFrete"><i class="fa-solid fa-truck"></i>&nbsp;&nbsp;&nbsp;| Entrega padrão: <span
+                            id="precoPadrao">00,00</span><button id="btnPadrao">Selecionar</button></span>
+                    <span class="tipoFrete"><i class="fa-solid fa-truck"></i>&nbsp;&nbsp;&nbsp;| Entrega registrada: <span
+                            id="precoRegistrada">00,00</span><button id="btnRegistrada">Selecionar</button></span>
+                    <span class="tipoFrete"><i class="fa-solid fa-truck-fast"></i>&nbsp;&nbsp;&nbsp;| Entrega Sedex: <span
+                            id="precoSedex">00,00</span> <button id="btnSedex">Selecionar</button></span>
+                </div>
+            </div>
         </div>
     </main>
 
     <script src="./scripts/carrinho.js"></script>
 </body>
+
 </html>

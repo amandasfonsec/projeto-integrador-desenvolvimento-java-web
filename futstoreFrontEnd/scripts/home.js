@@ -40,6 +40,8 @@ async function carregarProdutos() {
                 }
             }
 
+            produto.imagemPrincipal = imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png';
+
             produtoCard.innerHTML = `
                  <img src="${imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png'}" 
          alt="${produto.nome}" 

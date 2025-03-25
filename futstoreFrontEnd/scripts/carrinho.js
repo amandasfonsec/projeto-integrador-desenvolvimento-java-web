@@ -39,7 +39,7 @@ function listarCarrinho() {
 
         itensDiv.innerHTML += `
             <div class="itemCarrinho">
-                <img src="${item.imagemPrincipal || './assets/logotipoFutstore.png'}" alt="${item.nome}" class="imagemProduto">
+                <img src="${item.imagemPrincipal || './assets/logotipoFundo.png'}" alt="${item.nome}" class="imagemProduto">
                 <div class="detalhesProduto">
                     <h3>${item.nome}</h3>
                     <p>Preço: R$ ${item.valor}</p>
@@ -94,10 +94,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (finalizarBtn) {
         finalizarBtn.addEventListener('click', () => {
-            alert('Compra finalizada com sucesso! (Funcionalidade futura)');
+            alert('Próximos sprints');
         });
     }
+
+
+    
 });
+
+
 
 window.adicionarAoCarrinho = function(produto) {
     let carrinho = getCarrinho();
@@ -108,6 +113,12 @@ window.adicionarAoCarrinho = function(produto) {
         itemExistente.quantidade += 1;
     } else {
         produto.quantidade = 1;
+
+        // Se o produto não tem imagemPrincipal definida, recuperamos a correta
+        if (!produto.imagemPrincipal) {
+            produto.imagemPrincipal = produto.imagem ? produto.imagem : './assets/logotipoFundo.png';
+        }
+
         carrinho.push(produto);
     }
 

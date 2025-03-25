@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Adiciona opção no select da imagem principal
                 const option = document.createElement("option");
                 option.value = index;
-                option.textContent = `Imagem ${index + 1}`;
+                option.textContent = file.name;
 
                 imagemPrincipalSelect.appendChild(option);
             };
