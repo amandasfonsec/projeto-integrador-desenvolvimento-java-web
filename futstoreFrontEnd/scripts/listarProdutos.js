@@ -186,6 +186,19 @@ async function visualizarProduto(id) {
             imagensProduto = await imgResponse.json();
             if (imagensProduto.length > 0) {
                 imagemAtual = 0;
+                // Procura pela imagem principal
+            for (let i = 0; i < imagensProduto.length; i++) {
+                const imagem = imagensProduto[i];
+
+                if (imagem.principal === "true") {
+                    imagemAtual = i; // Achou a principal
+                    break; // Para o loop
+                } else {
+                    imagemAtual = 0;
+                }
+            }
+
+                
                 atualizarCarrossel();
             } else {
                 document.getElementById("modalImagem").src = imagem.imagem;

@@ -64,7 +64,11 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log(produto);
 
         // Validações simples
-        if (!produto.nome || !produto.descricao || isNaN(produto.valor)) {
+        if (!produto.nome || !produto.descricao || isNaN(produto.valor) || !produto.imagemPrincipal) {
+            if(!produto.imagemPrincipal){
+                alert("Insira imagem do produto e selecione a principal");
+                return;
+            }
             alert("Preencha todos os campos obrigatórios!");
             return;
         }
