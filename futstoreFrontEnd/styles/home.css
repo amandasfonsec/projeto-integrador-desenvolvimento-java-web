@@ -83,6 +83,22 @@
     margin-bottom: 10px;
 }
 
+.carrinho-btn{
+    padding: 10px 10px;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
 .produto-btn:hover {
+    background-color: #004080;
+}
+
+.carrinho-btn:hover {
     background-color: #004080;
 }

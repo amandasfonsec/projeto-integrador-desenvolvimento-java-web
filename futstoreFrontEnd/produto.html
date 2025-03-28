@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="./scripts/produto.js" defer></script>
     <script src="./scripts/carrinho.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <header class="header">
         <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
@@ -21,32 +26,33 @@
     </header>
 
     <div class="container-produto">
-        <div class="container-titulo"><h2 id="produtoNome"></h2></div>
-        <div class = "container-GeralProduto">
-        <div class="carousel">
-            <button id="prevBtn" class="btn">❮</button>
+        <div class="container-GeralProduto">
+            <div class="carousel">
+                <button id="prevBtn" class="btn">❮</button>
 
-            <div class = "container-imagem">
-            <img id="produtoImagem" src="" alt="Imagem do Produto">
-            </div>  
-            
-            <button id="nextBtn" class="btn">❯</button>
-        </div>
-        <div class = "container-detalhesProduto">
-            <p><strong>Avaliação:</strong> <span id="produtoAvaliacao"></span> ⭐</p>
-            <p><strong>Descrição:</strong> <span id="produtoDescricao"></span></p>
-            <p><strong>Preço:</strong> R$ <span id="produtoPreco"></span></p>
-            <button id="comprarBtn" class="btn">Adicionar ao Carrinho</button>
-        </div>        
+                <div class="container-imagem">
+                    <img id="produtoImagem" src="" alt="Imagem do Produto">
+                    <p><strong>Avaliação:</strong> <span id="produtoAvaliacao"></span> ⭐</p>
+                </div>
+
+                <button id="nextBtn" class="btn">❯</button>
+            </div>
+            <div class="container-detalhesProduto">
+                <h2 id="produtoNome"></h2>
+                <p><strong>Descrição:</strong> <span id="produtoDescricao"></span></p>
+                <p><strong>Preço:</strong> R$ <span id="produtoPreco"></span></p>
+                <button id="comprarBtn" class="btn">Comprar</button>
+            </div>
         </div>
     </div>
 
+
     <script>
-        document.getElementById('carrinhoBtn').addEventListener("click", function(){
+        document.getElementById('carrinhoBtn').addEventListener("click", function () {
             window.location.href = 'carrinho.html';
-            
+
         })
-        
+
     </script>
 </body>
 
