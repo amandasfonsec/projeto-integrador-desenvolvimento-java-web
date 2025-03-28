@@ -315,7 +315,10 @@ async function editarProduto(id) {
             document.getElementById("editQtdEstoque").disabled = false;
         }
 
-        // Exibir o modal de edição
+        document.getElementById("editImagemProduto").value = '';  // Limpa o input de imagem
+        document.getElementById("editNovasImagensContainer").innerHTML = ''; 
+
+        
         document.getElementById("modalEditarProduto").style.display = "flex";
 
     } catch (error) {
@@ -346,10 +349,12 @@ async function salvarEdicaoProduto() {
 
     let imagemInput = document.getElementById("editImagemProduto");
     if (imagemInput.files.length > 0) {
-        formData.append("imagensProduto", imagemInput.files[0]);
+        // Agora, iteramos sobre todos os arquivos selecionados
+        for (let i = 0; i < imagemInput.files.length; i++) {
+            formData.append("imagensProduto", imagemInput.files[i]);
+        }
     }
     
-
     try {
         let response = await fetch(`http://localhost:8080/produtos/${produtoId}`, {
             method: "PUT",
@@ -372,6 +377,41 @@ async function salvarEdicaoProduto() {
         alert("Erro ao editar produto.");
     }
 };
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("editImagemProduto").addEventListener("change", function (event) {
+        const novasImagensContainer = document.getElementById("editNovasImagensContainer");
+        if (!novasImagensContainer) {
+            console.error("Elemento 'editNovasImagensContainer' não encontrado!");
+            return;
+        }
+
+        novasImagensContainer.innerHTML = ''; // Limpa o container antes de adicionar novas imagens
+
+        const arquivos = event.target.files; // Obtém os arquivos selecionados pelo usuário
+
+        if (arquivos.length > 0) {
+            Array.from(arquivos).forEach(arquivo => {
+                const leitor = new FileReader();
+
+                leitor.onload = function (e) {
+                    const imgElement = document.createElement("img");
+                    imgElement.src = e.target.result;
+                    imgElement.alt = "Nova imagem do produto";
+                    imgElement.classList.add("produto-imagem");
+
+                    // Adiciona a nova imagem ao container
+                    novasImagensContainer.appendChild(imgElement);
+                };
+
+                leitor.readAsDataURL(arquivo);
+            });
+        } else {
+            novasImagensContainer.innerHTML = "<p>Nenhuma nova imagem selecionada.</p>";
+        }
+    });
+});
+
 
 function fecharModal() {
     document.getElementById("produtoModal").style.display = "none";
@@ -452,7 +492,10 @@ async function buscarImagensProduto(id) {
 
 
 
+
 document.addEventListener("DOMContentLoaded", function () {
+
+
     document.getElementById("logoutBtn").addEventListener("click", function () {
         if (confirm("Tem certeza que deseja sair?")) {
             localStorage.removeItem("token");

@@ -57,40 +57,55 @@ public class ProdutoController {
     public ResponseEntity<?> editarProduto(
         @PathVariable Long id,
         @RequestPart("produto") ProdutoDTO produtoDTO,
-        @RequestPart(value = "imagensProduto", required = false) MultipartFile imagem) {
-
-    try {
-        Produto produto = produtoService.buscarPorId(id);
-        if (produto == null) {
-            return ResponseEntity.notFound().build();
+        @RequestPart(value = "imagensProduto", required = false) List<MultipartFile> imagensProduto,
+        @RequestPart(value = "imagemPrincipalId", required = false) Long imagemPrincipalId) {
+    
+        try {
+            Produto produto = produtoService.buscarPorId(id);
+            if (produto == null) {
+                return ResponseEntity.notFound().build();
+            }
+    
+            produto.setNome(produtoDTO.getNome());
+            produto.setDescricao(produtoDTO.getDescricao());
+            produto.setValor(produtoDTO.getValor());
+            produto.setQtdEstoque(produtoDTO.getQtdEstoque());
+    
+            produtoRepository.save(produto);
+    
+            // Se houver imagens, substituir ou adicionar
+            if (imagensProduto != null && !imagensProduto.isEmpty()) {
+                // Caso queira limpar as imagens antigas
+                produtoImagemRepository.deleteByProduto(produto);
+                
+                // Salvar cada imagem enviada
+                for (MultipartFile imagem : imagensProduto) {
+                    ProdutoImagem novaImagem = new ProdutoImagem();
+                    novaImagem.setProduto(produto);
+                    novaImagem.setTipoArquivo(imagem.getContentType());
+                    novaImagem.setDados(imagem.getBytes());
+                    novaImagem.setPrincipal(false); // Defina a principal como false por padrão
+                    produtoImagemRepository.save(novaImagem);
+                }
+    
+                // Atualizar a imagem principal
+                if (imagemPrincipalId != null) {
+                    ProdutoImagem imagemPrincipal = produtoImagemRepository.findById(imagemPrincipalId).orElse(null);
+                    if (imagemPrincipal != null) {
+                        imagemPrincipal.setPrincipal(true);
+                        produtoImagemRepository.save(imagemPrincipal);
+                    }
+                }
+            }
+    
+            return ResponseEntity.ok(Map.of("mensagem", "Produto atualizado com sucesso!"));
+    
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("erro", "Erro ao editar produto: " + e.getMessage()));
         }
-
-        produto.setNome(produtoDTO.getNome());
-        produto.setDescricao(produtoDTO.getDescricao());
-        produto.setValor(produtoDTO.getValor());
-        produto.setQtdEstoque(produtoDTO.getQtdEstoque());
-
-        produtoRepository.save(produto);
-
-        // Se houver uma nova imagem, substituí-la
-        if (imagem != null && !imagem.isEmpty()) {
-            produtoImagemRepository.deleteByProduto(produto);
-            
-            ProdutoImagem novaImagem = new ProdutoImagem();
-            novaImagem.setProduto(produto);
-            novaImagem.setTipoArquivo(imagem.getContentType());
-            novaImagem.setDados(imagem.getBytes());
-            novaImagem.setPrincipal(true);
-            produtoImagemRepository.save(novaImagem);
-        }
-
-        return ResponseEntity.ok(Map.of("mensagem", "Produto atualizado com sucesso!"));
-
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("erro", "Erro ao editar produto: " + e.getMessage()));
     }
-}
+    
 
 @PatchMapping("/{id}/status")
 public ResponseEntity<?> alterarStatusProduto(@PathVariable Long id) {

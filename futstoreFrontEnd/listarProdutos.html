@@ -100,7 +100,12 @@
 
         <!-- Input para alterar a imagem -->
         <label for="editImagemProduto">Alterar Imagem:</label>
-        <input type="file" id="editImagemProduto" accept="image/*">
+        <input type="file" id="editImagemProduto" accept="image/*" multiple>
+
+        <h3>Imagens selecionadas:</h3>
+        <div id="editNovasImagensContainer" class="imagem-container">
+            <!-- As imagens cadastradas no banco aparecerão aqui -->
+        </div>
 
         <button class="btn" onclick="salvarEdicaoProduto()">Salvar</button>
     </div>
