@@ -348,6 +348,7 @@ async function salvarEdicaoProduto() {
     if (imagemInput.files.length > 0) {
         formData.append("imagensProduto", imagemInput.files[0]);
     }
+    
 
     try {
         let response = await fetch(`http://localhost:8080/produtos/${produtoId}`, {

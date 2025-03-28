@@ -1,26 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Detalhes do Produto</title>
     <link rel="icon" href="./assets/iconPage.png">
     <link rel="stylesheet" href="./styles/produto.css">
-    <link rel="stylesheet" href="./styles/header.css" type="text/css">
+    <link rel="stylesheet" href="./styles/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="./scripts/produto.js" defer></script>
+    <script src="./scripts/carrinho.js"></script>
 </head>
 <body>
     <header class="header">
         <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
         <div class="botoesCliente">
             <button id="loginBtn" class="login-btn"><i class="fa fa-user"></i> | Faça login ou cadastre-se</button>
-            <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho</button>
-        </div>      
-    </header>
-    <div class="container-produto">
-        <div class="titulo">
-            <h3>Nome do produto</h3>
+            <button id="carrinhoBtn"><i class="fa fa-shopping-cart"></i> | Carrinho</button>
         </div>
+    </header>
+
+    <div class="container-produto">
+        <h2 id="produtoNome"></h2>
+        <div class="carousel">
+            <button id="prevBtn" class="btn">❮</button>
+            <img id="produtoImagem" src="" alt="Imagem do Produto">
+            <button id="nextBtn" class="btn">❯</button>
+        </div>
+        <p><strong>Avaliação:</strong> <span id="produtoAvaliacao"></span> ⭐</p>
+        <p><strong>Descrição:</strong> <span id="produtoDescricao"></span></p>
+        <p><strong>Preço:</strong> R$ <span id="produtoPreco"></span></p>
+        <button id="comprarBtn" class="btn">Adicionar ao Carrinho</button>
     </div>
+
+    <script>
+        document.getElementById('carrinhoBtn').addEventListener("click", function(){
+            window.location.href = 'carrinho.html';
+        })
+    </script>
 </body>
+
 </html>

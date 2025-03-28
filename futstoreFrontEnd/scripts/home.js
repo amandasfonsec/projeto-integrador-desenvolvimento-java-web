@@ -1,4 +1,3 @@
-
 async function carregarProdutos() {
     try {
         const token = localStorage.getItem('token');
@@ -26,45 +25,29 @@ async function carregarProdutos() {
             const imagensResponse = await fetch(`http://localhost:8080/produtos/${produto.codigo}/imagens`);
             const imagens = await imagensResponse.json();
 
-            let imagemPrincipal = null;
-
-            // Procura pela imagem principal
-            for (let i = 0; i < imagens.length; i++) {
-                const imagem = imagens[i];
-
-                if (imagem.principal === "true") {
-                    imagemPrincipal = imagem; // Achou a principal
-                    break; // Para o loop
-                } else {
-                    imagemPrincipal = imagens[0];
-                }
-            }
+            let imagemPrincipal = imagens.find(img => img.principal === "true") || imagens[0];
 
             produto.imagemPrincipal = imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png';
 
             produtoCard.innerHTML = `
-                 <img src="${imagemPrincipal ? imagemPrincipal.imagem : 'caminho/padrao.png'}" 
-         alt="${produto.nome}" 
-         class="produto-imagem">
-                 <h3 class="produto-nome">${produto.nome}</h3>
-                 <p class="produto-preco">R$ ${produto.valor}</p>
-                 <button class="produto-btn">Exibir detalhes</button>
-                 <button class="carrinho-btn" onclick='adicionarAoCarrinho(${JSON.stringify(produto)})'>Comprar</button>
-             `;
+                <img src="${produto.imagemPrincipal}" alt="${produto.nome}" class="produto-imagem">
+                <h3 class="produto-nome">${produto.nome}</h3>
+                <p class="produto-preco">R$ ${produto.valor}</p>
+                <button class="produto-btn" data-id="${produto.codigo}">Exibir detalhes</button>
+                <button class="carrinho-btn" onclick='adicionarAoCarrinho(${JSON.stringify(produto)})'>Comprar</button>
+            `;
 
             container.appendChild(produtoCard);
-
-            // Seleciona todos os botões dentro do container (ou como preferir)
-            const botoes = container.getElementsByClassName('produto-btn');
-
-            // Percorre cada botão e adiciona o evento de clique
-            for (const btn of botoes) {
-                btn.addEventListener('click', function () {
-                    // Aqui você pode enviar para outra página, passando ID ou o que quiser
-                    window.location.href = "produto.html";
-                });
-            }
         }
+
+        // Adiciona evento de clique para cada botão de detalhes
+        document.querySelectorAll('.produto-btn').forEach(botao => {
+            botao.addEventListener('click', function () {
+                const produtoId = this.getAttribute('data-id');
+                window.location.href = `produto.html?id=${produtoId}`;
+            });
+        });
+
     } catch (error) {
         console.error('Erro ao carregar os produtos:', error);
     }
