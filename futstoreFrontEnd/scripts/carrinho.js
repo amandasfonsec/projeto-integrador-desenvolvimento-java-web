@@ -112,6 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const continuarBtn = document.getElementById('continuarComprando');
     const finalizarBtn = document.getElementById('finalizarCompra');
+    const inputCEP = document.querySelector(".inputFrete input");
+    const botoesFrete = document.querySelectorAll("#resultadoFrete button");
 
     if (continuarBtn) {
         continuarBtn.addEventListener('click', () => {
@@ -119,13 +121,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (finalizarBtn) {
-        finalizarBtn.addEventListener('click', () => {
-            alert('Próximos sprints');
-        });
+        
     }
 
+    // 🔴 Resetar o campo de CEP
+    if (inputCEP) {
+        inputCEP.value = "";
+        localStorage.removeItem("cepSalvo"); // Remove o CEP salvo no localStorage
+    }
 
+    // 🔴 Esconder os botões de frete
+    botoesFrete.forEach(botao => botao.style.display = "none");
 
+    // 🔴 Remover a seleção de frete salva e sinalizar que o frete não foi calculado
+    localStorage.removeItem("freteSelecionado");
+    localStorage.setItem("freteCalculado", "false");
+
+    atualizarResumoCompra(); // Atualiza os valores na interface
 });
 
 //Parte do frete

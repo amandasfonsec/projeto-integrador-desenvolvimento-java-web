@@ -15,6 +15,8 @@ async function carregarProdutos() {
 
         const produtos = await response.json();
 
+        produtos.sort((a, b) => b.codigo - a.codigo);
+
         const container = document.querySelector('.produtos-container');
         container.innerHTML = '';
 

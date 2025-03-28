@@ -133,8 +133,8 @@ function buscarProduto(termoBusca = null) {
             <td>R$ ${produto.valor.toFixed(2)}</td>
             <td>${produto.ativo ? "Ativo" : "Inativo"}</td>
             <td class="acoes">
-                <button class="btn-edit">✏️ Editar</button>
-                <button class="btn-status">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>
+                <button class="btn-edit" data-id="${produto.codigo}">✏️ Editar</button>
+                <button class="btn-status" data-id="${produto.codigo}">${produto.ativo ? "❌ Inativar" : "✅ Ativar"}</button>
                 <button class="btn-view" onclick="visualizarProduto(${produto.codigo})">👁️ Visualizar</button>
             </td>
         </tr>`;
@@ -145,6 +145,11 @@ function buscarProduto(termoBusca = null) {
     if (termoBusca === "") {
         atualizarTabelaProdutos();
     }
+
+    produtosFiltrados.forEach(produto => {
+        document.querySelector(`.btn-edit[data-id="${produto.codigo}"]`).addEventListener("click", () => editarProduto(produto.codigo));
+        document.querySelector(`.btn-status[data-id="${produto.codigo}"]`).addEventListener("click", () => alterarStatusProduto(produto.codigo, produto.ativo));
+    });
 }
 
 

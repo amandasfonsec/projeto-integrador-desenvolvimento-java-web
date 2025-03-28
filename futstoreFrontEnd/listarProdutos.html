@@ -21,14 +21,12 @@
     <div class="container">
         <h2>Lista de Produtos</h2>
 
-        <!-- Campo de busca -->
         <div class="topo">
             <input type="text" id="buscarProduto" placeholder="Buscar produto...">
             <button class="btn" onclick="buscarProduto()" id="buscarBtn">Buscar</button>
             <button class="btn" id="cadastrar">+</button>
         </div>
 
-        <!-- Tabela de produtos -->
         <table border="1" width="100%">
             <thead>
                 <tr>
@@ -41,7 +39,7 @@
                 </tr>
             </thead>
             <tbody id="tabelaProdutos">
-                <!-- Produtos serão inseridos aqui via JS -->
+                
             </tbody>
         </table>
         <div style="margin-top: 10px;">
@@ -54,7 +52,7 @@
         </div>
     </div>
 
-    <!-- Modal de Detalhes do Produto -->
+    <!-- Modal de Detalhes -->
     <div id="produtoModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="fecharModal()">&times;</span>
@@ -72,7 +70,7 @@
     </div>
 
     
-    <!-- Modal de Edição de Produto -->
+    <!-- Modal de Edição -->
 <div id="modalEditarProduto" class="modalProduto" style="display: none;">
     <div class="modalProduto-content">
         <span class="close" onclick="document.getElementById('modalEditarProduto').style.display='none'">&times;</span>
@@ -92,19 +90,17 @@
         <label for="editQtdEstoque">Quantidade em Estoque:</label>
         <input type="number" id="editQtdEstoque" required>
 
-        <!-- Exibição da imagem atual -->
+       
         <div id="editProdutoImagemContainer">
-            <!-- As imagens serão adicionadas aqui dinamicamente -->
+            
         </div>
         
-
-        <!-- Input para alterar a imagem -->
         <label for="editImagemProduto">Alterar Imagem:</label>
         <input type="file" id="editImagemProduto" accept="image/*" multiple>
 
         <h3>Imagens selecionadas:</h3>
         <div id="editNovasImagensContainer" class="imagem-container">
-            <!-- As imagens cadastradas no banco aparecerão aqui -->
+            
         </div>
 
         <button class="btn" onclick="salvarEdicaoProduto()">Salvar</button>
