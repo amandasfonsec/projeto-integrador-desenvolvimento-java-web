@@ -21,16 +21,24 @@
     </header>
 
     <div class="container-produto">
-        <h2 id="produtoNome"></h2>
+        <div class="container-titulo"><h2 id="produtoNome"></h2></div>
+        <div class = "container-GeralProduto">
         <div class="carousel">
             <button id="prevBtn" class="btn">❮</button>
+
+            <div class = "container-imagem">
             <img id="produtoImagem" src="" alt="Imagem do Produto">
+            </div>  
+            
             <button id="nextBtn" class="btn">❯</button>
         </div>
-        <p><strong>Avaliação:</strong> <span id="produtoAvaliacao"></span> ⭐</p>
-        <p><strong>Descrição:</strong> <span id="produtoDescricao"></span></p>
-        <p><strong>Preço:</strong> R$ <span id="produtoPreco"></span></p>
-        <button id="comprarBtn" class="btn">Adicionar ao Carrinho</button>
+        <div class = "container-detalhesProduto">
+            <p><strong>Avaliação:</strong> <span id="produtoAvaliacao"></span> ⭐</p>
+            <p><strong>Descrição:</strong> <span id="produtoDescricao"></span></p>
+            <p><strong>Preço:</strong> R$ <span id="produtoPreco"></span></p>
+            <button id="comprarBtn" class="btn">Adicionar ao Carrinho</button>
+        </div>        
+        </div>
     </div>
 
     <script>
