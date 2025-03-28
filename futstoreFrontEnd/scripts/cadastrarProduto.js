@@ -42,15 +42,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Envio do formulário
     form.addEventListener("submit", function (event) {
         event.preventDefault();
-
+    
         const token = localStorage.getItem("token");
-
+    
         if (!token) {
             alert("Você precisa estar logado para realizar essa ação.");
             window.location.href = "./login.html";
             return;
         }
-
+    
         // Cria o objeto produto com os dados do formulário
         const produto = {
             nome: document.getElementById("nomeProduto").value,
@@ -59,29 +59,28 @@ document.addEventListener("DOMContentLoaded", function () {
             valor: parseFloat(document.getElementById("precoProduto").value),
             qtdEstoque: parseInt(document.getElementById("qtdProduto").value),
             imagemPrincipal: imagemPrincipalSelect.value ? parseInt(imagemPrincipalSelect.value) : null
-            
         };
         console.log(produto);
-
+    
         // Validações simples
-        if (!produto.nome || !produto.descricao || isNaN(produto.valor) || !produto.imagemPrincipal) {
-            if(!produto.imagemPrincipal){
+        if (!produto.nome || !produto.descricao || isNaN(produto.valor) || produto.imagemPrincipal === null) {
+            if (produto.imagemPrincipal === null) {
                 alert("Insira imagem do produto e selecione a principal");
-                return;
+            } else {
+                alert("Preencha todos os campos obrigatórios!");
             }
-            alert("Preencha todos os campos obrigatórios!");
             return;
         }
-
+    
         // Cria o FormData para enviar no corpo da requisição
         const formData = new FormData();
         formData.append("produto", new Blob([JSON.stringify(produto)], { type: "application/json" }));
-
+    
         // Adiciona cada imagem selecionada
         Array.from(imagensInput.files).forEach(file => {
             formData.append("imagensProduto", file);
         });
-
+    
         // Envia a requisição para a API backend
         fetch("http://localhost:8080/produtos", {
             method: "POST",
@@ -94,12 +93,11 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.text())  // Captura a resposta como texto
         .then(text => {
             console.log("Resposta do servidor:", text);
-
+    
             try {
                 const data = JSON.parse(text); // Tenta converter para JSON
                 console.log("Produto cadastrado com sucesso:", data);
                 alert("Produto cadastrado com sucesso!");
-                console.log(produto);
                 window.location.href = "./listarProdutos.html";
             } catch (e) {
                 throw new Error("Resposta não é um JSON válido: " + text);
@@ -110,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
             alert("Erro ao cadastrar produto. Verifique os dados e tente novamente.");
         });
     });
+    
 
     // Botão de cancelar (voltar para a lista de produtos)
     const btnCancelar = document.getElementById("btnCancelarProduto");
@@ -118,5 +117,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-// Função para lidar com a pré-visualização das imagens
+
 
