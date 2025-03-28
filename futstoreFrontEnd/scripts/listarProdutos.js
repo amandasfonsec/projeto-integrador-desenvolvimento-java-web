@@ -293,6 +293,7 @@ async function editarProduto(id) {
         document.getElementById("editProdutoId").value = produto.id || produto.codigo;
         document.getElementById("editNome").value = produto.nome;
         document.getElementById("editDescricao").value = produto.descricao;
+        document.getElementById("avaliacaoProduto").value = produto.avaliacao;
         document.getElementById("editValor").value = produto.valor;
         document.getElementById("editQtdEstoque").value = produto.qtdEstoque;
 
@@ -306,18 +307,24 @@ async function editarProduto(id) {
             document.getElementById("editValor").disabled = true;
             document.getElementById("editQtdEstoque").disabled = false;
             document.getElementById("editImagemProduto").disabled = true;
+            document.getElementById("avaliacaoProduto").disabled = true;
+            document.getElementById("selectImagemPrincipal").disabled = true;
 
             document.getElementById("editNome").style.cursor = "not-allowed";
             document.getElementById("editDescricao").style.cursor = "not-allowed";
             document.getElementById("editValor").style.cursor = "not-allowed";
             document.getElementById("editQtdEstoque").style.cursor = "default";
             document.getElementById("editImagemProduto").style.cursor = "not-allowed";
+            document.getElementById("avaliacaoProduto").style.cursor = "not-allowed";
+            document.getElementById("selectImagemPrincipal").style.cursor = "not-allowed";
         } else {
-            // Se não for "ESTOQUISTA", todos os campos ficam editáveis
+            
             document.getElementById("editNome").disabled = false;
             document.getElementById("editDescricao").disabled = false;
             document.getElementById("editValor").disabled = false;
             document.getElementById("editQtdEstoque").disabled = false;
+            document.getElementById("avaliacaoProduto").disabled = false;
+            document.getElementById("selectImagemPrincipal").disabled = false;
         }
 
         document.getElementById("editImagemProduto").value = '';  // Limpa o input de imagem
@@ -346,7 +353,8 @@ async function salvarEdicaoProduto() {
         nome: document.getElementById("editNome").value,
         descricao: document.getElementById("editDescricao").value,
         valor: parseFloat(document.getElementById("editValor").value),
-        qtdEstoque: parseInt(document.getElementById("editQtdEstoque").value)
+        qtdEstoque: parseInt(document.getElementById("editQtdEstoque").value),
+        avaliacao: parseFloat(document.getElementById("avaliacaoProduto").value)
     };
 
     let formData = new FormData();
@@ -354,7 +362,7 @@ async function salvarEdicaoProduto() {
 
     let imagemInput = document.getElementById("editImagemProduto");
     if (imagemInput.files.length > 0) {
-        // Agora, iteramos sobre todos os arquivos selecionados
+
         for (let i = 0; i < imagemInput.files.length; i++) {
             formData.append("imagensProduto", imagemInput.files[i]);
         }
@@ -384,37 +392,46 @@ async function salvarEdicaoProduto() {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("editImagemProduto").addEventListener("change", function (event) {
-        const novasImagensContainer = document.getElementById("editNovasImagensContainer");
-        if (!novasImagensContainer) {
-            console.error("Elemento 'editNovasImagensContainer' não encontrado!");
-            return;
-        }
-
-        novasImagensContainer.innerHTML = ''; // Limpa o container antes de adicionar novas imagens
-
-        const arquivos = event.target.files; // Obtém os arquivos selecionados pelo usuário
-
-        if (arquivos.length > 0) {
-            Array.from(arquivos).forEach(arquivo => {
-                const leitor = new FileReader();
-
-                leitor.onload = function (e) {
-                    const imgElement = document.createElement("img");
-                    imgElement.src = e.target.result;
-                    imgElement.alt = "Nova imagem do produto";
-                    imgElement.classList.add("produto-imagem");
-
-                    // Adiciona a nova imagem ao container
-                    novasImagensContainer.appendChild(imgElement);
-                };
-
-                leitor.readAsDataURL(arquivo);
-            });
-        } else {
-            novasImagensContainer.innerHTML = "<p>Nenhuma nova imagem selecionada.</p>";
-        }
+    document.getElementById('editImagemProduto').addEventListener('change', function(event) {
+        const fileInput = event.target;
+        const files = fileInput.files;
+        const selectImagemPrincipal = document.getElementById('selectImagemPrincipal');
+        const novasImagensContainer = document.getElementById('editNovasImagensContainer');
+    
+        // Limpar o conteúdo do select antes de adicionar novas opções
+        selectImagemPrincipal.innerHTML = '';
+    
+        // Limpar o conteúdo do container de imagens selecionadas
+        novasImagensContainer.innerHTML = '';
+    
+        // Adicionar uma opção padrão
+        const opcaoPadrao = document.createElement('option');
+        opcaoPadrao.value = '';
+        opcaoPadrao.textContent = 'Selecione a imagem principal';
+        selectImagemPrincipal.appendChild(opcaoPadrao);
+    
+        // Adicionar cada arquivo como uma opção no select e como uma miniatura na tela
+        Array.from(files).forEach(file => {
+            // Criar opção no select
+            const option = document.createElement('option');
+            option.value = file.name;
+            option.textContent = file.name;
+            selectImagemPrincipal.appendChild(option);
+    
+            // Mostrar pré-visualização da imagem selecionada
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.alt = file.name;
+                img.style.width = '100px';
+                img.style.margin = '5px';
+                novasImagensContainer.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        });
     });
+    
 });
 
 
