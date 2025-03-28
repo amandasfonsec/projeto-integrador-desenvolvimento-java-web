@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const produtoId = urlParams.get("id"); // Pega o ID do produto da URL
-
+    const produtoId = parseInt(urlParams.get("id"));
+    
     if (!produtoId) {
         alert("Produto não encontrado.");
         return;
@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             imagemPrincipal: document.getElementById("produtoImagem").src,
         };
 
-        adicionarAoCarrinho(produto);
+        window.adicionarAoCarrinho(produto);
     });
 });
 
@@ -99,23 +99,4 @@ function atualizarCarrossel(imagensProduto, imagemAtual) {
 }
 
 // Função de adicionar ao carrinho
-window.adicionarAoCarrinho = function (produto) {
-    let carrinho = getCarrinho();
 
-    let itemExistente = carrinho.find(item => item.codigo === produto.codigo);
-
-    if (itemExistente) {
-        itemExistente.quantidade += 1;
-    } else {
-        produto.quantidade = 1;
-
-        if (!produto.imagemPrincipal) {
-            produto.imagemPrincipal = produto.imagem ? produto.imagem : './assets/logotipoFundo.png';
-        }
-
-        carrinho.push(produto);
-    }
-
-    salvarCarrinho(carrinho);
-    atualizarContadorCarrinho();
-};
