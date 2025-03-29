@@ -98,5 +98,3 @@ function atualizarCarrossel(imagensProduto, imagemAtual) {
     });
 }
 
-// Função de adicionar ao carrinho
-
