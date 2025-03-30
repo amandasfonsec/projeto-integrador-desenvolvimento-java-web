@@ -15,13 +15,13 @@ document.addEventListener("DOMContentLoaded", async () => {
             codigo: produtoId,  // Aqui você coloca o código do produto
             nome: document.getElementById("produtoNome").textContent,
             valor: parseFloat(document.getElementById("produtoPreco").textContent.replace('R$', '').trim()),
-            imagemPrincipal: document.getElementById("produtoImagem").src,
+            imagemPrincipal: imagemPassadaCarrinho.imagem,
         };
 
         window.adicionarAoCarrinho(produto);
     });
 });
-
+let imagemPassadaCarrinho;
 async function carregarProduto(id) {
     const token = localStorage.getItem("token");
 
@@ -30,7 +30,7 @@ async function carregarProduto(id) {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
+                "Accept": "application/json"
             }
         });
 
@@ -57,12 +57,14 @@ async function carregarProduto(id) {
 
         if (imgResponse.ok) {
             let imagensProduto = await imgResponse.json();
+            
             if (imagensProduto.length > 0) {
                 let imagemAtual = 0;
                 // Procura pela imagem principal
                 for (let i = 0; i < imagensProduto.length; i++) {
                     const imagem = imagensProduto[i];
                     if (imagem.principal === "true") {
+                        
                         imagemAtual = i;
                         break;
                     }
@@ -78,6 +80,7 @@ async function carregarProduto(id) {
 }
 
 function atualizarCarrossel(imagensProduto, imagemAtual) {
+    imagemPassadaCarrinho = imagensProduto[imagemAtual];
     const imagem = imagensProduto[imagemAtual];
     if (!imagem || !imagem.imagem) {
         console.warn("Imagem inválida no carrossel:", imagem);
