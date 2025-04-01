@@ -126,3 +126,24 @@ footer {
     margin: 0;
     font-size: 14px;
 }
+
+#modalAcao {
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    background-color: rgb(190, 190, 190);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+   
+    label, p{
+        color: black;
+    }
+
+    label{
+        font-size: 14px;
+        font-weight: bold;
+    }
+}
