@@ -113,47 +113,58 @@
                     <input type="text" id="uf" name="uf" required placeholder="UF" maxlength="2">
                 </div>
 
-                <div class="endEntrega">
-                    <h3>Endereço de entrega</h3>
-                    <button id="copiarEndereco">Copiar do endereço de faturamento</button>
+                <div>
+                    <h2>Endereço de Entrega</h2>
+                    <button id="adicionarEndereco">Adicionar Endereço</button>
+                    <button id="copiarEndereco">Copiar Endereço de Faturamento</button>
+                   
+            
+                    <div id="enderecosEntrega"></div>
                 </div>
             
-                <div class="item-form">
-                    <label for="cepEntrega">CEP:</label>
-                    <input type="text" id="cepEntrega" name="cepEntrega" placeholder="CEP de entrega">
-                </div>
+                <template id="enderecoTemplate">
+                    <div class="endereco-entrega">
+                        <h4>Endereço de Entrega Adicional</h4>
+            
+                        <div>
+                            <input type="radio" name="enderecoPadrao" class="radioPadrao">
+                            <label>Marcar como Padrão</label>
+                        </div>
+            
+                        <div>
+                            <label>CEP:</label>
+                            <input type="text" class="cepEntrega" placeholder="CEP de entrega">
+                        </div>
+                        <div>
+                            <label>Logradouro:</label>
+                            <input type="text" class="logradouroEntrega" placeholder="Logradouro">
+                        </div>
+                        <div>
+                            <label>Número:</label>
+                            <input type="text" class="numeroEntrega" placeholder="Número">
+                        </div>
+                        <div>
+                            <label>Complemento:</label>
+                            <input type="text" class="complementoEntrega" placeholder="Complemento">
+                        </div>
+                        <div>
+                            <label>Bairro:</label>
+                            <input type="text" class="bairroEntrega" placeholder="Bairro">
+                        </div>
+                        <div>
+                            <label>Cidade:</label>
+                            <input type="text" class="cidadeEntrega" placeholder="Cidade">
+                        </div>
+                        <div>
+                            <label>UF:</label>
+                            <input type="text" class="ufEntrega" placeholder="UF" maxlength="2">
+                        </div>
+                        <button type="button" class="removerEndereco">Remover Endereço</button>
+                        <hr>
+                    </div>
+                </template>
 
-                <div class="item-form">
-                    <label for="logradouroEntrega">Logradouro:</label>
-                    <input type="text" id="logradouroEntrega" name="logradouroEntrega" placeholder="Logradouro de entrega">
-                </div>
 
-                <div class="item-form">
-                    <label for="numeroEntrega">Número:</label>
-                    <input type="text" id="numeroEntrega" name="numeroEntrega" placeholder="Número de entrega">
-                </div>
-
-                <div class="item-form">
-                    <label for="complementoEntrega">Complemento:</label>
-                    <input type="text" id="complementoEntrega" name="complementoEntrega" placeholder="Complemento de entrega">
-                </div>
-
-                <div class="item-form">
-                    <label for="bairroEntrega">Bairro:</label>
-                    <input type="text" id="bairroEntrega" name="bairroEntrega" placeholder="Bairro de entrega">
-                </div>
-
-                <div class="item-form">
-                    <label for="cidadeEntrega">Cidade:</label>
-                    <input type="text" id="cidadeEntrega" name="cidadeEntrega" placeholder="Cidade de entrega">
-                </div>
-
-                <div class="item-form">
-                    <label for="ufEntrega">UF:</label>
-                    <input type="text" id="ufEntrega" name="ufEntrega" placeholder="UF de entrega" maxlength="2">
-                </div>
-                
-                
                 <div class="botoes">
                     <button type="submit">CADASTRAR</button>
                     <button type="reset">CANCELAR</button>

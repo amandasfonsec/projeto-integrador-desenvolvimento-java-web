@@ -88,7 +88,6 @@ function atualizarResumoCompra() {
     let totalFreteSpan = document.getElementById("totalfrete");
     let totalCompraSpan = document.getElementById("totalCompra");
 
-    // Verifica se há um frete salvo no localStorage
     let freteSalvo = JSON.parse(localStorage.getItem("freteSelecionado"));
     if (freteSalvo) {
         totalFrete = parseFloat(freteSalvo.valor.replace(",", ".")) || 0;
@@ -124,20 +123,17 @@ document.addEventListener('DOMContentLoaded', () => {
         
     }
 
-    // 🔴 Resetar o campo de CEP
     if (inputCEP) {
         inputCEP.value = "";
-        localStorage.removeItem("cepSalvo"); // Remove o CEP salvo no localStorage
+        localStorage.removeItem("cepSalvo");
     }
 
-    // 🔴 Esconder os botões de frete
     botoesFrete.forEach(botao => botao.style.display = "none");
 
-    // 🔴 Remover a seleção de frete salva e sinalizar que o frete não foi calculado
     localStorage.removeItem("freteSelecionado");
     localStorage.setItem("freteCalculado", "false");
 
-    atualizarResumoCompra(); // Atualiza os valores na interface
+    atualizarResumoCompra(); 
 });
 
 //Parte do frete
@@ -155,20 +151,17 @@ document.addEventListener("DOMContentLoaded", () => {
         inputCEP.value = localStorage.getItem("cepSalvo");
     }
 
-    // Restaurar visibilidade dos botões de frete se já foram calculados
     if (localStorage.getItem("freteCalculado") === "true") {
         botoesFrete.forEach(botao => botao.style.display = "inline-block");
     }
 
-    // Formatação do CEP e salvamento
     inputCEP.addEventListener("input", () => {
-        let cep = inputCEP.value.replace(/\D/g, ""); // Remove caracteres não numéricos
+        let cep = inputCEP.value.replace(/\D/g, ""); 
         if (cep.length > 5) {
             cep = cep.substring(0, 5) + "-" + cep.substring(5, 8);
         }
         inputCEP.value = cep;
 
-        // Salva o CEP no localStorage
         localStorage.setItem("cepSalvo", cep);
     });
 
@@ -181,16 +174,13 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        // Define os preços dos fretes
         document.getElementById("precoPadrao").textContent = "10,00";
         document.getElementById("precoRegistrada").textContent = "15,00";
         document.getElementById("precoSedex").textContent = "25,00";
 
-        // Exibe os botões e salva no localStorage que o frete foi calculado
         botoesFrete.forEach(botao => botao.style.display = "inline-block");
         localStorage.setItem("freteCalculado", "true");
 
-        // Se já houver um frete salvo, reaplica
         restaurarFreteSelecionado();
     });
 
@@ -202,7 +192,6 @@ document.addEventListener("DOMContentLoaded", () => {
         totalFreteSpan.textContent = frete;
         totalCompraSpan.textContent = totalCompra.toFixed(2).replace(".", ",");
 
-        // Atualiza estilos dos botões
         botoesFrete.forEach(botao => {
             botao.style.opacity = "0.5";
             botao.textContent = "Selecionar";
@@ -211,7 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
         botaoSelecionado.style.opacity = "1";
         botaoSelecionado.textContent = "Selecionado";
 
-        // Salva o frete no localStorage
         salvarFrete(tipoFrete, frete);
     }
 
@@ -229,8 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
-
-    // Aplica o frete salvo ao carregar a página
+    
     restaurarFreteSelecionado();
 
     document.getElementById("btnPadrao").addEventListener("click", function () {
