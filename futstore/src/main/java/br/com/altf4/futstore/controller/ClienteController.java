@@ -1,5 +1,6 @@
 package br.com.altf4.futstore.controller;
 
+import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
 import br.com.altf4.futstore.service.ClienteService;
 import jakarta.validation.Valid;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -32,15 +34,22 @@ public class ClienteController {
         }
     }
 
-    /* 
-    @GetMapping
-    public List<Cliente> listarClientes() {
-        return clienteService.findAll();
+    @PostMapping("/login")
+    public ResponseEntity<?> logar(@Valid @RequestBody ClienteDTO cliente) {
+        Map<String, Object> resposta = clienteService.gerarTokenComDados(cliente);
+
+        if (resposta == null || resposta.containsKey("erro")) {
+            return ResponseEntity.status(403).body("Erro: Email ou senha inválidos.");
+        }
+
+        return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("/{id}")
-    public Cliente buscarClientePorId(@PathVariable Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+    
+    @GetMapping
+    public List<Cliente> listarClientes() {
+        return clienteService.listarClientes();
     }
-        */
+
+      
 }

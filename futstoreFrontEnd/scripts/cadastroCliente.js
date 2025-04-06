@@ -28,10 +28,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
     adicionarEnderecoBtn.addEventListener("click", (event) => {
         const novoEndereco = enderecoTemplate.cloneNode(true);
+    
+        const radio = novoEndereco.querySelector(".radioPadrao");
+        if (radio) {
+            radio.setAttribute("name", "enderecoPadrao"); // reforça o name
+        }
+    
         enderecosEntrega.appendChild(novoEndereco);
         adicionarEventosCEP();
         event.preventDefault();
     });
+    
+    
+    
 
     function adicionarEventosCEP() {
         document.querySelectorAll(".cepEntrega").forEach((cepInput, index) => {
@@ -42,10 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelectorAll(".removerEndereco").forEach(botao => {
             botao.removeEventListener("click", handleRemover); // remove duplicata
             botao.addEventListener("click", handleRemover);
-        });
-
-        document.querySelectorAll(".radioPadrao").forEach(radio => {
-            radio.addEventListener("change", (e) => marcarPadrao(e.target));
         });
     }
 
@@ -74,11 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
     function handleRemover(event) {
         const endereco = event.target.closest(".endereco-entrega");
         endereco.remove();
-    }
-
-    function marcarPadrao(radioSelecionado) {
-        document.querySelectorAll(".radioPadrao").forEach(radio => radio.checked = false);
-        radioSelecionado.checked = true;
     }
 
     document.getElementById("copiarEndereco").addEventListener("click", copiarEndereco);
@@ -117,7 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // para salvar os enderecos de entrega
     function coletarEnderecosEntrega() {
         const lista = [];
-        document.querySelectorAll(".endereco-entrega").forEach(endereco => {
+    
+        document.querySelectorAll(".endereco-entrega").forEach((endereco) => {
             const cep = endereco.querySelector(".cepEntrega").value;
             const logradouro = endereco.querySelector(".logradouroEntrega").value;
             const bairro = endereco.querySelector(".bairroEntrega").value;
@@ -125,13 +126,18 @@ document.addEventListener("DOMContentLoaded", () => {
             const uf = endereco.querySelector(".ufEntrega").value;
             const numero = endereco.querySelector(".numeroEntrega").value;
             const complemento = endereco.querySelector(".complementoEntrega").value;
-            const padrao = endereco.querySelector(".radioPadrao").checked;
-
+    
+            // Agora busca o radio DENTRO desse endereço específico
+            const radio = endereco.querySelector(".radioPadrao");
+            const padrao = radio?.checked || false;
+    
             lista.push({ cep, logradouro, bairro, cidade, uf, numero, complemento, padrao });
         });
-
+    
         return lista;
     }
+    
+    
 
     adicionarEventosCEP();
 

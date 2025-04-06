@@ -1,12 +1,11 @@
-
-document.getElementById("loginForm").addEventListener("submit", async function (e) {
+document.getElementById("formLogin").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const email = document.getElementById("usuario").value;
+    const email = document.getElementById("email").value;
     const senha = document.getElementById("senha").value;
 
     try {
-        const response = await fetch("http://localhost:8080/usuarios/login", {
+        const response = await fetch("http://localhost:8080/clientes/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -17,6 +16,7 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         let data;
         if (response.headers.get("content-type")?.includes("application/json")) {
             data = await response.json();
+            window.location.href = "home.html";
         } else {
             data = await response.text();
         }
@@ -32,16 +32,13 @@ document.getElementById("loginForm").addEventListener("submit", async function (
         }
 
         const token = data.token;
-        const grupo = data.grupo;
         const nome = data.nome;
         const id = data.id;
 
         localStorage.setItem("token", token);
-        localStorage.setItem("grupo", grupo);
         localStorage.setItem("nome", nome);
         localStorage.setItem("id", id);
 
-        window.location.href = 'principal.html';
 
     } catch (error) {
         console.error("Erro ao logar:", error);
@@ -49,9 +46,3 @@ document.getElementById("loginForm").addEventListener("submit", async function (
     }
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('grupo');
-    localStorage.removeItem('nome');
-    localStorage.removeItem('id');
-});

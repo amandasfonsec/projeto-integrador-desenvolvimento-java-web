@@ -7,6 +7,7 @@ import java.util.Date;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
+import br.com.altf4.futstore.model.Cliente;
 import br.com.altf4.futstore.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -26,6 +27,15 @@ public class TokenUtil {
     public static String createToken(Usuario usuario) {
         return PREFIX + Jwts.builder()
             .setSubject(usuario.getEmail()) 
+            .setIssuer(EMISSOR)
+            .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+            .signWith(SECRET)
+            .compact();
+    }
+
+    public static String createToken(Cliente cliente) {
+        return PREFIX + Jwts.builder()
+            .setSubject(cliente.getEmail()) 
             .setIssuer(EMISSOR)
             .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
             .signWith(SECRET)

@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UsuarioDTO {
+public class ClienteDTO {
 
     @Email(message = "Email inválido")
     @NotBlank(message = "O email é obrigatório")
@@ -16,9 +16,8 @@ public class UsuarioDTO {
     @NotBlank(message = "A senha é obrigatória")
     private String senha;
 
-    public UsuarioDTO(String email, String senha) {
+    public ClienteDTO(String email, String senha) {
         this.email = email;
         this.senha = senha;
     }
-
 }

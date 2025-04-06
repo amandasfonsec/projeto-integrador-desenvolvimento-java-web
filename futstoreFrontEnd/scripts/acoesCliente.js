@@ -1,21 +1,20 @@
-let btnLoginCadatro = document.getElementById('loginBtn');
+let btnLoginCadastro = document.getElementById('loginBtn');
 let modalAcao = document.getElementById('modalAcao');
 
-btnLoginCadatro.addEventListener("click", function(){
-   modalAcao.style.display = "block";
+window.addEventListener("DOMContentLoaded", function() {
+    let nomeCliente = localStorage.getItem("nome");
 
-    modalAcao.innerHTML=`
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email"><br><br>
-        <label for="password">Senha:</label><br>
-        <input type="password" id="password" name="password"><br><br>
-        <button type="submit">Entrar</button>
-        <p>Não possui login? <a href="cadastroCliente.html">Cadastre-se</a></p>
-        <button id="fecharModal">Fechar</button>
-    `;
+    if (nomeCliente) {
 
-    document.getElementById('fecharModal').addEventListener("click", function() {
-        modalAcao.style.display = "none";
-    });
+        btnLoginCadastro.innerHTML = `<i class="fa fa-user"></i> | ${nomeCliente}`;
+
+        btnLoginCadastro.addEventListener("click", function(){
+            modalAcao.classList.toggle("hidden");
+        });
+
+    } else {
+        btnLoginCadastro.addEventListener("click", function(){
+            window.location.href = "./loginCliente.html";
+        });
+    }
 });
-

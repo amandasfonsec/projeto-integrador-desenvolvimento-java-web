@@ -16,8 +16,17 @@
     <header class="header">
         <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
         <div class="botoesCliente">
-            <button id="loginBtn" class="login-btn"><i class="fa fa-user"></i> | Faça login ou cadastre-se</button>
-            <div id="modalAcao" style="display: none;"></div>
+            <div class="container-login-dropdown" style="position: relative; display: inline-block;">
+                <button id="loginBtn" class="login-btn">
+                    <i class="fa fa-user"></i> | Faça login ou cadastre-se
+                </button>
+                <div id="modalAcao" class="menu-cliente hidden">
+                    <ul>
+                        <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfil.html">Editar Perfil</a></li>
+                        <li><i class="fa-solid fa-user"></i> | <a id="logoutBtn">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
             <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho</button>
         </div>
     </header>
