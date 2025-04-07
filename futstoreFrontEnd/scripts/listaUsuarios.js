@@ -1,3 +1,12 @@
+function getToken() {
+    let token = localStorage.getItem("token");
+    if(token == null){
+        alert("TOKEN INVÁLIDO");
+        window.location.href = "home.html";
+    }
+    return token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     fetchUsuarios();
 
@@ -10,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function fetchUsuarios(termoBusca = "") {
     const url = termoBusca ? `http://localhost:8080/usuarios/buscar?nome=${encodeURIComponent(termoBusca)}` : "http://localhost:8080/usuarios";
     
-    fetch(url, { headers: { 'Authorization': localStorage.getItem('token') } })
+    fetch(url, { headers: { 'Authorization': `Bearer ${getToken()}` } })
         .then(response => response.json())
         .then(usuarios => tabela(usuarios))
         .catch(error => console.error("Erro ao buscar usuários:", error));
@@ -59,7 +68,7 @@ function alterarStatus(botao) {
         fetch(`http://localhost:8080/usuarios/${idUsuario}/status`, {
             method: 'PUT',
             headers: {
-                'Authorization': localStorage.getItem('token'),
+                'Authorization': `Bearer ${getToken()}`,
                 'Content-Type': 'application/json'
             }
         })

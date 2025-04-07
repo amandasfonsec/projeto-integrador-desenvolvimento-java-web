@@ -2,7 +2,7 @@ let btnLoginCadastro = document.getElementById('loginBtn');
 let modalAcao = document.getElementById('modalAcao');
 
 window.addEventListener("DOMContentLoaded", function() {
-    let nomeCliente = localStorage.getItem("nome");
+    let nomeCliente = localStorage.getItem("nomeCliente");
 
     if (nomeCliente) {
 
