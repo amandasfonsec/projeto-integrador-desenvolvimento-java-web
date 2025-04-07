@@ -30,6 +30,12 @@ public class ClienteController {
             Cliente clienteSalvo = clienteService.criarUsuario(cliente);
             return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
         } catch (Exception e) {
+            if (e.getMessage().contains("E-mail já cadastrado")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
+            if (e.getMessage().contains("CPF já cadastrado")) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+            }
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao cadastrar cliente: " + e.getMessage());
         }
     }

@@ -40,7 +40,7 @@ public class Endereco {
     private String tipo;
 
     @Column(name = "endereco_padrao", nullable = false)
-    private boolean enderecoPadrao = false;
+    private boolean enderecoPadrao;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fk_cliente_id", nullable = false)

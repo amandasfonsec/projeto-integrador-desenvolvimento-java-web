@@ -32,6 +32,8 @@
                 <div class="item-form">
                     <label for="nome">Nome Completo:</label>
                     <input type="text" id="nome" name="nome" required placeholder="Nome completo">
+                    <span id="erro-nome" style="color: rgb(75, 75, 75); display: none;">Digite pelo menos dois nomes com 3 letras ou
+                        mais.</span>
                 </div>
 
                 <div class="item-form">
@@ -133,7 +135,8 @@
 
                         <div>
                             <label>CEP:</label>
-                            <input type="text" class="cepEntrega" placeholder="CEP de entrega" oninput="formatarCEP(this)">
+                            <input type="text" class="cepEntrega" placeholder="CEP de entrega"
+                                oninput="formatarCEP(this)">
                         </div>
                         <div>
                             <label>Logradouro:</label>
@@ -240,6 +243,22 @@
                 input.value = cep;
             }
         }
+
+        const inputNome = document.getElementById("nome");
+        const erroNome = document.getElementById("erro-nome");
+
+        inputNome.addEventListener("input", () => {
+            const valor = inputNome.value.trim();
+            const regex = /^([A-Za-zÀ-ÿ]{3,})\s+([A-Za-zÀ-ÿ]{3,})(\s+[A-Za-zÀ-ÿ]{3,})*$/;
+
+            if (regex.test(valor)) {
+                erroNome.style.display = "none";
+                inputNome.setCustomValidity("");
+            } else {
+                erroNome.style.display = "inline";
+                inputNome.setCustomValidity("Nome inválido");
+            }
+        });
 
 
     </script>

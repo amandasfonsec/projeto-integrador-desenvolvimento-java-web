@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
         const radio = novoEndereco.querySelector(".radioPadrao");
         if (radio) {
-            radio.setAttribute("name", "enderecoPadrao"); // reforça o name
+            radio.setAttribute("name", "enderecoPadrao"); 
         }
     
         enderecosEntrega.appendChild(novoEndereco);
@@ -183,6 +183,8 @@ document.addEventListener("DOMContentLoaded", () => {
             senha,
             enderecos
         };
+
+        console.log(enderecosEntrega);
     
         try {
             const response = await fetch("http://localhost:8080/clientes", {
@@ -195,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
             if (response.ok) {
                 alert("Cadastro realizado com sucesso!");
-                window.location.href = "home.html"; 
+                window.location.href = "loginCliente.html"; 
             } else {
                 const erro = await response.text();
                 alert("Erro ao cadastrar: " + erro);

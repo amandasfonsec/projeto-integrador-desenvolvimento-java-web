@@ -32,6 +32,14 @@ public class ClienteService {
     }
 
     public Cliente criarUsuario(Cliente cliente) {
+
+        if (repository.existsByEmail(cliente.getEmail())) {
+            throw new RuntimeException("E-mail já cadastrado!");
+        }
+        if (repository.existsByCpf(cliente.getCpf())) {
+            throw new RuntimeException("CPF já cadastrado!");
+        }
+        
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
         return repository.save(cliente);
     }
