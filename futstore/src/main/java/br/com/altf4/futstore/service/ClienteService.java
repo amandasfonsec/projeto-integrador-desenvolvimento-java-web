@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
+import br.com.altf4.futstore.model.Produto;
+import br.com.altf4.futstore.model.Usuario;
 import br.com.altf4.futstore.repository.IClienteRepository;
 import br.com.altf4.futstore.security.Token;
 import br.com.altf4.futstore.security.TokenUtil;
@@ -17,34 +19,38 @@ import br.com.altf4.futstore.security.TokenUtil;
 
 @Service
 public class ClienteService {
-    private IClienteRepository repository;
+    private IClienteRepository clienteRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     public ClienteService(IClienteRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
+        this.clienteRepository = repository;
         this.passwordEncoder = passwordEncoder;
     }
 
     public List<Cliente> listarClientes() {
-        return repository.findAll();
+        return clienteRepository.findAll();
     }
 
-    public Cliente criarUsuario(Cliente cliente) {
+    public Cliente buscarPorId(Long idCliente) {
+        return clienteRepository.findByIdCliente(idCliente);
+    }
 
-        if (repository.existsByEmail(cliente.getEmail())) {
+    public Cliente criarCliente(Cliente cliente) {
+
+        if (clienteRepository.existsByEmail(cliente.getEmail())) {
             throw new RuntimeException("E-mail já cadastrado!");
         }
-        if (repository.existsByCpf(cliente.getCpf())) {
+        if (clienteRepository.existsByCpf(cliente.getCpf())) {
             throw new RuntimeException("CPF já cadastrado!");
         }
         
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
-        return repository.save(cliente);
+        return clienteRepository.save(cliente);
     }
 
     public Map<String, Object> gerarTokenComDados(ClienteDTO clienteDTO) {
-        Cliente cliente = repository.findByEmail(clienteDTO.getEmail());
+        Cliente cliente = clienteRepository.findByEmail(clienteDTO.getEmail());
 
         if (cliente == null || !passwordEncoder.matches(clienteDTO.getSenha(), cliente.getSenha())) {
             return null;
@@ -53,7 +59,7 @@ public class ClienteService {
         Token token = new Token(TokenUtil.createToken(cliente));
 
         Map<String, Object> resposta = new HashMap<>();
-        resposta.put("id", cliente.getId_cliente());
+        resposta.put("id", cliente.getIdCliente());
         resposta.put("token", token.getToken());
         resposta.put("nome", cliente.getNome());
 

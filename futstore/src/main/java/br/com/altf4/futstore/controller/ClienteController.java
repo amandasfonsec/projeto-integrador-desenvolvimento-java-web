@@ -2,6 +2,7 @@ package br.com.altf4.futstore.controller;
 
 import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
+import br.com.altf4.futstore.model.Produto;
 import br.com.altf4.futstore.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class ClienteController {
         try {
             cliente.getEnderecos().forEach(endereco -> endereco.setCliente(cliente));
 
-            Cliente clienteSalvo = clienteService.criarUsuario(cliente);
+            Cliente clienteSalvo = clienteService.criarCliente(cliente);
             return ResponseEntity.status(HttpStatus.CREATED).body(clienteSalvo);
         } catch (Exception e) {
             if (e.getMessage().contains("E-mail já cadastrado")) {
@@ -55,6 +56,12 @@ public class ClienteController {
     @GetMapping
     public List<Cliente> listarClientes() {
         return clienteService.listarClientes();
+    }
+
+    @GetMapping("/{idCliente}")
+    public ResponseEntity<Cliente> buscarClientePorId(@PathVariable Long idCliente) {
+        Cliente cliente = clienteService.buscarPorId(idCliente);
+        return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
     }
 
       

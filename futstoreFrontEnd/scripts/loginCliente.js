@@ -31,13 +31,13 @@ document.getElementById("formLogin").addEventListener("submit", async function (
             return;
         }
 
-        const token = data.token;
-        const nome = data.nome;
-        const id = data.id;
+        const tokenCliente = data.token;
+        const nomeCliente = data.nome;
+        const idCliente = data.id;
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("nome", nome);
-        localStorage.setItem("id", id);
+        localStorage.setItem("tokenCliente", tokenCliente);
+        localStorage.setItem("nomeCliente", nomeCliente);
+        localStorage.setItem("idCliente", idCliente);
 
 
     } catch (error) {

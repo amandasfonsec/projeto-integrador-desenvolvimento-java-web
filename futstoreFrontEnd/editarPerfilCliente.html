@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ediatr Perfil</title>
+    <script src="./scripts/acoesCliente.js" defer></script>
+    <link rel="stylesheet" href="./styles/editarPerfil.css" type="text/css">
+    <link rel="icon" href="./assets/iconPage.png">
+    <link rel="stylesheet" href="./styles/header.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+<body>
+    <script src="./scripts/editarPerfilCliente.js" defer></script>
+    <header class="header">
+        <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
+        <div class="botoesCliente">
+            <div class="container-login-dropdown" style="position: relative; display: inline-block;">
+                <button id="loginBtn" class="login-btn">
+                    <i class="fa fa-user"></i> | Faça login ou cadastre-se
+                </button>
+                <div id="modalAcao" class="menu-cliente hidden">
+                    <ul>
+                        <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfil.html">Editar Perfil</a></li>
+                        <li><i class="fa-solid fa-user"></i> | <a id="logoutBtn">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+            <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho</button>
+        </div>
+    </header>
+
+    <div class="containerEditar">
+        <div class="topo">
+            <h1>Atualizar Perfil</h1>
+            <p>Preencha os campos abaixo alterar o seu perfil de cliente.</p><br>
+        </div>
+        <div id="form-cadastro" class="form-cadastro">
+            <h3>Dados pessoais</h3>
+            <form action="" id="formCadastro">
+                <div class="item-form">
+                    <label for="nome">Nome Completo:</label>
+                    <input type="text" id="nome" name="nome" required placeholder="Nome completo">
+                    <span id="erro-nome" style="color: rgb(75, 75, 75); display: none;">Digite pelo menos dois nomes com 3 letras ou
+                        mais.</span>
+                </div>
+
+                <div class="item-form">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" name="email" required placeholder="E-mail">
+                </div>
+
+                <!--devo colocar disabled para o CPF e ele deve aparecer para o usuario, mas nao pode fazer nada--> 
+                <div class="item-form">
+                    <label for="cpfCadastro">CPF:</label>
+                    <input type="text" id="cpfCadastro" required oninput="formatarCPF(this); validarCPF(this.value)"
+                        name="cpf">
+                </div>
+
+                
+
+                <div class="item-form">
+                    <label for="dataNascimento">Data de nascimento:</label>
+                    <input type="text" id="dataNascimento" name="dataNascimento" required placeholder="DD/MM/AAAA"
+                        oninput="this.value = this.value.replace(/[^0-9/]/g, '');">
+                </div>
+
+                <div class="item-form">
+                    <label for="genero">Gênero:</label>
+                    <select name="genero" id="genero" required>
+                        <option value="" disabled selected>Selecione seu gênero</option>
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="item-form">
+                    <label for="senhaCadastro">Senha:</label>
+                    <input type="password" id="senhaCadastro" required oninput="validarSenhas()" name="senha">
+                </div>
+
+                <div class="item-form">
+                    <label for="confirmaSenhaCadastro">Confirme a Senha:</label>
+                    <input type="password" id="confirmaSenhaCadastro" required oninput="validarSenhas()"
+                        name="confirmaSenha">
+                </div>
+
+                <div class="erro"><span id="erroSenha"></span></div>
+
+                <br>
+                <!--Endereço de faturamente está disabled, mas aparece.--> 
+                <h3>Endereço de faturamento</h3>
+                <div class="item-form">
+                    <label for="cep">CEP:</label>
+                    <input type="text" id="cep" name="cep" required placeholder="CEP" oninput="formatarCEP(this)">
+                </div>
+
+                <div class="item-form">
+                    <label for="logradouro">Logradouro:</label>
+                    <input type="text" id="logradouro" name="logradouro" required placeholder="Logradouro">
+                </div>
+
+                <div class="item-form">
+                    <label for="numero">Número:</label>
+                    <input type="text" id="numero" name="numero" required placeholder="Número">
+                </div>
+
+                <div class="item-form">
+                    <label for="complemento">Complemento:</label>
+                    <input type="text" id="complemento" name="complemento" placeholder="Complemento">
+                </div>
+
+                <div class="item-form">
+                    <label for="bairro">Bairro:</label>
+                    <input type="text" id="bairro" name="bairro" required placeholder="Bairro">
+                </div>
+
+                <div class="item-form">
+                    <label for="cidade">Cidade:</label>
+                    <input type="text" id="cidade" name="cidade" required placeholder="Cidade">
+                </div>
+
+                <div class="item-form">
+                    <label for="uf">UF:</label>
+                    <input type="text" id="uf" name="uf" required placeholder="UF" maxlength="2">
+                </div>
+
+                <div>
+                    <h3>Endereços de Entrega</h3>
+                    <button id="adicionarEndereco">Adicionar Endereço</button>
+                    <button id="copiarEndereco">Copiar Endereço de Faturamento</button>
+
+
+                    <div id="enderecosEntrega"></div>
+                </div>
+
+                <template id="enderecoTemplate">
+                    <div class="endereco-entrega">
+                        <h4>Endereço de Entrega</h4>
+
+                        <div>
+                            <input type="radio" name="enderecoPadrao" class="radioPadrao">
+                            <label>Marcar como Padrão</label>
+                        </div>
+
+                        <div>
+                            <label>CEP:</label>
+                            <input type="text" class="cepEntrega" placeholder="CEP de entrega"
+                                oninput="formatarCEP(this)">
+                        </div>
+                        <div>
+                            <label>Logradouro:</label>
+                            <input type="text" class="logradouroEntrega" placeholder="Logradouro">
+                        </div>
+                        <div>
+                            <label>Número:</label>
+                            <input type="text" class="numeroEntrega" placeholder="Número" required>
+                        </div>
+                        <div>
+                            <label>Complemento:</label>
+                            <input type="text" class="complementoEntrega" placeholder="Complemento">
+                        </div>
+                        <div>
+                            <label>Bairro:</label>
+                            <input type="text" class="bairroEntrega" placeholder="Bairro">
+                        </div>
+                        <div>
+                            <label>Cidade:</label>
+                            <input type="text" class="cidadeEntrega" placeholder="Cidade">
+                        </div>
+                        <div>
+                            <label>UF:</label>
+                            <input type="text" class="ufEntrega" placeholder="UF" maxlength="2">
+                        </div>
+                        <button type="button" class="removerEndereco">Remover Endereço</button>
+                        <hr>
+                    </div>
+                </template>
+
+
+                <div class="botoes">
+                    <button type="submit">CADASTRAR</button>
+                    <button type="reset">CANCELAR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

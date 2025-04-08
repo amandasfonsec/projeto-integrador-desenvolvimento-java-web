@@ -1,7 +1,12 @@
 
 // Função utilitária para pegar token sem prefixo duplicado
 function getToken() {
-    let token = localStorage.getItem("token") || '';
+    let token = localStorage.getItem("token");
+    if(token == null){
+        alert("TOKEN INVÁLIDO");
+        window.location.href = "home.html";
+        return;
+    }
     return token.startsWith("Bearer ") ? token.replace("Bearer ", "") : token;
 }
 
@@ -475,7 +480,7 @@ async function buscarImagensProduto(id) {
         const response = await fetch(`http://localhost:8080/produtos/${id}/imagens`, {
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${getToken()}`,
                 "Content-Type": "application/json"
             }
         });
