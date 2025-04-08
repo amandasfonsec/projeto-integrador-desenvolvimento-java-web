@@ -28,18 +28,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     adicionarEnderecoBtn.addEventListener("click", (event) => {
         const novoEndereco = enderecoTemplate.cloneNode(true);
-    
-        const radio = novoEndereco.querySelector(".radioPadrao");
-        if (radio) {
-            radio.setAttribute("name", "enderecoPadrao"); 
-        }
-    
         enderecosEntrega.appendChild(novoEndereco);
         adicionarEventosCEP();
         event.preventDefault();
     });
-    
-    
     
 
     function adicionarEventosCEP() {
@@ -92,6 +84,11 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        if(document.getElementById("cep").value.isEmpty()){
+            alert("Preencha o endereço de faturamento primeiro!");
+            return;
+        }
+
         const cep = document.getElementById("cep").value;
         const logradouro = document.getElementById("logradouro").value;
         const bairro = document.getElementById("bairro").value;
@@ -114,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("copiarEndereco").style.cursor = "not-allowed";
     }
 
-    // para salvar os enderecos de entrega
+    // para salvar e guardar os enderecos de entrega
     function coletarEnderecosEntrega() {
         const lista = [];
     
@@ -126,26 +123,30 @@ document.addEventListener("DOMContentLoaded", () => {
             const uf = endereco.querySelector(".ufEntrega").value;
             const numero = endereco.querySelector(".numeroEntrega").value;
             const complemento = endereco.querySelector(".complementoEntrega").value;
+            const padrao = endereco.querySelector(".radioPadrao").checked; 
     
-            // Agora busca o radio DENTRO desse endereço específico
-            const radio = endereco.querySelector(".radioPadrao");
-            const padrao = radio?.checked || false;
-    
-            lista.push({ cep, logradouro, bairro, cidade, uf, numero, complemento, padrao });
+            lista.push({
+                cep,
+                logradouro,
+                bairro,
+                cidade,
+                uf,
+                numero,
+                complemento,
+                tipo: "ENTREGA",
+                padrao 
+            });
         });
     
         return lista;
     }
     
-    
-
     adicionarEventosCEP();
-
 
     document.getElementById("formCadastro").addEventListener("submit", async function (e) {
         e.preventDefault(); 
     
-        // Dados pessoais
+        // dados 
         const nome = document.getElementById("nome").value;
         const email = document.getElementById("email").value;
         const cpf = document.getElementById("cpfCadastro").value.replace(/\D/g, '');
@@ -153,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const genero = document.getElementById("genero").value;
         const senha = document.getElementById("senhaCadastro").value;
     
-        // Endereço de faturamento
+        // endereço de faturamento
         const enderecoFaturamento = {
             cep: document.getElementById("cep").value,
             logradouro: document.getElementById("logradouro").value,
@@ -166,11 +167,8 @@ document.addEventListener("DOMContentLoaded", () => {
             padrao: false
         };
     
-        // Endereços de entrega
-        const enderecosEntrega = coletarEnderecosEntrega().map(endereco => ({
-            ...endereco,
-            tipo: "ENTREGA"
-        }));
+        // endereços de entrega
+        const enderecosEntrega = coletarEnderecosEntrega();
     
         const enderecos = [enderecoFaturamento, ...enderecosEntrega];
     

@@ -1,6 +1,7 @@
 package br.com.altf4.futstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class Endereco {
     @Column(name = "tipo", length = 20)
     private String tipo;
 
+    @JsonProperty("padrao")
     @Column(name = "endereco_padrao", nullable = false)
     private boolean enderecoPadrao;
 

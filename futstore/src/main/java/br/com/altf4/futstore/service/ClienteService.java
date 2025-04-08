@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
-import br.com.altf4.futstore.model.Usuario;
 import br.com.altf4.futstore.repository.IClienteRepository;
 import br.com.altf4.futstore.security.Token;
 import br.com.altf4.futstore.security.TokenUtil;
