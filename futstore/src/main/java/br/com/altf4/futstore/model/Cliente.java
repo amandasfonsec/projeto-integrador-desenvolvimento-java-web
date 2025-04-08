@@ -28,7 +28,7 @@ public class Cliente {
     private String cpf;
 
     @JsonFormat(pattern = "dd/MM/yyyy")
-    @Column(name = "data_nascimento", nullable = false)
+    @Column(name = "dataNascimento", nullable = false)
     @Temporal(TemporalType.DATE)
     private Date dataNascimento;
 

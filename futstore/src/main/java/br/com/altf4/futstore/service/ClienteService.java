@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
+import br.com.altf4.futstore.model.Endereco;
 import br.com.altf4.futstore.model.Produto;
 import br.com.altf4.futstore.model.Usuario;
+import br.com.altf4.futstore.repository.IClienteEnderecoRepository;
 import br.com.altf4.futstore.repository.IClienteRepository;
 import br.com.altf4.futstore.security.Token;
 import br.com.altf4.futstore.security.TokenUtil;
@@ -20,12 +22,22 @@ import br.com.altf4.futstore.security.TokenUtil;
 @Service
 public class ClienteService {
     private IClienteRepository clienteRepository;
+    private IClienteEnderecoRepository clienteEnderecoRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ClienteService(IClienteRepository repository, PasswordEncoder passwordEncoder) {
+    public ClienteService(IClienteRepository repository, PasswordEncoder passwordEncoder, IClienteEnderecoRepository clienteEnderecoRepository) {
         this.clienteRepository = repository;
         this.passwordEncoder = passwordEncoder;
+        this.clienteEnderecoRepository = clienteEnderecoRepository;
+    }
+
+    public List<Endereco> listarEnderecos(Long idCliente){
+        Cliente cliente = buscarPorId(idCliente);
+        if(cliente == null){
+            throw new RuntimeException("Cliente não encontrado");
+        }
+        return clienteEnderecoRepository.findByCliente(cliente);
     }
 
     public List<Cliente> listarClientes() {

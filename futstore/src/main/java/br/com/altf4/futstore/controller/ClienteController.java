@@ -2,6 +2,7 @@ package br.com.altf4.futstore.controller;
 
 import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
+import br.com.altf4.futstore.model.Endereco;
 import br.com.altf4.futstore.model.Produto;
 import br.com.altf4.futstore.service.ClienteService;
 import jakarta.validation.Valid;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +66,36 @@ public class ClienteController {
         Cliente cliente = clienteService.buscarPorId(idCliente);
         return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
     }
+
+    //Listar os enderecos do usuario, usado para editar perfil
+    @GetMapping("/{idCliente}/enderecos")
+    public ResponseEntity<List<Map<String,String>>> listarEnderecosCliente(@PathVariable Long idCliente){
+        try {
+            List<Endereco> enderecos = clienteService.listarEnderecos(idCliente);
+
+            List<Map<String, String>> listaMappingEnderecos = new ArrayList<>(); 
+            for(Endereco endereco : enderecos){
+                Map<String, String> enderecoInfo = new HashMap<>();
+                enderecoInfo.put("id_Endereco", (endereco.getId_endereco().toString()));
+                enderecoInfo.put("bairro",endereco.getBairro());
+                enderecoInfo.put("cidade",endereco.getCidade());
+                enderecoInfo.put("complemento",endereco.getComplemento());
+                enderecoInfo.put("padrao",endereco.isEnderecoPadrao()? "true" : "false");
+                enderecoInfo.put("logradouro",endereco.getLogradouro());
+                enderecoInfo.put("numero",endereco.getNumero());
+                enderecoInfo.put("tipo",endereco.getTipo());
+                enderecoInfo.put("uf",endereco.getUf());
+
+                listaMappingEnderecos.add(enderecoInfo);
+            }
+            return ResponseEntity.ok(listaMappingEnderecos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of(Map.of("erro","Erro ao listar Imagens do produto:" +e.getMessage())));
+        }
+        
+    }
+
+
 
       
 }
