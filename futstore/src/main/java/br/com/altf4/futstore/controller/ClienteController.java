@@ -56,17 +56,38 @@ public class ClienteController {
     }
 
     @PutMapping("/{idCliente}")
-    public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente){
-        Cliente clienteExistente = clienteService.buscarPorId(idCliente);
+public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente) {
+    Cliente clienteExistente = clienteService.buscarPorId(idCliente);
 
-        if(clienteExistente == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        //Lógica para editar o cliente
-        cliente.setIdCliente(idCliente);
-        Cliente clienteAtualizado = clienteService.editarCliente(cliente);
-        return ResponseEntity.status(HttpStatus.OK).body(clienteAtualizado);
+    if (clienteExistente == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+    // Atualizar os campos
+    clienteExistente.setNome(cliente.getNome());
+    clienteExistente.setEmail(cliente.getEmail());
+    clienteExistente.setCpf(cliente.getCpf());
+    clienteExistente.setGenero(cliente.getGenero());
+    clienteExistente.setDataNascimento(cliente.getDataNascimento());
+
+    // Atualizar senha se veio no request
+    if (cliente.getSenha() != null && !cliente.getSenha().isEmpty()) {
+        clienteExistente.setSenha(cliente.getSenha());
+    }
+
+    // Atualizar endereços
+    clienteExistente.getEnderecos().clear(); // Remove os anteriores
+    if (cliente.getEnderecos() != null) {
+        for (Endereco endereco : cliente.getEnderecos()) {
+            endereco.setCliente(clienteExistente); // vínculo bidirecional
+            clienteExistente.getEnderecos().add(endereco);
+        }
+    }
+
+    Cliente clienteAtualizado = clienteService.editarCliente(clienteExistente);
+    return ResponseEntity.ok(clienteAtualizado);
+}
+
     
     @GetMapping
     public List<Cliente> listarClientes() {

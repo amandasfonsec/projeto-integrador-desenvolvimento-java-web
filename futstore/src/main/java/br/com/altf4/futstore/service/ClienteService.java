@@ -48,18 +48,18 @@ public class ClienteService {
         return clienteRepository.findByIdCliente(idCliente);
     }
 
-    public Cliente editarCliente(Cliente cliente){
-        //Verifica se o usuário existe no banco
-        Cliente clienteOriginal = clienteRepository.findByIdCliente(cliente.getIdCliente());
-        if(clienteOriginal==null){
-            throw new RuntimeException("Cliente não encontrando");
+    public Cliente editarCliente(Cliente cliente) {
+        if (cliente == null || cliente.getIdCliente() == null) {
+            throw new IllegalArgumentException("Cliente inválido");
         }
+    
+        // Se a senha ainda não estiver codificada (por exemplo, se ela foi alterada no Controller),
+        // encode aqui:
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
-        
-
+    
         return clienteRepository.save(cliente);
-        
     }
+    
 
 
     public Cliente criarCliente(Cliente cliente) {
