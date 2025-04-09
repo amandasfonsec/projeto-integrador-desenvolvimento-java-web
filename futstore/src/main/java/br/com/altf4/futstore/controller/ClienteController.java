@@ -55,6 +55,18 @@ public class ClienteController {
         return ResponseEntity.ok(resposta);
     }
 
+    @PutMapping("/{idCliente}")
+    public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente){
+        Cliente clienteExistente = clienteService.buscarPorId(idCliente);
+
+        if(clienteExistente == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        //Lógica para editar o cliente
+        cliente.setIdCliente(idCliente);
+        Cliente clienteAtualizado = clienteService.editarCliente(cliente);
+        return ResponseEntity.status(HttpStatus.OK).body(clienteAtualizado);
+    }
     
     @GetMapping
     public List<Cliente> listarClientes() {
@@ -85,6 +97,7 @@ public class ClienteController {
                 enderecoInfo.put("numero",endereco.getNumero());
                 enderecoInfo.put("tipo",endereco.getTipo());
                 enderecoInfo.put("uf",endereco.getUf());
+                enderecoInfo.put("cep",endereco.getCep());
 
                 listaMappingEnderecos.add(enderecoInfo);
             }

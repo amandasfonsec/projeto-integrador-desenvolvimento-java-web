@@ -48,6 +48,20 @@ public class ClienteService {
         return clienteRepository.findByIdCliente(idCliente);
     }
 
+    public Cliente editarCliente(Cliente cliente){
+        //Verifica se o usuário existe no banco
+        Cliente clienteOriginal = clienteRepository.findByIdCliente(cliente.getIdCliente());
+        if(clienteOriginal==null){
+            throw new RuntimeException("Cliente não encontrando");
+        }
+        cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
+        
+
+        return clienteRepository.save(cliente);
+        
+    }
+
+
     public Cliente criarCliente(Cliente cliente) {
 
         if (clienteRepository.existsByEmail(cliente.getEmail())) {

@@ -65,7 +65,7 @@
                 <div class="item-form">
                     <label for="dataNascimento">Data de nascimento:</label>
                     <input type="text" id="dataNascimento" name="dataNascimento" required placeholder="DD/MM/AAAA"
-                        oninput="this.value = this.value.replace(/[^0-9/]/g, '');">
+                        oninput="formatarData(this)" onchange="validarAno(this)">
                 </div>
 
                 <div class="item-form">
@@ -80,12 +80,12 @@
 
                 <div class="item-form">
                     <label for="senhaCadastro">Senha:</label>
-                    <input type="password" id="senhaCadastro" placeholder="SENHA" required oninput="validarSenhas()" name="senha">
+                    <input type="password" id="senhaCadastro" placeholder="SENHA" oninput="validarSenhas()" name="senha">
                 </div>
 
                 <div class="item-form">
                     <label for="confirmaSenhaCadastro">Confirme a Senha:</label>
-                    <input type="password" id="confirmaSenhaCadastro" placeholder="SENHA" required oninput="validarSenhas()"
+                    <input type="password" id="confirmaSenhaCadastro" placeholder="SENHA" oninput="validarSenhas()"
                         name="confirmaSenha">
                 </div>
 
@@ -96,51 +96,51 @@
                 <h3>Endereço de faturamento</h3>
                 <div class="item-form">
                     <label for="cep">CEP:</label>
-                    <input type="text" id="cep" name="cep" required placeholder="CEP" oninput="formatarCEP(this)">
+                    <input type="text" id="cep" name="cep"  placeholder="CEP" disabled oninput="formatarCEP(this)">
                 </div>
 
                 <div class="item-form">
                     <label for="logradouro">Logradouro:</label>
-                    <input type="text" id="logradouro" name="logradouro" required placeholder="Logradouro">
+                    <input type="text" id="logradouro" name="logradouro" disabled  placeholder="Logradouro">
                 </div>
 
                 <div class="item-form">
                     <label for="numero">Número:</label>
-                    <input type="text" id="numero" name="numero" required placeholder="Número">
+                    <input type="text" id="numero" name="numero" disabled  placeholder="Número">
                 </div>
 
                 <div class="item-form">
                     <label for="complemento">Complemento:</label>
-                    <input type="text" id="complemento" name="complemento" placeholder="Complemento">
+                    <input type="text" id="complemento" name="complemento"  disabled placeholder="Complemento">
                 </div>
 
                 <div class="item-form">
                     <label for="bairro">Bairro:</label>
-                    <input type="text" id="bairro" name="bairro" required placeholder="Bairro">
+                    <input type="text" id="bairro" name="bairro" disabled placeholder="Bairro">
                 </div>
 
                 <div class="item-form">
                     <label for="cidade">Cidade:</label>
-                    <input type="text" id="cidade" name="cidade" required placeholder="Cidade">
+                    <input type="text" id="cidade" name="cidade" disabled placeholder="Cidade">
                 </div>
 
                 <div class="item-form">
                     <label for="uf">UF:</label>
-                    <input type="text" id="uf" name="uf" required placeholder="UF" maxlength="2">
+                    <input type="text" id="uf" name="uf" disabled placeholder="UF" maxlength="2">
                 </div>
 
                 <div>
                     <h3>Endereços de Entrega</h3>
                     <button id="adicionarEndereco">Adicionar Endereço</button>
-                    <button id="copiarEndereco">Copiar Endereço de Faturamento</button>
+                    
 
-
+                    <div id="enderecosRegistrado"></div>
                     <div id="enderecosEntrega"></div>
                 </div>
 
                 <template id="enderecoTemplate">
                     <div class="endereco-entrega">
-                        <h4>Endereço de Entrega</h4>
+                        <h4></h4>
 
                         <div>
                             <input type="radio" name="enderecoPadrao" class="radioPadrao">
