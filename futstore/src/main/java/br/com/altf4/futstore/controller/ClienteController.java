@@ -56,37 +56,59 @@ public class ClienteController {
     }
 
     @PutMapping("/{idCliente}")
-public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente) {
-    Cliente clienteExistente = clienteService.buscarPorId(idCliente);
-
-    if (clienteExistente == null) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    // Atualizar os campos
-    clienteExistente.setNome(cliente.getNome());
-    clienteExistente.setEmail(cliente.getEmail());
-    clienteExistente.setCpf(cliente.getCpf());
-    clienteExistente.setGenero(cliente.getGenero());
-    clienteExistente.setDataNascimento(cliente.getDataNascimento());
-
-    // Atualizar senha se veio no request
-    if (cliente.getSenha() != null && !cliente.getSenha().isEmpty()) {
-        clienteExistente.setSenha(cliente.getSenha());
-    }
-
-    // Atualizar endereços
-    clienteExistente.getEnderecos().clear(); // Remove os anteriores
-    if (cliente.getEnderecos() != null) {
-        for (Endereco endereco : cliente.getEnderecos()) {
-            endereco.setCliente(clienteExistente); // vínculo bidirecional
-            clienteExistente.getEnderecos().add(endereco);
+    public ResponseEntity<Cliente> editarCliente(@PathVariable Long idCliente, @RequestBody Cliente cliente) {
+        Cliente clienteExistente = clienteService.buscarPorId(idCliente);
+        
+        if (clienteExistente == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    
+        // Atualiza os campos permitidos
+        clienteExistente.setNome(cliente.getNome());
+        clienteExistente.setDataNascimento(cliente.getDataNascimento());
+        clienteExistente.setGenero(cliente.getGenero());
+    
+        // Atualiza a senha, se fornecida
+        
+            clienteExistente.setSenha(cliente.getSenha());
+        
+    
+        // Mapeia os endereços existentes usando um HashMap (sem stream)
+        Map<Long, Endereco> enderecosExistentesMap = new HashMap<>();
+        List<Endereco> enderecosExistentes = clienteExistente.getEnderecos();
+        if (enderecosExistentes != null) {
+            for (Endereco endereco : enderecosExistentes) {
+                if (endereco.getId_endereco() != null) {
+                    enderecosExistentesMap.put(endereco.getId_endereco(), endereco);
+                }
+            }
+        }
+    
+        // Limpa a lista existente, preservando a referência (evita erro do Hibernate)
+        enderecosExistentes.clear();
+    
+        if (cliente.getEnderecos() != null) {
+            for (Endereco endereco : cliente.getEnderecos()) {
+                if (endereco.getId_endereco() != null && enderecosExistentesMap.containsKey(endereco.getId_endereco())) {
+                    // Atualiza apenas o campo 'padrao'
+                    Endereco existente = enderecosExistentesMap.get(endereco.getId_endereco());
+                    existente.setEnderecoPadrao(endereco.isEnderecoPadrao());
+                    enderecosExistentes.add(existente);
+                } else {
+                    // Novo endereço
+                    endereco.setCliente(clienteExistente);
+                    enderecosExistentes.add(endereco);
+                }
+            }
+        }
+    
+        // Não precisa setar a lista novamente, pois foi atualizada por referência
+    
+        Cliente clienteAtualizado = clienteService.editarCliente(clienteExistente);
+        return ResponseEntity.ok(clienteAtualizado);
     }
+    
 
-    Cliente clienteAtualizado = clienteService.editarCliente(clienteExistente);
-    return ResponseEntity.ok(clienteAtualizado);
-}
 
     
     @GetMapping

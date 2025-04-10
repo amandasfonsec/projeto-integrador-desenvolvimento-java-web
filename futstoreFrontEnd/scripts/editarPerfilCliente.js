@@ -1,6 +1,7 @@
 const idCliente = localStorage.getItem("idCliente");
 
 console.log(idCliente);
+let perfilDados;
 
 function formatarCPF(input) {
     let cpf = input.value.replace(/\D/g, '');
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!response.ok) {
                 throw new Error(`Erro ao buscar perfil para edição: ${response.status}`);
             }
-            let perfilDados = await response.json();
+            perfilDados = await response.json();
             console.log("Editando perfil", perfilDados);
 
             //ATUALIZA OS CAMPOS DO PERFIL
@@ -197,6 +198,107 @@ document.addEventListener("DOMContentLoaded", () => {
             const endereco = event.target.closest(".endereco-entrega");
             endereco.remove();
         }
+
+        document.getElementById("formCadastro").addEventListener("submit", async function (e) {
+            e.preventDefault(); 
+        
+            // dados do cliente
+            const idCliente = perfilDados.idCliente;
+            const nome = document.getElementById("nome").value;
+            const email = perfilDados.email;
+            const cpf = perfilDados.cpf;
+            const dataNascimento = document.getElementById("dataNascimento").value;
+            const genero = document.getElementById("genero").value;
+            const senhaInput = document.getElementById("senhaCadastro");
+            const senha = senhaInput && senhaInput.value ? senhaInput.value : perfilDados.senha;
+        
+            // endereço de faturamento
+            const enderecoFaturamento = {
+                cep: document.getElementById("cep").value,
+                logradouro: document.getElementById("logradouro").value,
+                numero: document.getElementById("numero").value,
+                complemento: document.getElementById("complemento").value,
+                bairro: document.getElementById("bairro").value,
+                cidade: document.getElementById("cidade").value,
+                uf: document.getElementById("uf").value,
+                tipo: "FATURAMENTO",
+                padrao: false
+            };
+        
+            // endereços de entrega
+
+
+            // para salvar e guardar os enderecos de entrega
+    function coletarEnderecosEntregaNovosOuAtualizados() {
+        const lista = [];
+        const idEnderecosExistentes = 0;
+        document.querySelectorAll(".endereco-entrega").forEach((endereco) => {
+            const cep = endereco.querySelector(".cepEntrega").value;
+            const logradouro = endereco.querySelector(".logradouroEntrega").value;
+            const bairro = endereco.querySelector(".bairroEntrega").value;
+            const cidade = endereco.querySelector(".cidadeEntrega").value;
+            const uf = endereco.querySelector(".ufEntrega").value;
+            const numero = endereco.querySelector(".numeroEntrega").value;
+            const complemento = endereco.querySelector(".complementoEntrega").value;
+            const padrao = endereco.querySelector(".radioPadrao").checked; 
+    
+            lista.push({
+                
+                cep,
+                logradouro,
+                bairro,
+                cidade,
+                uf,
+                numero,
+                complemento,
+                tipo: "ENTREGA",
+                padrao 
+            });
+        });
+    
+        return lista;
+    }
+
+
+            const enderecosEntregaNovosOuAtualizados = coletarEnderecosEntregaNovosOuAtualizados();
+        
+            const enderecos = [enderecoDados[0], ...enderecosEntregaNovosOuAtualizados];
+        
+            const dadosCliente = {
+                nome,
+                email,
+                cpf,
+                dataNascimento,
+                genero,
+                senha,
+                enderecos
+            };
+    
+            console.log(enderecosEntregaNovosOuAtualizados);
+        
+            try {
+                const response = await fetch(`http://localhost:8080/clientes/${idCliente}`, {
+                    method: "PUT",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.token}`
+                 },
+                    body: JSON.stringify(dadosCliente)
+                });
+        
+                if (response.ok) {
+                    alert("Edicao do perfil realizada com sucesso!");
+                    window.location.href = "home.html"; 
+                } else {
+                    const erro = await response.text();
+                    alert("Erro ao editar perfil: " + erro);
+                }
+            } catch (error) {
+                console.error("Erro de rede:", error);
+                alert("Erro de rede ao editar perfil.");
+            }
+        });
+        
 
 
     }
