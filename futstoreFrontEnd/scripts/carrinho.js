@@ -1,4 +1,3 @@
-
 function getCarrinho() {
     const carrinho = localStorage.getItem('carrinho');
     return carrinho ? JSON.parse(carrinho) : [];
@@ -20,16 +19,17 @@ function atualizarContadorCarrinho() {
 function listarCarrinho() {
     let carrinho = getCarrinho();
     let itensDiv = document.getElementById('itensCarrinho');
+    let totalCarrinhoSpan = document.getElementById("totalCarrinho");
+
+    if (!itensDiv || !totalCarrinhoSpan) return;
+
     let totalCarrinho = 0;
-
-    if (!itensDiv) return;
-
     itensDiv.innerHTML = '';
 
     if (carrinho.length === 0) {
         itensDiv.innerHTML = '<p>O carrinho está vazio.</p>';
-        document.getElementById('totalCarrinho').textContent = '0,00';
-        atualizarResumoCompra(); // Atualiza o total corretamente mesmo com o carrinho vazio
+        totalCarrinhoSpan.textContent = '0,00';
+        atualizarResumoCompra();
         return;
     }
 
@@ -55,9 +55,8 @@ function listarCarrinho() {
         `;
     });
 
-    document.getElementById('totalCarrinho').textContent = totalCarrinho.toFixed(2).replace(".", ",");
-
-    atualizarResumoCompra(); // Atualiza o total da compra sempre que o carrinho mudar
+    totalCarrinhoSpan.textContent = totalCarrinho.toFixed(2).replace(".", ",");
+    atualizarResumoCompra();
 }
 
 function alterarQuantidade(codigo, delta) {
@@ -83,10 +82,14 @@ function removerItem(codigo) {
 }
 
 function atualizarResumoCompra() {
-    let totalCarrinho = parseFloat(document.getElementById("totalCarrinho").textContent.replace(",", ".")) || 0;
+    const totalCarrinhoSpan = document.getElementById("totalCarrinho");
+    const totalFreteSpan = document.getElementById("totalfrete");
+    const totalCompraSpan = document.getElementById("totalCompra");
+
+    if (!totalCarrinhoSpan || !totalFreteSpan || !totalCompraSpan) return;
+
+    let totalCarrinho = parseFloat(totalCarrinhoSpan.textContent.replace(",", ".")) || 0;
     let totalFrete = 0;
-    let totalFreteSpan = document.getElementById("totalfrete");
-    let totalCompraSpan = document.getElementById("totalCompra");
 
     let freteSalvo = JSON.parse(localStorage.getItem("freteSelecionado"));
     if (freteSalvo) {
@@ -100,29 +103,23 @@ function atualizarResumoCompra() {
     totalCompraSpan.textContent = totalCompra.toFixed(2).replace(".", ",");
 }
 
-// Atualiza o total da compra sempre que a página carregar
+// Executa apenas se elementos existirem
 document.addEventListener("DOMContentLoaded", () => {
-    atualizarResumoCompra();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById("totalCarrinho")) {
+        atualizarResumoCompra();
+        listarCarrinho();
+    }
     atualizarContadorCarrinho();
-    listarCarrinho();
 
     const continuarBtn = document.getElementById('continuarComprando');
-    const finalizarBtn = document.getElementById('finalizarCompra');
-    const inputCEP = document.querySelector(".inputFrete input");
-    const botoesFrete = document.querySelectorAll("#resultadoFrete button");
-
     if (continuarBtn) {
         continuarBtn.addEventListener('click', () => {
             window.location.href = 'home.html';
         });
     }
-    if (finalizarBtn) {
-        
-    }
 
+    const inputCEP = document.querySelector(".inputFrete input");
+    const botoesFrete = document.querySelectorAll("#resultadoFrete button");
     if (inputCEP) {
         inputCEP.value = "";
         localStorage.removeItem("cepSalvo");
@@ -132,21 +129,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     localStorage.removeItem("freteSelecionado");
     localStorage.setItem("freteCalculado", "false");
-
-    atualizarResumoCompra(); 
 });
 
-//Parte do frete
+// FRETE
 document.addEventListener("DOMContentLoaded", () => {
     const inputCEP = document.querySelector(".inputFrete input");
     const calcularFreteBtn = document.querySelector(".inputFrete button");
     const resultadoFrete = document.getElementById("resultadoFrete");
-    const botoesFrete = resultadoFrete.querySelectorAll("button");
+    const botoesFrete = resultadoFrete ? resultadoFrete.querySelectorAll("button") : [];
     const totalFreteSpan = document.getElementById("totalfrete");
     const totalCompraSpan = document.getElementById("totalCompra");
     const totalCarrinhoSpan = document.getElementById("totalCarrinho");
 
-    
+    if (!inputCEP || !resultadoFrete || !totalFreteSpan || !totalCompraSpan || !totalCarrinhoSpan) return;
+
     if (localStorage.getItem("cepSalvo")) {
         inputCEP.value = localStorage.getItem("cepSalvo");
     }
@@ -156,12 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     inputCEP.addEventListener("input", () => {
-        let cep = inputCEP.value.replace(/\D/g, ""); 
+        let cep = inputCEP.value.replace(/\D/g, "");
         if (cep.length > 5) {
             cep = cep.substring(0, 5) + "-" + cep.substring(5, 8);
         }
         inputCEP.value = cep;
-
         localStorage.setItem("cepSalvo", cep);
     });
 
@@ -209,7 +204,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function restaurarFreteSelecionado() {
         let freteSalvo = JSON.parse(localStorage.getItem("freteSelecionado"));
-
         if (freteSalvo) {
             let botaoSelecionado = document.getElementById(`btn${freteSalvo.tipo}`);
             if (botaoSelecionado) {
@@ -217,41 +211,46 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     }
-    
+
     restaurarFreteSelecionado();
 
-    document.getElementById("btnPadrao").addEventListener("click", function () {
-        atualizarResumoCompra("10,00", this, "Padrao");
-    });
+    const btnPadrao = document.getElementById("btnPadrao");
+    const btnRegistrada = document.getElementById("btnRegistrada");
+    const btnSedex = document.getElementById("btnSedex");
 
-    document.getElementById("btnRegistrada").addEventListener("click", function () {
-        atualizarResumoCompra("15,00", this, "Registrada");
-    });
+    if (btnPadrao) {
+        btnPadrao.addEventListener("click", function () {
+            atualizarResumoCompra("10,00", this, "Padrao");
+        });
+    }
 
-    document.getElementById("btnSedex").addEventListener("click", function () {
-        atualizarResumoCompra("25,00", this, "Sedex");
-    });
+    if (btnRegistrada) {
+        btnRegistrada.addEventListener("click", function () {
+            atualizarResumoCompra("15,00", this, "Registrada");
+        });
+    }
+
+    if (btnSedex) {
+        btnSedex.addEventListener("click", function () {
+            atualizarResumoCompra("25,00", this, "Sedex");
+        });
+    }
 });
-
-
 
 window.adicionarAoCarrinho = function (produto) {
     let carrinho = getCarrinho();
-
     let itemExistente = carrinho.find(item => item.codigo === produto.codigo);
 
     if (itemExistente) {
         itemExistente.quantidade += 1;
     } else {
         produto.quantidade = 1;
-
         if (!produto.imagemPrincipal) {
             produto.imagemPrincipal = produto.imagem ? produto.imagem : './assets/logotipoFundo.png';
         }
-
         carrinho.push(produto);
     }
 
     salvarCarrinho(carrinho);
     atualizarContadorCarrinho();
-}
+};
