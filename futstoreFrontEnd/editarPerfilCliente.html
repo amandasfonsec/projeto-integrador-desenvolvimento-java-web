@@ -26,10 +26,10 @@
                 </button>
                 <div id="modalAcao" class="menu-cliente hidden">
                     <ul>
-                        <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfil.html">Editar Perfil</a></li>
+                        <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfilCliente.html">Editar Perfil</a></li>
                         <li>
                             <i class="fa-solid fa-user"></i> |
-                            <button id="logoutBtn" style="all: unset; cursor: pointer;">Logout</button>
+                            <button id="logoutBtn" href="" style="all: unset; cursor: pointer;"><a>Logout</a></button>
                           </li>
                           
                     </ul>
@@ -259,6 +259,11 @@
 
 
     </script>
-
+    <script>
+        document.getElementById('carrinhoBtn').addEventListener("click", function () {
+            window.location.href = 'carrinho.html';
+        })
+    </script>
+        <script src="./scripts/carrinho.js" defer></script>
 </body>
 </html>

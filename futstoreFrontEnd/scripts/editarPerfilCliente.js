@@ -289,6 +289,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (response.ok) {
                     alert("Edicao do perfil realizada com sucesso!");
                     window.location.href = "home.html"; 
+                    localStorage.setItem("nomeCliente", nome);
                 } else {
                     const erro = await response.text();
                     alert("Erro ao editar perfil: " + erro);

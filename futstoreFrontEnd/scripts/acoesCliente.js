@@ -20,6 +20,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     localStorage.removeItem("nomeCliente");
                     localStorage.removeItem("tokenCliente");
                     localStorage.removeItem("idCliente");
+                    localStorage.removeItem("carrinho");
                     window.location.href = "./loginCliente.html";
                 }
             });
