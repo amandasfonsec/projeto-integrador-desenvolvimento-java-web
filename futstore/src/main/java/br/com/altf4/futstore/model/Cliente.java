@@ -3,6 +3,7 @@ package br.com.altf4.futstore.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -27,10 +28,9 @@ public class Cliente {
     @Column(name = "cpf", length = 14, nullable = false, unique = true)
     private String cpf;
 
-    @JsonFormat(pattern = "dd/MM/yyyy")
     @Column(name = "dataNascimento", nullable = false)
-    @Temporal(TemporalType.DATE)
-    private Date dataNascimento;
+    @JsonFormat(pattern = "dd/MM/yyyy")
+    private LocalDate dataNascimento;
 
     @Column(name = "genero", length = 50, nullable = false)
     private String genero;

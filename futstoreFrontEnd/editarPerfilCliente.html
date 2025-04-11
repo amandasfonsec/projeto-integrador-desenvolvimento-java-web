@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ediatr Perfil</title>
+    <title>Editar Perfil</title>
     <script src="./scripts/acoesCliente.js" defer></script>
     <link rel="stylesheet" href="./styles/editarPerfil.css" type="text/css">
     <link rel="icon" href="./assets/iconPage.png">
@@ -37,7 +37,7 @@
 
     <div class="containerEditar">
         <div class="topo">
-            <h1>Atualizar Perfil</h1>
+            <h1>Editar Perfil</h1>
             <p>Preencha os campos abaixo alterar o seu perfil de cliente.</p><br>
         </div>
         <div id="form-cadastro" class="form-cadastro">
@@ -80,13 +80,13 @@
 
                 <div class="item-form">
                     <label for="senhaCadastro">Senha:</label>
-                    <input type="password" id="senhaCadastro" placeholder="SENHA" oninput="validarSenhas()" name="senha">
+                    <input type="password" id="senhaCadastro" placeholder="SENHA" oninput="validarSenhas()" name="senha" required>
                 </div>
 
                 <div class="item-form">
                     <label for="confirmaSenhaCadastro">Confirme a Senha:</label>
                     <input type="password" id="confirmaSenhaCadastro" placeholder="SENHA" oninput="validarSenhas()"
-                        name="confirmaSenha">
+                        name="confirmaSenha" required>
                 </div>
 
                 <div class="erro"><span id="erroSenha"></span></div>
@@ -142,37 +142,38 @@
                     <div class="endereco-entrega">
                         <h4></h4>
 
-                        <div>
+                        <div class="itemTemplate">
                             <input type="radio" name="enderecoPadrao" class="radioPadrao">
                             <label>Marcar como Padrão</label>
                         </div>
 
-                        <div>
+                        <div class="itemTemplate">
                             <label>CEP:</label>
                             <input type="text" class="cepEntrega" placeholder="CEP de entrega"
                                 oninput="formatarCEP(this)">
                         </div>
-                        <div>
+                        <div class="itemTemplate">
                             <label>Logradouro:</label>
                             <input type="text" class="logradouroEntrega" placeholder="Logradouro">
                         </div>
-                        <div>
+                        <div >
+                        <div class="itemTemplate">
                             <label>Número:</label>
                             <input type="text" class="numeroEntrega" placeholder="Número" required>
                         </div>
-                        <div>
+                        <div class="itemTemplate">
                             <label>Complemento:</label>
                             <input type="text" class="complementoEntrega" placeholder="Complemento">
                         </div>
-                        <div>
+                        <div class="itemTemplate">
                             <label>Bairro:</label>
                             <input type="text" class="bairroEntrega" placeholder="Bairro">
                         </div>
-                        <div>
+                        <div class="itemTemplate">
                             <label>Cidade:</label>
                             <input type="text" class="cidadeEntrega" placeholder="Cidade">
                         </div>
-                        <div>
+                        <div class="itemTemplate">
                             <label>UF:</label>
                             <input type="text" class="ufEntrega" placeholder="UF" maxlength="2">
                         </div>
@@ -183,8 +184,7 @@
 
 
                 <div class="botoes">
-                    <button type="submit">ATUALIZAR</button>
-                    <button type="reset">CANCELAR</button>
+                    <button type="submit" class="btn">ATUALIZAR</button>
                 </div>
             </form>
         </div>

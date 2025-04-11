@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const enderecoTemplate = document.getElementById("enderecoTemplate").content;
     const adicionarEnderecoBtn = document.getElementById("adicionarEndereco");
 
-    adicionarEnderecoBtn.addEventListener("click", (event) => {
+    adicionarEnderecoBtn.addEventListener("mousedown", (event) => {
         const novoEndereco = enderecoTemplate.cloneNode(true);
         enderecosEntrega.appendChild(novoEndereco);
         adicionarEventosCEP();
@@ -81,11 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const ultimoEndereco = document.querySelector(".endereco-entrega:last-of-type");
         if (!ultimoEndereco) {
             alert("Adicione um endereço de entrega primeiro!");
-            return;
-        }
-
-        if(document.getElementById("cep").value.isEmpty()){
-            alert("Preencha o endereço de faturamento primeiro!");
             return;
         }
 

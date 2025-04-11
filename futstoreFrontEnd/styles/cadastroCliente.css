@@ -116,6 +116,7 @@ button {
     border-radius: 5px;
     font-size: 12px;
     background-color:  #0056b3; 
+    font-weight: 700;
 }
 
 button:visited {
@@ -132,4 +133,19 @@ button:hover {
     border: 1px solid #ddd;
     margin-top: 10px;
     border-radius: 5px;
+    
+}
+
+.botoes{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.itemTemplate{
+    margin-bottom: 8px;
+    
+    input{
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
 }

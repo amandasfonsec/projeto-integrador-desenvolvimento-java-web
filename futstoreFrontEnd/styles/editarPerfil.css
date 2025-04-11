@@ -1,3 +1,186 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
 .containerEditar{
     margin-top: 160px;
+    margin-bottom: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 70%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.topo {
+    width: 90%;
+
+    h1 {
+        font-family: "Bebas Neue", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 45px;
+        margin-bottom: 0;
+        margin-top: 50px;
+    }
+
+    h3 {
+        font-family: "Bebas Neue", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 30px;
+        margin-top: 20px;
+        margin-bottom: 5px;
+    }
+
+    p {
+        margin: 0;
+    }
+}
+
+.form-cadastro {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    font-size: 16px;
+    font-weight: 600;
+
+
+    h3 {
+        font-family: "Bebas Neue", sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 25px;
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: #150358;
+    }
+}
+
+.item-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+
+    label {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    input {
+        height: 25px;
+        border-radius: 10px;
+        font-size: 16px;
+        padding: 5px;
+        border: 1px solid #ddd;
+    }
+}
+
+.erro {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 700;
+    align-items: center;
+
+}
+
+.endEntrega {
+    display: flex;
+    flex-direction: row;
+
+    button {
+        height: 20px;
+        margin-top: 5px;
+        width: auto;
+        margin-left: 10px;
+    }
+}
+
+.endEntrega {
+    display: flex;
+    flex-direction: row;
+
+    button {
+        height: 20px;
+        margin-top: 5px;
+        width: auto;
+        margin-left: 10px;
+    }
+}
+
+.btn {
+    cursor: pointer;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color:  #0056b3; 
+    font-weight: 600;
+}
+
+.btn:visited {
+    color: black;
+}
+
+.btn:hover {
+    background-color: rgb(9, 9, 69);
+    color: white;
+}
+
+.endereco-entrega {
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-top: 10px;
+    border-radius: 5px;
+
+    button{
+        margin-top: 8px;
+        background-color: red;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
+
+.itemTemplate{
+    margin-top: 8px;
+    
+    input{
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+}
+
+
+.botoes{
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#adicionarEndereco{
+    cursor: pointer;
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    background-color:  #0056b3; 
+    font-weight: 700;
+}
+
+#adicionarEndereco:hover{
+    background-color: rgb(9, 9, 69);
+    color: white;
 }
