@@ -29,7 +29,7 @@
                         <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfilCliente.html">Editar Perfil</a></li>
                         <li>
                             <i class="fa-solid fa-user"></i> |
-                            <button id="logoutBtn" href="" style="all: unset; cursor: pointer;"><a>Logout</a></button>
+                            <button id="logoutBtn"><a>Logout</a></button>
                           </li>
                           
                     </ul>
@@ -265,5 +265,21 @@
         })
     </script>
         <script src="./scripts/carrinho.js" defer></script>
+
+        <style>
+            #logoutBtn {
+              background: none;
+              border: none;
+              color: #551A8B;;
+              text-decoration: underline;
+              cursor: pointer;
+              font: inherit; /* mantém o estilo da fonte padrão */
+              padding: 0;    /* remove o espaçamento do botão */
+            }
+          
+            #logoutBtn:hover {
+              color: #551A8B;;
+            }
+          </style>
 </body>
 </html>
