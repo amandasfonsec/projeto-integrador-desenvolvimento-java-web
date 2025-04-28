@@ -32,5 +32,15 @@ public class PedidoController {
     public ResponseEntity<Pedido> buscarPedidoPorId(@PathVariable Long idPedido) {
         Pedido pedido = pedidoService.buscarPorId(idPedido);
         return pedido != null ? ResponseEntity.ok(pedido) : ResponseEntity.notFound().build();
-    } 
+    }
+
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<List<Pedido>> listarPedidosPorCliente(@PathVariable Long idCliente) {
+    List<Pedido> pedidos = pedidoService.listarPedidosCliente(idCliente);
+    if (pedidos.isEmpty()) {
+        return ResponseEntity.noContent().build(); 
+    }
+    return ResponseEntity.ok(pedidos);
+}
+
 }

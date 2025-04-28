@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", function () {
                     localStorage.removeItem("tokenCliente");
                     localStorage.removeItem("idCliente");
                     localStorage.removeItem("carrinho");
-                    window.location.href = "./loginCliente.html";
+                    window.location.href = "./home.html";
                 }
             });
         }

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="./scripts/acoesCliente.js" defer></script>
     <script src="./scripts/carrinho.js"></script>
+    <script src="./scripts/listaPedidos.js" defer></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
@@ -26,8 +27,8 @@
                 <div id="modalAcao" class="menu-cliente hidden">
                     <ul>
                         <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfilCliente.html">Editar Perfil</a></li>
-                        <li><i class="fa-solid fa-user"></i> | <a id="logoutBtn" href="">Logout</a>
                         <li><i class="fa-solid fa-box"></i> | <a id="pedidosCliente" href="pedidosCliente.html"> Meus pedidos</a></li>
+                        <li><i class="fa-solid fa-user"></i> | <a id="logoutBtn" href="">Logout</a>
                     </ul>
                 </div>
             </div>
@@ -42,9 +43,9 @@
                 <div class="pedido-item">
                     <div class="pedido-info">
                         <p><strong>Pedido N°: </strong></p>
-                        <p>Data: </p>
-                        <p>Status: </p>
-                        <p>Total:</p>
+                        <p><strong>Data: </strong></p>
+                        <p><strong>Status: </strong></p>
+                        <p><strong>Total: </strong></p>
                     </div>
                     <a class="detalhes" href="">Ver detalhes</a>
                 </div>
