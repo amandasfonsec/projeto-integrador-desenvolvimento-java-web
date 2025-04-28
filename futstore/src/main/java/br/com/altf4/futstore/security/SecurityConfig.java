@@ -31,6 +31,7 @@ public class SecurityConfig {
                 .requestMatchers("/produtos/**").permitAll()
                 .requestMatchers("/usuarios/**").permitAll()
                 .requestMatchers("/clientes/**").permitAll()
+                .requestMatchers("/pedidos/**").permitAll()
                 .anyRequest().authenticated() 
             )
             .cors(cors -> cors.configurationSource(request -> {

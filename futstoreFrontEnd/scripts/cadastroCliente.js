@@ -204,8 +204,17 @@ document.addEventListener("DOMContentLoaded", () => {
             });
     
             if (response.ok) {
-                alert("Cadastro realizado com sucesso!");
-                window.location.href = "loginCliente.html"; 
+
+                const redirecionar = localStorage.getItem('redirecionar');
+
+                if (redirecionar) {
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.href = "loginCliente.html";
+                } else{
+                    alert("Cadastro realizado com sucesso!");
+                    window.location.href = "loginCliente.html";
+                }
+                
             } else {
                 const erro = await response.text();
                 alert("Erro ao cadastrar: " + erro);

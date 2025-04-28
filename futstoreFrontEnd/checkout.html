@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar compra</title>
+    <link rel="stylesheet" href="./styles/checkout.css">
+    <link rel="stylesheet" href="./styles/header.css">
+    <link rel="icon" href="./assets/iconPage.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore"></a>
+    </header>
+
+    <div id="container-pedido">
+        <div class="topo">
+            <h1>Finalizar Pedido</h1>
+            <p>Preencha as informações para concluir a compra.</p>
+        </div>
+
+        <div class="form-etapa" id="etapa-1">
+            <h3>Endereço de Entrega</h3>
+
+            <div class="botoes">
+                <button type="button" onclick="proximaEtapa(2)">Próximo</button>
+            </div>
+        </div>
+
+        <div class="form-etapa" id="etapa-2" style="display: none;">
+            <h3>Forma de Pagamento</h3>
+
+            <div class="botoes">
+                <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+                <button type="button" onclick="proximaEtapa(3)">Próximo</button>
+            </div>
+        </div>
+
+        <div class="form-etapa" id="etapa-3" style="display: none;">
+            <h3>Resumo do pedido</h3>
+
+            <div class="botoes">
+                <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+                <button type="submit">FINALIZAR COMPRA</button>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Futstore. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        function proximaEtapa(numero) {
+            document.querySelectorAll('.form-etapa').forEach(div => div.style.display = 'none');
+            document.getElementById('etapa-' + numero).style.display = 'block';
+        }
+
+        function voltarEtapa(numero) {
+            document.querySelectorAll('.form-etapa').forEach(div => div.style.display = 'none');
+            document.getElementById('etapa-' + numero).style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>

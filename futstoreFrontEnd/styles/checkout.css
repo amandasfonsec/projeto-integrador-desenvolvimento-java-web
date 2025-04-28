@@ -1,0 +1,60 @@
+#container-pedido {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 160px;
+    margin-bottom: 100px;
+    width: 90%;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-left: 40px;
+}
+
+.topo {
+    width: 100%;
+}
+
+.topo h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 38px;
+    margin: 20px 0 10px 0;
+    font-weight:400;
+}
+
+.topo p {
+    margin-bottom: 30px;
+    font-size: 16px;
+}
+
+
+
+.botoes {
+    display: flex;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+button {
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0056b3;
+    color: white;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: rgb(9, 9, 69);
+}
+
+.form-etapa{
+    width: 100%;
+}
+
+

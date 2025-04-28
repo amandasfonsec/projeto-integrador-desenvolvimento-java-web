@@ -16,7 +16,17 @@ document.getElementById("formLogin").addEventListener("submit", async function (
         let data;
         if (response.headers.get("content-type")?.includes("application/json")) {
             data = await response.json();
-            window.location.href = "home.html";
+
+            const redirecionar = localStorage.getItem('redirecionar');
+
+            if (redirecionar) {
+                localStorage.removeItem('redirecionar');
+                window.location.href = "carrinho.html";
+            } else{
+                window.location.href = "home.html";
+            }
+
+            
         } else {
             data = await response.text();
         }

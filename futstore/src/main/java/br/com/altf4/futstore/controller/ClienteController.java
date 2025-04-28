@@ -3,7 +3,6 @@ package br.com.altf4.futstore.controller;
 import br.com.altf4.futstore.dto.ClienteDTO;
 import br.com.altf4.futstore.model.Cliente;
 import br.com.altf4.futstore.model.Endereco;
-import br.com.altf4.futstore.model.Produto;
 import br.com.altf4.futstore.service.ClienteService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

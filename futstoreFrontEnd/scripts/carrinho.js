@@ -237,6 +237,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+    const finalizarCompraBtn = document.getElementById('finalizarCompra');
+    
+    if (finalizarCompraBtn) {
+        finalizarCompraBtn.addEventListener('click', () => {
+            const clienteLogado = localStorage.getItem('idCliente');
+
+            if (!clienteLogado) {
+                alert('Você precisa estar logado para finalizar a compra!');
+                localStorage.setItem('redirecionar', 'true');
+                window.location.href = 'loginCliente.html';
+            } else {
+                window.location.href = 'checkout.html'; 
+            }
+        });
+    }
+});
+
+
 window.adicionarAoCarrinho = function (produto) {
     let carrinho = getCarrinho();
     let itemExistente = carrinho.find(item => item.codigo === produto.codigo);
@@ -253,4 +272,7 @@ window.adicionarAoCarrinho = function (produto) {
 
     salvarCarrinho(carrinho);
     atualizarContadorCarrinho();
+    
 };
+
+

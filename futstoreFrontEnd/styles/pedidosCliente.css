@@ -1,0 +1,46 @@
+.container-pedidos{
+    margin-top: 160px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+h1{
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+}
+
+.pedidos-lista{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 80px;
+}
+
+.pedido-item{
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 250px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    text-align: left;
+}
+
+.pedido-item:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.pedidos-lista{
+    display: flex;
+    flex-direction: row;
+}

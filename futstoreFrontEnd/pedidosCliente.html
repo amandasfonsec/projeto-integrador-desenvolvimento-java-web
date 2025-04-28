@@ -1,24 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Futstore</title>
+    <title>Meus pedidos</title>
     <link rel="icon" href="./assets/iconPage.png">
-    <script src="./scripts/home.js" defer></script>
-    <script src="./scripts/acoesCliente.js" defer></script>
-    <link rel="stylesheet" href="./styles/home.css">
-    <link rel="stylesheet" href="./styles/header.css" type="text/css">
+    <link rel="stylesheet" href="./styles/pedidosCliente.css">
+    <link rel="stylesheet" href="./styles/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="./scripts/acoesCliente.js" defer></script>
+    <script src="./scripts/carrinho.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
 </head>
-
 <body>
+
     <header class="header">
         <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
         <div class="botoesCliente">
@@ -29,18 +26,31 @@
                 <div id="modalAcao" class="menu-cliente hidden">
                     <ul>
                         <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfilCliente.html">Editar Perfil</a></li>
-                        <li><i class="fa-solid fa-box"></i> | <a id="pedidosCliente" href="pedidosCliente.html"> Meus pedidos</a></li>
                         <li><i class="fa-solid fa-user"></i> | <a id="logoutBtn" href="">Logout</a>
+                        <li><i class="fa-solid fa-box"></i> | <a id="pedidosCliente" href="pedidosCliente.html"> Meus pedidos</a></li>
                     </ul>
                 </div>
             </div>
-            <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho</button>
+            <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho </button>
         </div>
     </header>
 
-    <section class="produtos-container">
-        <!-- Aqui ficam os produtos -->
-    </section>
+    <main>
+        <div class="container-pedidos">
+            <h1>Meus Pedidos</h1>
+            <div class="pedidos-lista">
+                <div class="pedido-item">
+                    <div class="pedido-info">
+                        <p><strong>Pedido N°: </strong></p>
+                        <p>Data: </p>
+                        <p>Status: </p>
+                        <p>Total:</p>
+                    </div>
+                    <a class="detalhes" href="">Ver detalhes</a>
+                </div>
+            </div>   
+        </div>
+    </main>
 
     <footer>
         <div class="footer-content">
@@ -61,8 +71,5 @@
             window.location.href = 'carrinho.html';
         })
     </script>
-    <script src="./scripts/carrinho.js" defer></script>
-
 </body>
-
 </html>
