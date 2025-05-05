@@ -1,13 +1,6 @@
 package br.com.altf4.futstore.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Data
@@ -28,13 +21,12 @@ public class ItemPedido {
     @JoinColumn(name = "fk_produto_id", nullable = false)
     private Produto produto;
 
-    @Column(name = "qtd_produto")
-    private Integer qtdProduto;
+    @Column(name = "quantidade")
+    private Integer quantidade;
 
     @Column(name = "valor_unitario")
     private double valorUnitario;
 
     @Column(name = "sub_total")
     private double subTotal;
-    
 }

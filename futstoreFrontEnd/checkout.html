@@ -1,73 +1,75 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finalizar compra</title>
-    <link rel="stylesheet" href="./styles/checkout.css">
-    <link rel="stylesheet" href="./styles/header.css">
-    <link rel="icon" href="./assets/iconPage.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finalizar compra</title>
+  <link rel="stylesheet" href="./styles/checkout.css" />
+  <link rel="stylesheet" href="./styles/header.css" />
+  <link rel="icon" href="./assets/iconPage.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <header class="header">
+    <a href="./home.html"><img alt="Logotipo Futstore" src="./assets/logotipoFutstore.png" /></a>
+  </header>
 
-    <header class="header">
-        <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore"></a>
-    </header>
-
-    <div id="container-pedido">
-        <div class="topo">
-            <h1>Finalizar Pedido</h1>
-            <p>Preencha as informações para concluir a compra.</p>
-        </div>
-
-        <div class="form-etapa" id="etapa-1">
-            <h3>Endereço de Entrega</h3>
-
-            <div class="botoes">
-                <button type="button" onclick="proximaEtapa(2)">Próximo</button>
-            </div>
-        </div>
-
-        <div class="form-etapa" id="etapa-2" style="display: none;">
-            <h3>Forma de Pagamento</h3>
-
-            <div class="botoes">
-                <button type="button" onclick="voltarEtapa(1)">Voltar</button>
-                <button type="button" onclick="proximaEtapa(3)">Próximo</button>
-            </div>
-        </div>
-
-        <div class="form-etapa" id="etapa-3" style="display: none;">
-            <h3>Resumo do pedido</h3>
-
-            <div class="botoes">
-                <button type="button" onclick="voltarEtapa(2)">Voltar</button>
-                <button type="submit">FINALIZAR COMPRA</button>
-            </div>
-        </div>
-
+  <div id="container-pedido">
+    <div class="topo">
+      <h1>Finalizar Pedido</h1>
+      <p>Preencha as informações para concluir a compra.</p>
     </div>
 
-    <footer>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Futstore. Todos os direitos reservados.</p>
-        </div>
-    </footer>
+    <!-- ETAPA 1: ENDEREÇO -->
+    <div class="form-etapa" id="etapa-1">
+      <div id="enderecos-entrega"></div>
+      <h3>Endereço de Entrega</h3>
+      <div style="margin-bottom: 15px;">
+        <button onclick="redirecionarParaCadastro()" type="button" class="botao-secundario">
+          + Adicionar Novo Endereço
+        </button>
+      </div>
+      <div class="botoes">
+        <button onclick="validarEndereco()" type="button">Próximo</button>
+      </div>
+    </div>
 
-    <script>
-        function proximaEtapa(numero) {
-            document.querySelectorAll('.form-etapa').forEach(div => div.style.display = 'none');
-            document.getElementById('etapa-' + numero).style.display = 'block';
-        }
+    <!-- ETAPA 2: PAGAMENTO -->
+    <div class="form-etapa" id="etapa-2" style="display: none;">
+      <h3>Forma de Pagamento</h3>
+      <label><input type="radio" name="pagamento" value="boleto" onclick="exibirCamposCartao(false)"> Boleto</label><br />
+      <label><input type="radio" name="pagamento" value="cartao" onclick="exibirCamposCartao(true)"> Cartão de Crédito</label>
+      <div id="dados-cartao" style="display: none; margin-top: 15px;">
+        <input id="numero-cartao" placeholder="Número do cartão" type="text"><br />
+        <input id="nome-cartao" placeholder="Nome completo no cartão" type="text"><br />
+        <input id="vencimento-cartao" placeholder="MM/AA" type="text"><br />
+        <input id="codigo-cartao" placeholder="Código verificador (CVV)" type="text"><br />
+        <input id="parcelas-cartao" type="number" min="1" max="12" placeholder="Quantidade de parcelas"><br />
+      </div>
+      <div class="botoes">
+        <button onclick="voltarEtapa(1)" type="button">Voltar</button>
+        <button onclick="validarPagamento()" type="button">Próximo</button>
+      </div>
+    </div>
 
-        function voltarEtapa(numero) {
-            document.querySelectorAll('.form-etapa').forEach(div => div.style.display = 'none');
-            document.getElementById('etapa-' + numero).style.display = 'block';
-        }
-    </script>
+    <!-- ETAPA 3: RESUMO -->
+    <div class="form-etapa" id="etapa-3" style="display: none;">
+      <h3>Resumo do Pedido</h3>
+      <div class="resumo-pedido" id="resumoPedido"></div>
 
+      <div class="botoes">
+        <button onclick="voltarEtapa(2)" type="button">Voltar</button>
+        <button onclick="finalizarPedido()" type="button">FINALIZAR COMPRA</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-bottom">
+      <p>© 2025 Futstore. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+
+  <script src="./scripts/checkout.js"></script>
 </body>
 </html>
