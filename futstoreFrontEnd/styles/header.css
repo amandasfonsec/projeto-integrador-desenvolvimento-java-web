@@ -69,6 +69,7 @@ img{
         border: none;
         border-radius: 5px;
         font-size: 12px;
+        margin-top: 5px;
     }
 
     button:visited {

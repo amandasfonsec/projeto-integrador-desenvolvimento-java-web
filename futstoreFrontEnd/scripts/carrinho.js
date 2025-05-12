@@ -239,7 +239,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
     const finalizarCompraBtn = document.getElementById('finalizarCompra');
-    
+
     if (finalizarCompraBtn) {
         finalizarCompraBtn.addEventListener('click', () => {
             const clienteLogado = localStorage.getItem('idCliente');
@@ -249,7 +249,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 localStorage.setItem('redirecionar', 'true');
                 window.location.href = 'loginCliente.html';
             } else {
-                window.location.href = 'checkout.html'; 
+                const carrinho = JSON.parse(localStorage.getItem('carrinho'));
+
+                if (!carrinho || carrinho.length === 0) {
+                    alert('Adicione um item no carrinho para finalizar a compra!');
+                } else {
+                    window.location.href = 'checkout.html';
+                }
+
             }
         });
     }
@@ -272,7 +279,7 @@ window.adicionarAoCarrinho = function (produto) {
 
     salvarCarrinho(carrinho);
     atualizarContadorCarrinho();
-    
+
 };
 
 

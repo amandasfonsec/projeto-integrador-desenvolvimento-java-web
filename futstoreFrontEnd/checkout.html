@@ -1,75 +1,222 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Finalizar compra</title>
-  <link rel="stylesheet" href="./styles/checkout.css" />
-  <link rel="stylesheet" href="./styles/header.css" />
-  <link rel="icon" href="./assets/iconPage.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar compra</title>
+    <script src="./scripts/checkOut.js" defer></script>
+    <link rel="stylesheet" href="./styles/checkout.css">
+    <link rel="stylesheet" href="./styles/header.css">
+    <link rel="icon" href="./assets/iconPage.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
+
 <body>
-  <header class="header">
-    <a href="./home.html"><img alt="Logotipo Futstore" src="./assets/logotipoFutstore.png" /></a>
-  </header>
 
-  <div id="container-pedido">
-    <div class="topo">
-      <h1>Finalizar Pedido</h1>
-      <p>Preencha as informações para concluir a compra.</p>
+    <header class="header">
+        <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore"></a>
+    </header>
+
+    <div id="container-pedido">
+        <div class="topo">
+            <h1>Finalizar Pedido</h1>
+            <p>Preencha as informações para concluir a compra.</p>
+        </div>
+
+        <div class="form-etapa" id="etapa-1">
+            <h3>Endereços de Entrega</h3>
+            <button id="adicionarEndereco">Adicionar Endereço</button>
+            <div id="enderecosRegistrado"></div>
+            <div id="enderecosEntregaNovos"></div>
+
+            <template id="enderecoTemplate">
+                <div class="endereco-entrega">
+                    <h4></h4>
+                    <div class="itemTemplate">
+                        <input type="radio" name="enderecoPadrao" class="radioPadrao" required>
+                        <label>Selecionar este endereço para entrega</label>
+                    </div>
+
+                    <div class="itemTemplate">
+                        <label>CEP:</label>
+                        <input type="text" class="cepEntrega" placeholder="CEP de entrega" oninput="formatarCEP(this)">
+                    </div>
+                    <div class="itemTemplate">
+                        <label>Logradouro:</label>
+                        <input type="text" class="logradouroEntrega" placeholder="Logradouro">
+                    </div>
+                    <div>
+                        <div class="itemTemplate">
+                            <label>Número:</label>
+                            <input type="text" class="numeroEntrega" placeholder="Número" required>
+                        </div>
+                        <div class="itemTemplate">
+                            <label>Complemento:</label>
+                            <input type="text" class="complementoEntrega" placeholder="Complemento">
+                        </div>
+                        <div class="itemTemplate">
+                            <label>Bairro:</label>
+                            <input type="text" class="bairroEntrega" placeholder="Bairro">
+                        </div>
+                        <div class="itemTemplate">
+                            <label>Cidade:</label>
+                            <input type="text" class="cidadeEntrega" placeholder="Cidade">
+                        </div>
+                        <div class="itemTemplate">
+                            <label>UF:</label>
+                            <input type="text" class="ufEntrega" placeholder="UF" maxlength="2">
+                        </div>
+                        <button type="button" class="removerEndereco">Remover Endereço</button>
+                    </div>
+            </template>
+            <div id="freteContainer">
+                <h3>Frete</h3>
+                <div id="resultadoFrete">
+                    <span class="tipoFrete"><i class="fa-solid fa-truck"></i>&nbsp;&nbsp;&nbsp;| Entrega padrão: <span
+                            id="precoPadrao">10,00</span><button id="btnPadrao">Selecionar</button></span> <br>
+                    <span class="tipoFrete"><i class="fa-solid fa-truck"></i>&nbsp;&nbsp;&nbsp;| Entrega registrada:
+                        <span id="precoRegistrada">15,00</span><button id="btnRegistrada">Selecionar</button></span> <br>
+                    <span class="tipoFrete"><i class="fa-solid fa-truck-fast"></i>&nbsp;&nbsp;&nbsp;| Entrega Sedex:
+                        <span id="precoSedex">25,00</span> <button id="btnSedex">Selecionar</button></span>
+                </div>
+            </div>
+            <div class="botoes">
+                <button type="button" id="passaParaEtapaDois">Próximo</button>
+            </div>
+        </div>
+
+        <div class="form-etapa" id="etapa-2" style="display: none;">
+            <h3>Forma de Pagamento</h3>
+            <label><input type="radio" name="pagamento" value="Boleto" onclick="exibirCamposCartao(false)">
+                Boleto</label><br />
+            <label><input type="radio" name="pagamento" value="Cartão de Crédito" onclick="exibirCamposCartao(true)">
+                Cartão de
+                Crédito</label>
+            <div id="dados-cartao" style="display: none; margin-top: 15px;">
+                <input id="numero-cartao" placeholder="Número do cartão" type="text"
+                    oninput="formatarNumeroCartao(this)"> <br>
+                <input id="nome-cartao" placeholder="Nome completo no cartão" type="text"><br />
+                <input id="vencimento-cartao" placeholder="MM/AA" type="text" oninput="formatarVencimento(this)"> <br>
+                <input id="codigo-cartao" placeholder="Código verificador (CVV)" type="text"
+                    oninput="formatarCVV(this)"> <br>
+                <select id="parcelas-cartao">
+                    <option value="" disabled selected>Selecione o número de parcelas</option>
+                </select><br />
+
+            </div>
+            <div class="botoes">
+                <button type="button" onclick="voltarEtapa(1)">Voltar</button>
+                <button type="button" onclick="validarPagamento()">Próximo</button>
+            </div>
+        </div>
+
+        <div class="form-etapa" id="etapa-3" style="display: none;">
+            <h3>Resumo do pedido</h3>
+            <div class="resumo-pedido" id="resumoPedido"></div>
+            <div class="botoes">
+                <button type="button" onclick="voltarEtapa(2)">Voltar</button>
+                <button type="submit" id = "finalizaPedido">FINALIZAR COMPRA</button>
+            </div>
+        </div>
+
     </div>
 
-    <!-- ETAPA 1: ENDEREÇO -->
-    <div class="form-etapa" id="etapa-1">
-      <div id="enderecos-entrega"></div>
-      <h3>Endereço de Entrega</h3>
-      <div style="margin-bottom: 15px;">
-        <button onclick="redirecionarParaCadastro()" type="button" class="botao-secundario">
-          + Adicionar Novo Endereço
-        </button>
-      </div>
-      <div class="botoes">
-        <button onclick="validarEndereco()" type="button">Próximo</button>
-      </div>
-    </div>
+    <footer>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Futstore. Todos os direitos reservados.</p>
+        </div>
+    </footer>
 
-    <!-- ETAPA 2: PAGAMENTO -->
-    <div class="form-etapa" id="etapa-2" style="display: none;">
-      <h3>Forma de Pagamento</h3>
-      <label><input type="radio" name="pagamento" value="boleto" onclick="exibirCamposCartao(false)"> Boleto</label><br />
-      <label><input type="radio" name="pagamento" value="cartao" onclick="exibirCamposCartao(true)"> Cartão de Crédito</label>
-      <div id="dados-cartao" style="display: none; margin-top: 15px;">
-        <input id="numero-cartao" placeholder="Número do cartão" type="text"><br />
-        <input id="nome-cartao" placeholder="Nome completo no cartão" type="text"><br />
-        <input id="vencimento-cartao" placeholder="MM/AA" type="text"><br />
-        <input id="codigo-cartao" placeholder="Código verificador (CVV)" type="text"><br />
-        <input id="parcelas-cartao" type="number" min="1" max="12" placeholder="Quantidade de parcelas"><br />
-      </div>
-      <div class="botoes">
-        <button onclick="voltarEtapa(1)" type="button">Voltar</button>
-        <button onclick="validarPagamento()" type="button">Próximo</button>
-      </div>
-    </div>
+    <script>
+        function proximaEtapa(numero) {
 
-    <!-- ETAPA 3: RESUMO -->
-    <div class="form-etapa" id="etapa-3" style="display: none;">
-      <h3>Resumo do Pedido</h3>
-      <div class="resumo-pedido" id="resumoPedido"></div>
+            if(numero === 2) {
+                if(localStorage.getItem('freteSelecionado').valueOf() === "undefined") {
+                    alert("Por favor, selecione uma forma de frete antes de continuar.");
+                    return;
+                }
+            }
 
-      <div class="botoes">
-        <button onclick="voltarEtapa(2)" type="button">Voltar</button>
-        <button onclick="finalizarPedido()" type="button">FINALIZAR COMPRA</button>
-      </div>
-    </div>
-  </div>
+            if (numero === 3) {
+                const formaPagamentoSelecionada = document.querySelector('input[name="pagamento"]:checked');
+                if (!formaPagamentoSelecionada) {
+                    alert("Por favor, selecione uma forma de pagamento antes de continuar.");
+                    return;
+                }
+            }
 
-  <footer>
-    <div class="footer-bottom">
-      <p>© 2025 Futstore. Todos os direitos reservados.</p>
-    </div>
-  </footer>
 
-  <script src="./scripts/checkout.js"></script>
+            document.querySelectorAll('.form-etapa').forEach(div => div.style.display = 'none');
+            document.getElementById('etapa-' + numero).style.display = 'block';
+        }
+
+        function voltarEtapa(numero) {
+            if (numero === 1) {
+
+                localStorage.removeItem('enderecoSelecionadoParaEntrega');
+                localStorage.removeItem('enderecoNovo');
+                console.clear();
+                const enderecosSalvos = JSON.parse(localStorage.getItem('enderecoRegistrado')) || [];
+                if (window.logEnderecosDados) {
+                    window.logEnderecosDados(enderecosSalvos);
+                }
+                //let enderecoSelecionadoPedido = coletarEnderecoEntregaSelecionado();
+                //localStorage.setItem("enderecoSelecionadoParaEntrega", JSON.stringify(enderecoSelecionadoPedido));
+            }
+
+            document.querySelectorAll('.form-etapa').forEach(div => div.style.display = 'none');
+            document.getElementById('etapa-' + numero).style.display = 'block';
+        }
+
+        function formatarCEP(input) {
+            let cep = input.value.replace(/\D/g, '');
+            if (cep.length > 8) cep = cep.slice(0, 8);
+
+            if (cep.length >= 6) {
+                input.value = cep.replace(/(\d{5})(\d{1,3})/, '$1-$2');
+            } else {
+                input.value = cep;
+            }
+        }
+
+
+        function formatarNumeroCartao(input) {
+            let valor = input.value.replace(/\D/g, '').substring(0, 16);
+            let formatado = valor.match(/.{1,4}/g);
+            input.value = formatado ? formatado.join(' ') : '';
+        }
+
+        function formatarVencimento(input) {
+            let valor = input.value.replace(/\D/g, '').substring(0, 4);
+            if (valor.length >= 3) {
+                input.value = valor.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+            } else {
+                input.value = valor;
+            }
+        }
+
+        function formatarCVV(input) {
+            input.value = input.value.replace(/\D/g, '').substring(0, 3);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const selectParcelas = document.getElementById("parcelas-cartao");
+            for (let i = 1; i <= 12; i++) {
+                //const valorParcela = `R$ ${(100 / i).toFixed(2).replace('.', ',')} (sem juros)`; 
+                const option = document.createElement("option");
+                option.value = i;
+                option.textContent = `${i}x (sem juros)`;
+                selectParcelas.appendChild(option);
+            }
+        });
+
+    </script>
+
 </body>
+
 </html>

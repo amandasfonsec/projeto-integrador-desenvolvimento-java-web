@@ -28,9 +28,15 @@
                 </button>
                 <div id="modalAcao" class="menu-cliente hidden">
                     <ul>
-                        <li><i class="fa-solid fa-pencil"></i> | <a href="editarPerfilCliente.html">Editar Perfil</a></li>
-                        <li><i class="fa-solid fa-box"></i> | <a id="pedidosCliente" href="pedidosCliente.html"> Meus pedidos</a></li>
-                        <li><i class="fa-solid fa-user"></i> | <a id="logoutBtn" href="">Logout</a>
+                        <a href="editarPerfilCliente.html">
+                            <li><i class="fa-solid fa-pencil"></i> | Editar Perfil</li>
+                        </a>
+                        <a id="pedidosCliente" href="pedidosCliente.html">
+                            <li><i class="fa-solid fa-box"></i> | Meus pedidos</li>
+                        </a>
+                        <a id="logoutBtn" href="">
+                            <li><i class="fa-solid fa-user"></i> | Logout</li>
+                        </a>
                     </ul>
                 </div>
             </div>
@@ -38,8 +44,25 @@
         </div>
     </header>
 
+    <section class="carrosel" id="carrosel">
+        <div class="carrosel-container">
+            <div class="carrosel-item active">
+                <img src="./assets/1.png" alt="Carrossel 1">
+            </div>
+            <div class="carrosel-item">
+                <img src="./assets/2.png" alt="Carrossel 2">
+            </div>
+            <div class="carrosel-item">
+                <img src="./assets/3.png" alt="Carrossel 3">
+            </div>
+            <div class="carrosel-item">
+                <img src="./assets/4.png" alt="Carrossel 4">
+            </div>
+        </div>
+    </section>
+
     <section class="produtos-container">
-        <!-- Aqui ficam os produtos -->
+
     </section>
 
     <footer>
@@ -60,6 +83,31 @@
         document.getElementById('carrinhoBtn').addEventListener("click", function () {
             window.location.href = 'carrinho.html';
         })
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carrosel-item');
+        const totalSlides = slides.length;
+
+        const showSlide = (index) => {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                }
+            });
+        };
+
+        const nextSlide = () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        };
+
+        const prevSlide = () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        };
+
+        setInterval(nextSlide, 5000);
     </script>
     <script src="./scripts/carrinho.js" defer></script>
 

@@ -32,9 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
                         <p><strong>Pedido N°: </strong>${pedido.idPedido}</p>
                         <p><strong>Data: </strong>${pedido.dtPedido}</p>
                         <p><strong>Status: </strong>${pedido.statusPedido}</p>
-                        <p><strong>Total R$: </strong>${pedido.valorTotalPedido.toFixed(2)}</p>
+                        <p><strong>Total R$: </strong>${pedido.valorTotalPedido != null ? pedido.valorTotalPedido.toFixed(2) : '0.00'}</p>
+
                     </div>
-                    <a class="detalhes" href="detalhesPedido.html?id=${pedido.idPedido}">Ver detalhes</a>
+                    <a class="detalhes" href="#" data-id="${pedido.idPedido}">Ver detalhes</a>
+
                 `;
 
                 pedidosLista.appendChild(pedidoItem);
