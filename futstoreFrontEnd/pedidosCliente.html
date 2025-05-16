@@ -61,8 +61,7 @@
                 </div>
             </div>
         </div>
-        <div id="modal-detalhes"
-            style="display:none; position:fixed;">
+        <div id="modal-detalhes" style="display:none; position:fixed;">
             <h2>Detalhes do Pedido</h2>
             <div id="detalhes-pedido"></div>
             <button onclick="fecharModal()">Fechar</button>
@@ -89,16 +88,16 @@
         })
 
         document.querySelector('.pedidos-lista').addEventListener('click', function (event) {
-    const botao = event.target;
-    if (botao.classList.contains('detalhes')) {
-        event.preventDefault();
-        const idPedido = botao.getAttribute('data-id');
+            const botao = event.target;
+            if (botao.classList.contains('detalhes')) {
+                event.preventDefault();
+                const idPedido = botao.getAttribute('data-id');
 
-        fetch(`http://localhost:8080/pedidos/${idPedido}`)
-            .then(response => response.json())
-            .then(data => {
-                const detalhes = document.getElementById('detalhes-pedido');
-                detalhes.innerHTML = `
+                fetch(`http://localhost:8080/pedidos/${idPedido}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const detalhes = document.getElementById('detalhes-pedido');
+                        detalhes.innerHTML = `
                     <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
                     <p><strong>Data:</strong> ${data.dtPedido}</p>
                     <p><strong>Status:</strong> ${data.statusPedido}</p>
@@ -106,17 +105,25 @@
                     <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
                     <h3>Itens:</h3>
                     <ul>
-                        ${data.itensPedido.map(item =>
-                            `<li>${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}</li>`
-                        ).join('')}
+                        ${data.itensPedido.map(item => {
+                            const imagemPrincipal = item.produto.imagens.find(img => img.principal) || item.produto.imagens[0];
+                            const imagemSrc = `data:${imagemPrincipal.tipoArquivo};base64,${imagemPrincipal.dados}`;
+                            return `<li>
+                                    <img src="${imagemSrc}" alt="${item.produto.nome}" width="100">
+                                    <br>
+                                    ${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
+                                    </li>
+                                    `;
+                        }).join('')}
                     </ul>
+
                 `;
-                document.getElementById('modal-detalhes').style.display = 'block';
-            })
-            .catch(err => console.error('Erro ao buscar detalhes:', err));
-    }
-});
-    
+                        document.getElementById('modal-detalhes').style.display = 'block';
+                    })
+                    .catch(err => console.error('Erro ao buscar detalhes:', err));
+            }
+        });
+
 
         function fecharModal() {
             document.getElementById('modal-detalhes').style.display = 'none';
