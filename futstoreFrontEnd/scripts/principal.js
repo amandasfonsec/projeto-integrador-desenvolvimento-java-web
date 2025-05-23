@@ -3,14 +3,10 @@ function isTokenValid(token) {
         const pureToken = token.replace('Bearer ', '');
         const parts = pureToken.split('.');
 
-        if (parts.length !== 3) {
-            return false;
-        }
+        if (parts.length !== 3) return false;
 
         const payload = JSON.parse(atob(parts[1]));
-        if (!payload.exp) {
-            return false;
-        }
+        if (!payload.exp) return false;
 
         const currentTime = Math.floor(Date.now() / 1000);
         return payload.exp > currentTime;
@@ -20,9 +16,9 @@ function isTokenValid(token) {
     }
 }
 
-
 window.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('token');
+    const grupo = localStorage.getItem('grupo');
 
     if (!token || !isTokenValid(token)) {
         alert('Sessão expirada! Faça login novamente.');
@@ -30,51 +26,34 @@ window.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const grupo = localStorage.getItem('grupo');
-    console.log('Grupo:', grupo);
-
     const listarUsuariosLink = document.getElementById('listarUsuariosLink');
     const listarPedidosLink = document.getElementById('listarPedidos');
 
-    if (!listarUsuariosLink) {
-        console.error('Elemento listarUsuariosLink não encontrado!');
-        return;
-    }
-
-    if (grupo !== 'ADMINISTRADOR') {
-        listarPedidosLink.style.display = 'none';
-        listarUsuariosLink.style.display = 'none';
-    } else {
-        //Enquanto a lista de Pedidos não foi criada o style.display do listarPedidos deve ficar invisivel
-        //(por enquanto...)
-        listarPedidosLink.style.display = 'none';
-        listarUsuariosLink.style.pointerEvents = 'auto';
-        listarUsuariosLink.style.color = 'dark-blue';
+    if (grupo === 'ADMINISTRADOR') {
+        listarUsuariosLink.style.display = 'inline-block';
         listarUsuariosLink.addEventListener('click', () => {
             window.location.href = './listaUsuarios.html';
         });
     }
 
-    
+    if (grupo === 'ADMINISTRADOR' || grupo === 'ESTOQUISTA') {
+        listarPedidosLink.style.display = 'inline-block';
+        listarPedidosLink.addEventListener('click', () => {
+            window.location.href = './pedidosEstoquista.html';
+        });
+    }
 
-});
+    document.getElementById('listarProduto').addEventListener('click', () => {
+        window.location.href = './listarProdutos.html';
+    });
 
-document.getElementById('listarProduto').addEventListener('click', () => {
-    window.location.href = './listarProdutos.html';
-});
-
-document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("logoutBtn").addEventListener("click", function () {
         if (confirm("Tem certeza que deseja sair?")) {
-            // Remover dados do localStorage
             localStorage.removeItem("token");
             localStorage.removeItem("grupo");
             localStorage.removeItem("nome");
             localStorage.removeItem("userId");
-
-            // Redirecionar para a página de login
             window.location.href = "login.html";
         }
     });
 });
-    

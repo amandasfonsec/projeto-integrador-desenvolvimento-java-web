@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pedidos - Estoquista</title>
+  <link rel="icon" href="./assets/iconPage.png" />
+  <link rel="stylesheet" href="./styles/pedidosCliente.css" />
+  <link rel="stylesheet" href="./styles/header.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <script src="./scripts/acoesCliente.js" defer></script>
+  <script src="./scripts/carrinho.js" defer></script>
+  <script src="./scripts/pedidosEstoquista.js" defer></script> <!-- ADICIONADO -->
+</head>
+
+<body>
+  <header class="header">
+    <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome" /></a>
+    <div class="botoesCliente">
+      <button id="carrinhoBtn"><i class="fa fa-shopping-cart"></i> | Carrinho</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="container-pedidos">
+      <h1>Todos os Pedidos</h1>
+      <div class="pedidos-lista"></div>
+    </div>
+
+    <div id="modal-detalhes" style="display:none; position:fixed;">
+      <h2>Detalhes do Pedido</h2>
+      <div id="detalhes-pedido"></div>
+      <button onclick="fecharModal()">Fechar</button>
+    </div>
+  </main>
+</body>
+</html>
