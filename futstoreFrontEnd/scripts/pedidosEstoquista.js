@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-  document.getElementById('carrinhoBtn').addEventListener("click", () => {
-    window.location.href = 'carrinho.html';
-  });
+
 
   fetch(`http://localhost:8080/pedidos`)
     .then(resp => resp.json())
@@ -32,12 +30,12 @@ document.addEventListener('DOMContentLoaded', function () {
           <button class="editar-status" data-id="${pedido.idPedido}">Editar Status</button>
           <div class="status-edicao" style="display:none;" data-id="${pedido.idPedido}">
             <select class="novo-status">
-              <option value="aguardando pagamento">Aguardando Pagamento</option>
-              <option value="pagamento rejeitado">Pagamento Rejeitado</option>
-              <option value="pagamento com sucesso">Pagamento com Sucesso</option>
-              <option value="aguardando retirada">Aguardando Retirada</option>
-              <option value="em transito">Em Trânsito</option>
-              <option value="entregue">Entregue</option>
+              <option value="Aguardando pagamento">Aguardando Pagamento</option>
+              <option value="Pagamento rejeitado">Pagamento Rejeitado</option>
+              <option value="Pagamento com sucesso">Pagamento com Sucesso</option>
+              <option value="Aguardando retirada">Aguardando Retirada</option>
+              <option value="Em trânsito">Em Trânsito</option>
+              <option value="Entregue">Entregue</option>
             </select>
             <button class="salvar-status">Salvar</button>
           </div>
@@ -66,13 +64,13 @@ document.addEventListener('DOMContentLoaded', function () {
             <h3>Itens:</h3>
             <ul>
               ${data.itensPedido.map(item => {
-                const img = item.produto.imagens.find(i => i.principal) || item.produto.imagens[0];
-                return `
+            const img = item.produto.imagens.find(i => i.principal) || item.produto.imagens[0];
+            return `
                   <li>
                     <img src="data:${img.tipoArquivo};base64,${img.dados}" width="100">
                     <br>${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
                   </li>`;
-              }).join('')}
+          }).join('')}
             </ul>`;
           document.getElementById('modal-detalhes').style.display = 'block';
         });
@@ -97,9 +95,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data => {
           alert("Status atualizado com sucesso!");
-          const spanStatus = container.previousElementSibling.querySelector('.status-text');
-          if (spanStatus) {
-            spanStatus.textContent = data.statusPedido;
+          const pedidoId = container.dataset.id;
+          const itemDiv = document.querySelector(`.editar-status[data-id="${pedidoId}"]`).closest('.pedido-item');
+          const statusSpan = itemDiv.querySelector('.status-text');
+          if (statusSpan) {
+            statusSpan.textContent = data.statusPedido;
           }
           container.style.display = 'none';
         })
@@ -111,3 +111,13 @@ document.addEventListener('DOMContentLoaded', function () {
 function fecharModal() {
   document.getElementById('modal-detalhes').style.display = 'none';
 }
+
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  if (confirm("Tem certeza que deseja sair?")) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("grupo");
+    localStorage.removeItem("nome");
+    localStorage.removeItem("userId");
+    window.location.href = "login.html";
+  }
+});

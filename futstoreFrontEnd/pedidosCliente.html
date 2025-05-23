@@ -9,129 +9,126 @@
     <link rel="stylesheet" href="./styles/pedidosCliente.css">
     <link rel="stylesheet" href="./styles/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<script src="./scripts/acoesCliente.js" defer></script>
-<script src="./scripts/carrinho.js"></script>
-<script src="./scripts/listaPedidos.js" defer></script>
+    <script src="./scripts/acoesCliente.js" defer></script>
+    <script src="./scripts/carrinho.js"></script>
+    <script src="./scripts/listaPedidos.js" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
-<main>
-    <div class="container-pedidos">
-        <h1>Meus Pedidos</h1>
-        <div class="pedidos-lista">
-            
+
+<body>
+
+    <header class="header">
+        <a href="./home.html"><img src="./assets/logotipoFutstore.png" alt="Logotipo Futstore" id="goHome"></a>
+        <div class="botoesCliente">
+            <div class="container-login-dropdown" style="position: relative; display: inline-block;">
+                <button id="loginBtn" class="login-btn">
+                    <i class="fa fa-user"></i> | Faça login ou cadastre-se
+                </button>
+                <div id="modalAcao" class="menu-cliente hidden">
+                    <ul>
+                        <a href="editarPerfilCliente.html">
+                            <li><i class="fa-solid fa-pencil"></i> | Editar Perfil</li>
+                        </a>
+                        <a id="pedidosCliente" href="pedidosCliente.html">
+                            <li><i class="fa-solid fa-box"></i> | Meus pedidos</li>
+                        </a>
+                        <a id="logoutBtn" href="">
+                            <li><i class="fa-solid fa-user"></i> | Logout</li>
+                        </a>
+                    </ul>
+                </div>
+            </div>
+            <button id="carrinhoBtn"><i class="fa fa-shopping-cart" aria-hidden="true"></i> | Carrinho </button>
         </div>
-    </div>
+    </header>
 
-    <div id="modal-detalhes" style="display:none; position:fixed;">
-        <h2>Detalhes do Pedido</h2>
-        <div id="detalhes-pedido"></div>
-        <button onclick="fecharModal()">Fechar</button>
-    </div>
-</main>
+    <main>
+        <div class="container-pedidos">
+            <h1>Meus Pedidos</h1>
+            <div class="pedidos-lista">
+                <div class="pedido-item">
+                    <div class="pedido-info">
+                        <p><strong>Pedido N°: </strong></p>
+                        <p><strong>Data: </strong></p>
+                        <p><strong>Status: </strong></p>
+                        <p><strong>Total: </strong></p>
+                    </div>
+                    <a class="detalhes" href="#" data-id="1">Ver detalhes</a>
+                </div>
+            </div>
+        </div>
+        <div id="modal-detalhes" style="display:none; position:fixed;">
+            <h2>Detalhes do Pedido</h2>
+            <div id="detalhes-pedido"></div>
+            <button onclick="fecharModal()">Fechar</button>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-info">
+                <h2>Sobre nós</h2>
+                <p>Futstore é uma loja online dedicada a oferecer os melhores produtos para os amantes do futebol. Desde
+                    camisas de times até acessórios, temos tudo o que você precisa para mostrar seu amor pelo esporte!
+                </p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Futstore. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('carrinhoBtn').addEventListener("click", function () {
+            window.location.href = 'carrinho.html';
+        })
+
+        document.querySelector('.pedidos-lista').addEventListener('click', function (event) {
+            const botao = event.target;
+            if (botao.classList.contains('detalhes')) {
+                event.preventDefault();
+                const idPedido = botao.getAttribute('data-id');
+
+                fetch(`http://localhost:8080/pedidos/${idPedido}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const detalhes = document.getElementById('detalhes-pedido');
+                        detalhes.innerHTML = `
+                    <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
+                    <p><strong>Data:</strong> ${data.dtPedido}</p>
+                    <p><strong>Status:</strong> ${data.statusPedido}</p>
+                    <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
+                    <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
+                    <h3>Itens:</h3>
+                    <ul>
+                        ${data.itensPedido.map(item => {
+                            const imagemPrincipal = item.produto.imagens.find(img => img.principal) || item.produto.imagens[0];
+                            const imagemSrc = `data:${imagemPrincipal.tipoArquivo};base64,${imagemPrincipal.dados}`;
+                            return `<li>
+                                    <img src="${imagemSrc}" alt="${item.produto.nome}" width="100">
+                                    <br>
+                                    ${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
+                                    </li>
+                                    `;
+                        }).join('')}
+                    </ul>
+
+                `;
+                        document.getElementById('modal-detalhes').style.display = 'block';
+                    })
+                    .catch(err => console.error('Erro ao buscar detalhes:', err));
+            }
+        });
 
 
-
-<script>
-    document.getElementById('carrinhoBtn').addEventListener("click", () => {
-        window.location.href = 'carrinho.html';
-    });
-
-    const idCliente = localStorage.getItem('idCliente');
-    if (!idCliente) {
-        alert('Usuário não está logado.');
-    } else {
-        fetch(`http://localhost:8080/pedidos/cliente/${idCliente}`)
-            .then(resp => resp.json())
-            .then(pedidos => {
-                const lista = document.querySelector('.pedidos-lista');
-                lista.innerHTML = '';
-
-                pedidos.forEach(pedido => {
-                    const div = document.createElement('div');
-                    div.className = 'pedido-item';
-                    div.innerHTML = `
-                        <div class="pedido-info">
-                            <p><strong>Pedido N°:</strong> ${pedido.idPedido}</p>
-                            <p><strong>Data:</strong> ${pedido.dtPedido}</p>
-                            <p><strong>Status:</strong> <span class="status-text">${pedido.statusPedido}</span></p>
-                            <p><strong>Total:</strong> R$ ${pedido.valorTotalPedido?.toFixed(2) || '0.00'}</p>
-                        </div>
-                        <a class="detalhes" href="#" data-id="${pedido.idPedido}">Ver detalhes</a>
-                        <button class="editar-status" data-id="${pedido.idPedido}">Editar Status</button>
-                        <div class="status-edicao" style="display:none;" data-id="${pedido.idPedido}">
-                            <select class="novo-status">
-                                <option value="aguardando pagamento">Aguardando Pagamento</option>
-                                <option value="pagamento rejeitado">Pagamento Rejeitado</option>
-                                <option value="pagamento com sucesso">Pagamento com Sucesso</option>
-                                <option value="aguardando retirada">Aguardando Retirada</option>
-                                <option value="em transito">Em Trânsito</option>
-                                <option value="entregue">Entregue</option>
-                            </select>
-                            <button class="salvar-status">Salvar</button>
-                        </div>
-                    `;
-                    lista.appendChild(div);
-                });
-            });
-    }
-
-    document.querySelector('.pedidos-lista').addEventListener('click', function (e) {
-        const el = e.target;
-
-        if (el.classList.contains('detalhes')) {
-            e.preventDefault();
-            const id = el.dataset.id;
-            fetch(`http://localhost:8080/pedidos/${id}`)
-                .then(res => res.json())
-                .then(data => {
-                    const detalhes = document.getElementById('detalhes-pedido');
-                    detalhes.innerHTML = `
-                        <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
-                        <p><strong>Data:</strong> ${data.dtPedido}</p>
-                        <p><strong>Status:</strong> ${data.statusPedido}</p>
-                        <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
-                        <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
-                        <h3>Itens:</h3>
-                        <ul>
-                            ${data.itensPedido.map(item => {
-                                const img = item.produto.imagens.find(i => i.principal) || item.produto.imagens[0];
-                                return `
-                                    <li>
-                                        <img src="data:${img.tipoArquivo};base64,${img.dados}" width="100">
-                                        <br>${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
-                                    </li>`;
-                            }).join('')}
-                        </ul>`;
-                    document.getElementById('modal-detalhes').style.display = 'block';
-                });
+        function fecharModal() {
+            document.getElementById('modal-detalhes').style.display = 'none';
         }
+    </script>
+</body>
 
-        if (el.classList.contains('editar-status')) {
-            const statusDiv = el.nextElementSibling;
-            statusDiv.style.display = 'block';
-        }
-
-        if (el.classList.contains('salvar-status')) {
-            const container = el.parentElement;
-            const id = container.dataset.id;
-            const novoStatus = container.querySelector('.novo-status').value;
-
-            fetch(`http://localhost:8080/pedidos/${id}/status?status=${encodeURIComponent(novoStatus)}`, {
-                method: 'PUT'
-            })
-                .then(resp => {
-                    if (!resp.ok) throw new Error('Erro ao atualizar status');
-                    return resp.json();
-                })
-                .then(data => {
-                    alert("Status atualizado com sucesso!");
-                    container.previousElementSibling.querySelector('.status-text').textContent = data.statusPedido;
-                    container.style.display = 'none';
-                })
-                .catch(err => alert("Erro: " + err.message));
-        }
-    });
-
-    function fecharModal() {
-        document.getElementById('modal-detalhes').style.display = 'none';
-    }
-</script>
+</html>

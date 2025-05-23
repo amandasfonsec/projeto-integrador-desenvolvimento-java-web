@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (grupo === 'ADMINISTRADOR' || grupo === 'ESTOQUISTA') {
+    if (grupo === 'ESTOQUISTA') {
         listarPedidosLink.style.display = 'inline-block';
         listarPedidosLink.addEventListener('click', () => {
             window.location.href = './pedidosEstoquista.html';

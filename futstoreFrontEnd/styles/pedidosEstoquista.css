@@ -1,0 +1,79 @@
+.container-pedidos {
+    margin-top: 160px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+h3 {
+    font-family: "Bebas Neue", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 40px;
+}
+
+.pedidos-lista {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    margin-bottom: 80px;
+    gap: 15px;
+}
+
+.pedido-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 90%;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px;
+    text-align: left;
+}
+
+.pedido-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+#modal-detalhes {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    display: none;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+
+    h2 {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 26px;
+        margin: 20px 0 10px 0;
+        font-weight: 400;
+        color: #150358;
+    }
+
+    button {
+        cursor: pointer;
+        padding: 10px 20px;
+        font-size: 14px;
+        border: none;
+        border-radius: 5px;
+        background-color: #0056b3;
+        color: white;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background-color: rgb(9, 9, 69);
+    }
+
+}
