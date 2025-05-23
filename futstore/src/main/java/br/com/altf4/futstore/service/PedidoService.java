@@ -40,75 +40,76 @@ public class PedidoService {
     }
 
     public Pedido criarPedido(Pedido pedido) {
-    if (pedido.getCliente() == null || pedido.getCliente().getIdCliente() == null) {
-        throw new RuntimeException("ID do cliente não pode ser nulo");
-    }
-
-    if (pedido.getEndereco() == null) {
-        throw new RuntimeException("Endereço não pode ser nulo");
-    }
-
-    if (pedidoRepository.existsByIdPedido(pedido.getIdPedido())) {
-        throw new RuntimeException("Pedido já cadastrado!");
-    }
-
-    // Buscar cliente no banco
-    Cliente cliente = clienteRepository.findByIdCliente(pedido.getCliente().getIdCliente());
-    if (cliente == null) {
-        throw new RuntimeException("Cliente não encontrado");
-    }
-
-    Endereco endereco;
-
-    // Se o endereço já existir (tem ID), buscar no banco
-    if (pedido.getEndereco().getId_endereco() != null) {
-        endereco = enderecoRepository.findById(pedido.getEndereco().getId_endereco())
-                .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
-   } else {
-    // Novo endereço – associar ao cliente
-    endereco = new Endereco();
-    endereco.setCep(pedido.getEndereco().getCep()); // Garantir que o CEP está definido
-    endereco.setLogradouro(pedido.getEndereco().getLogradouro()); // Garantir que o Logradouro está definido
-    endereco.setNumero(pedido.getEndereco().getNumero()); // Garantir que o Número está definido
-    endereco.setComplemento(pedido.getEndereco().getComplemento()); // Garantir que o Complemento está definido
-    endereco.setBairro(pedido.getEndereco().getBairro()); // Garantir que o Bairro está definido
-    endereco.setCidade(pedido.getEndereco().getCidade()); // Garantir que a Cidade está definida
-    endereco.setUf(pedido.getEndereco().getUf()); // Garantir que a UF está definida
-    endereco.setTipo(pedido.getEndereco().getTipo()); // Garantir que o Tipo está definido
-    endereco.setEnderecoPadrao(pedido.getEndereco().isEnderecoPadrao()); // Garantir que o Endereço Padrão está definido
-
-    endereco.setCliente(cliente); // Associar o cliente ao endereço
-    enderecoRepository.save(endereco); // Salvar o novo endereço
-    
-}
-    
-
-    // Associar cliente e endereço ao pedido
-    pedido.setCliente(cliente);
-    pedido.setEndereco(endereco);
-
-    // Configurar itens do pedido
-    if (pedido.getItensPedido() != null) {
-        for (ItemPedido item : pedido.getItensPedido()) {
-            if (item.getProduto() == null || item.getProduto().getCodigo() == null) {
-                throw new RuntimeException("Produto ou ID do produto não pode ser nulo");
-            }
-
-            Produto produto = produtoRepository.findById(item.getProduto().getCodigo())
-                    .orElseThrow(() -> new RuntimeException(
-                            "Produto com ID " + item.getProduto().getCodigo() + " não encontrado"));
-
-            item.setProduto(produto);
-            item.setPedido(pedido); 
-            
+        if (pedido.getCliente() == null || pedido.getCliente().getIdCliente() == null) {
+            throw new RuntimeException("ID do cliente não pode ser nulo");
         }
+
+        if (pedido.getEndereco() == null) {
+            throw new RuntimeException("Endereço não pode ser nulo");
+        }
+
+        if (pedidoRepository.existsByIdPedido(pedido.getIdPedido())) {
+            throw new RuntimeException("Pedido já cadastrado!");
+        }
+
+        Cliente cliente = clienteRepository.findByIdCliente(pedido.getCliente().getIdCliente());
+        if (cliente == null) {
+            throw new RuntimeException("Cliente não encontrado");
+        }
+
+        Endereco endereco;
+        if (pedido.getEndereco().getId_endereco() != null) {
+            endereco = enderecoRepository.findById(pedido.getEndereco().getId_endereco())
+                    .orElseThrow(() -> new RuntimeException("Endereço não encontrado"));
+        } else {
+            endereco = new Endereco();
+            endereco.setCep(pedido.getEndereco().getCep());
+            endereco.setLogradouro(pedido.getEndereco().getLogradouro());
+            endereco.setNumero(pedido.getEndereco().getNumero());
+            endereco.setComplemento(pedido.getEndereco().getComplemento());
+            endereco.setBairro(pedido.getEndereco().getBairro());
+            endereco.setCidade(pedido.getEndereco().getCidade());
+            endereco.setUf(pedido.getEndereco().getUf());
+            endereco.setTipo(pedido.getEndereco().getTipo());
+            endereco.setEnderecoPadrao(pedido.getEndereco().isEnderecoPadrao());
+            endereco.setCliente(cliente);
+            enderecoRepository.save(endereco);
+        }
+
+        pedido.setCliente(cliente);
+        pedido.setEndereco(endereco);
+
+        if (pedido.getItensPedido() != null) {
+            for (ItemPedido item : pedido.getItensPedido()) {
+                if (item.getProduto() == null || item.getProduto().getCodigo() == null) {
+                    throw new RuntimeException("Produto ou ID do produto não pode ser nulo");
+                }
+
+                Produto produto = produtoRepository.findById(item.getProduto().getCodigo())
+                        .orElseThrow(() -> new RuntimeException(
+                                "Produto com ID " + item.getProduto().getCodigo() + " não encontrado"));
+
+                item.setProduto(produto);
+                item.setPedido(pedido);
+            }
+        }
+
+        return pedidoRepository.save(pedido);
     }
 
-    return pedidoRepository.save(pedido);
-}
-
-
+    // ✅ Alterado: agora retorna pedidos ordenados por data decrescente
     public List<Pedido> listarPedidosCliente(Long idCliente) {
-        return pedidoRepository.findByCliente_IdCliente(idCliente);
+        return pedidoRepository.findByCliente_IdClienteOrderByDtPedidoDesc(idCliente);
+    }
+
+    // ✅ Novo método para atualizar o status do pedido
+    public Pedido atualizarStatusPedido(Long idPedido, String novoStatus) {
+        Pedido pedido = pedidoRepository.findByIdPedido(idPedido);
+        if (pedido == null) {
+            throw new RuntimeException("Pedido não encontrado");
+        }
+
+        pedido.setStatusPedido(novoStatus);
+        return pedidoRepository.save(pedido);
     }
 }

@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     await carregarProduto(produtoId);
 
-    // Evento para adicionar o produto ao carrinho
+   
     document.getElementById("comprarBtn").addEventListener("click", () => {
         const produto = {
-            codigo: produtoId,  // Aqui você coloca o código do produto
+            codigo: produtoId,  
             nome: document.getElementById("produtoNome").textContent,
             valor: parseFloat(document.getElementById("produtoPreco").textContent.replace('R$', '').trim()),
             imagemPrincipal: imagemPassadaCarrinho.imagem,
@@ -41,13 +41,13 @@ async function carregarProduto(id) {
         let produto = await response.json();
         console.log("Detalhes do produto:", produto);
 
-        // Preenche os dados do produto na página
+        
         document.getElementById("produtoNome").textContent = produto.nome;
         document.getElementById("produtoAvaliacao").textContent = produto.avaliacao;
         document.getElementById("produtoDescricao").textContent = produto.descricao;
         document.getElementById("produtoPreco").textContent = `R$ ${produto.valor.toFixed(2)}`;
 
-        // Carrega as imagens do produto
+        
         let imgResponse = await fetch(`http://localhost:8080/produtos/${id}/imagens`, {
             method: "GET",
             headers: {
@@ -60,7 +60,7 @@ async function carregarProduto(id) {
             
             if (imagensProduto.length > 0) {
                 let imagemAtual = 0;
-                // Procura pela imagem principal
+                
                 for (let i = 0; i < imagensProduto.length; i++) {
                     const imagem = imagensProduto[i];
                     if (imagem.principal === "true") {
@@ -89,7 +89,7 @@ function atualizarCarrossel(imagensProduto, imagemAtual) {
     }
     document.getElementById("produtoImagem").src = imagem.imagem;
 
-    // Atualiza a navegação do carrossel
+    
     document.getElementById("prevBtn").addEventListener("click", () => {
         imagemAtual = (imagemAtual - 1 + imagensProduto.length) % imagensProduto.length;
         document.getElementById("produtoImagem").src = imagensProduto[imagemAtual].imagem;

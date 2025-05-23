@@ -13,9 +13,23 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@200..700&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+
+    <style>
+        .busca-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        #buscaProduto {
+            width: 320px;
+            padding: 10px 14px;
+            font-size: 16px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+    </style>
 </head>
 
 <body>
@@ -28,15 +42,9 @@
                 </button>
                 <div id="modalAcao" class="menu-cliente hidden">
                     <ul>
-                        <a href="editarPerfilCliente.html">
-                            <li><i class="fa-solid fa-pencil"></i> | Editar Perfil</li>
-                        </a>
-                        <a id="pedidosCliente" href="pedidosCliente.html">
-                            <li><i class="fa-solid fa-box"></i> | Meus pedidos</li>
-                        </a>
-                        <a id="logoutBtn" href="">
-                            <li><i class="fa-solid fa-user"></i> | Logout</li>
-                        </a>
+                        <a href="editarPerfilCliente.html"><li><i class="fa-solid fa-pencil"></i> | Editar Perfil</li></a>
+                        <a id="pedidosCliente" href="pedidosCliente.html"><li><i class="fa-solid fa-box"></i> | Meus pedidos</li></a>
+                        <a id="logoutBtn" href=""><li><i class="fa-solid fa-user"></i> | Logout</li></a>
                     </ul>
                 </div>
             </div>
@@ -61,8 +69,14 @@
         </div>
     </section>
 
-    <section class="produtos-container">
+    <!-- Campo de busca de produtos -->
+    <div class="busca-container">
+        <input type="text" id="buscaProduto" placeholder="Buscar por nome do produto..." />
+    </div>
 
+    <!-- Lista de produtos -->
+    <section class="produtos-container">
+        <!-- Os produtos serão carregados dinamicamente -->
     </section>
 
     <footer>
@@ -82,7 +96,7 @@
     <script>
         document.getElementById('carrinhoBtn').addEventListener("click", function () {
             window.location.href = 'carrinho.html';
-        })
+        });
 
         let currentSlide = 0;
         const slides = document.querySelectorAll('.carrosel-item');
@@ -102,15 +116,9 @@
             showSlide(currentSlide);
         };
 
-        const prevSlide = () => {
-            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
-            showSlide(currentSlide);
-        };
-
         setInterval(nextSlide, 5000);
     </script>
     <script src="./scripts/carrinho.js" defer></script>
-
 </body>
 
 </html>
