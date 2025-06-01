@@ -10,24 +10,24 @@ function logEnderecosDados(enderecos) {
 window.logEnderecosDados = logEnderecosDados;
 
 function coletarItensPedidos() {
-        const lista = [];
-        const carrinho = JSON.parse(localStorage.getItem("carrinho"));
-        carrinho.forEach(itemPedido => {
-            const codigo = itemPedido.codigo;
-            const qtdProduto = itemPedido.quantidade;
-            const valorUnitario = parseFloat(itemPedido.valor);
-            const subTotal = parseFloat(qtdProduto) * parseFloat(valorUnitario);
+    const lista = [];
+    const carrinho = JSON.parse(localStorage.getItem("carrinho"));
+    carrinho.forEach(itemPedido => {
+        const produto = { codigo: itemPedido.codigo };
+        const qtdProduto = itemPedido.quantidade;
+        const valorUnitario = parseFloat(itemPedido.valor);
+        const subTotal = qtdProduto * valorUnitario;
 
-            lista.push({
-                codigo,
-                qtdProduto,
-                valorUnitario,
-                subTotal
-            })
+        lista.push({
+            produto, 
+            qtdProduto,
+            valorUnitario,
+            subTotal
         });
-        return lista;
+    });
+    return lista;
+}
 
-    }
 
 function formatarCPF(input) {
     let cpf = input.value.replace(/\D/g, '');
@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         const valorFrete = parseFloat(frete.valor.replace(',', '.'));
         const valorTotalPedido = localStorage.getItem('valorTotalPedido');
         const statusPedido = "Aguardando Pagamento";
-        const itensPedidos = coletarItensPedidos();
+        const itensPedido = coletarItensPedidos();
 
         const dadosPedido = {
             dtPedido,
@@ -338,7 +338,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             valorFrete,
             valorTotalPedido,
             statusPedido,
-            itensPedidos
+            itensPedido
         }
         console.log(dadosPedido);
         

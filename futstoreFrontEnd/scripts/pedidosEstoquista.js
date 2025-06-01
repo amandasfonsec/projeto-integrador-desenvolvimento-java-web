@@ -8,13 +8,8 @@ document.addEventListener('DOMContentLoaded', function () {
       lista.innerHTML = '';
 
       // Ordenar por data decrescente (supondo que dtPedido seja string no formato "dd/MM/yyyy")
-      pedidos.sort((a, b) => {
-        const [diaA, mesA, anoA] = a.dtPedido.split('/');
-        const [diaB, mesB, anoB] = b.dtPedido.split('/');
-        const dataA = new Date(`${anoA}-${mesA}-${diaA}`);
-        const dataB = new Date(`${anoB}-${mesB}-${diaB}`);
-        return dataB - dataA;
-      });
+      pedidos.sort((a, b) => b.idPedido - a.idPedido);
+
 
       pedidos.forEach(pedido => {
         const div = document.createElement('div');
@@ -59,9 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
             <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
             <p><strong>Data:</strong> ${data.dtPedido}</p>
             <p><strong>Status:</strong> ${data.statusPedido}</p>
+            <p><strong>Frete:</strong> R$${data.valorFrete}</p>
             <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
             <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
-            <h3>Itens:</h3>
+            <h2>Itens:</h2>
             <ul>
               ${data.itensPedido.map(item => {
             const img = item.produto.imagens.find(i => i.principal) || item.produto.imagens[0];

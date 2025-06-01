@@ -101,7 +101,9 @@
                     <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
                     <p><strong>Data:</strong> ${data.dtPedido}</p>
                     <p><strong>Status:</strong> ${data.statusPedido}</p>
+                    <p><strong>Endereço de entrega:</strong> ${data.endereco.logradouro} N°${data.endereco.numero}</p>
                     <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
+                    <p><strong>Frete:</strong> R$ ${data.valorFrete.toFixed(2)}</p>
                     <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
                     <h3>Itens:</h3>
                     <ul>
@@ -109,7 +111,7 @@
                             const imagemPrincipal = item.produto.imagens.find(img => img.principal) || item.produto.imagens[0];
                             const imagemSrc = `data:${imagemPrincipal.tipoArquivo};base64,${imagemPrincipal.dados}`;
                             return `<li>
-                                    <img src="${imagemSrc}" alt="${item.produto.nome}" width="100">
+                                    <img src="${imagemSrc}" alt="${item.produto.nome}">
                                     <br>
                                     ${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
                                     </li>

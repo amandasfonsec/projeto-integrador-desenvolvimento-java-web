@@ -55,7 +55,6 @@ public class PedidoController {
         return ResponseEntity.ok(pedidos);
     }
 
-    // ✅ NOVO ENDPOINT PARA ALTERAR STATUS
     @PutMapping("/{idPedido}/status")
     public ResponseEntity<?> atualizarStatusPedido(@PathVariable Long idPedido, @RequestParam String status) {
         try {
