@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const enderecosAdicionais = []; //salvar os endereços
+    const enderecosAdicionais = []; 
 
     function buscarCEP(inputCEP, logradouro, bairro, cidade, uf) {
         const cep = document.getElementById(inputCEP).value.replace(/\D/g, '');
@@ -36,12 +36,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function adicionarEventosCEP() {
         document.querySelectorAll(".cepEntrega").forEach((cepInput, index) => {
-            cepInput.removeEventListener("blur", handleCEP); // remove duplicata
+            cepInput.removeEventListener("blur", handleCEP); 
             cepInput.addEventListener("blur", handleCEP);
         });
 
         document.querySelectorAll(".removerEndereco").forEach(botao => {
-            botao.removeEventListener("click", handleRemover); // remove duplicata
+            botao.removeEventListener("click", handleRemover); 
             botao.addEventListener("click", handleRemover);
         });
     }

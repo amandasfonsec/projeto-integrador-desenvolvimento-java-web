@@ -82,4 +82,10 @@ h3 {
         height: 60px;
     }
 
+    li{
+        display: flex;
+        flex-direction: column;
+        
+    }
+
 }

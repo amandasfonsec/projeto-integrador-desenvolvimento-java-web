@@ -202,7 +202,6 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("formCadastro").addEventListener("submit", async function (e) {
             e.preventDefault(); 
         
-            // dados do cliente
             const idCliente = perfilDados.idCliente;
             const nome = document.getElementById("nome").value;
             const email = perfilDados.email;
@@ -212,7 +211,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const senhaInput = document.getElementById("senhaCadastro");
             const senha = senhaInput && senhaInput.value ? senhaInput.value : perfilDados.senha;
         
-            // endereço de faturamento
             const enderecoFaturamento = {
                 cep: document.getElementById("cep").value,
                 logradouro: document.getElementById("logradouro").value,

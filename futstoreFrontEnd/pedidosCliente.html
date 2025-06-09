@@ -101,7 +101,7 @@
                     <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
                     <p><strong>Data:</strong> ${data.dtPedido}</p>
                     <p><strong>Status:</strong> ${data.statusPedido}</p>
-                    <p><strong>Endereço de entrega:</strong> ${data.endereco.logradouro} N°${data.endereco.numero}</p>
+                    <p><strong>Endereço de entrega:</strong> ${data.endereco.logradouro} <b>N°</b>${data.endereco.numero} <b>CEP:</b>${data.endereco.cep} <b>Cidade:</b>${data.endereco.cidade}  </p>
                     <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
                     <p><strong>Frete:</strong> R$ ${data.valorFrete.toFixed(2)}</p>
                     <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>

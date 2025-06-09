@@ -51,23 +51,28 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
           const detalhes = document.getElementById('detalhes-pedido');
           detalhes.innerHTML = `
-            <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
-            <p><strong>Data:</strong> ${data.dtPedido}</p>
-            <p><strong>Status:</strong> ${data.statusPedido}</p>
-            <p><strong>Frete:</strong> R$${data.valorFrete}</p>
-            <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
-            <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
-            <h2>Itens:</h2>
-            <ul>
-              ${data.itensPedido.map(item => {
-            const img = item.produto.imagens.find(i => i.principal) || item.produto.imagens[0];
-            return `
-                  <li>
-                    <img src="data:${img.tipoArquivo};base64,${img.dados}" width="100">
-                    <br>${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
-                  </li>`;
+                    <p><strong>Pedido Nº:</strong> ${data.idPedido}</p>
+                    <p><strong>Data:</strong> ${data.dtPedido}</p>
+                    <p><strong>Status:</strong> ${data.statusPedido}</p>
+                    <p><strong>Endereço de entrega:</strong> ${data.endereco.logradouro} <b>N°</b>${data.endereco.numero} <b>CEP:</b>${data.endereco.cep} <b>Cidade:</b>${data.endereco.cidade}  </p>
+                    <p><strong>Forma de Pagamento:</strong> ${data.formaPagamento}</p>
+                    <p><strong>Frete:</strong> R$ ${data.valorFrete.toFixed(2)}</p>
+                    <p><strong>Total:</strong> R$ ${data.valorTotalPedido.toFixed(2)}</p>
+                    <h3>Itens:</h3>
+                    <ul>
+                        ${data.itensPedido.map(item => {
+            const imagemPrincipal = item.produto.imagens.find(img => img.principal) || item.produto.imagens[0];
+            const imagemSrc = `data:${imagemPrincipal.tipoArquivo};base64,${imagemPrincipal.dados}`;
+            return `<li>
+                                    <img src="${imagemSrc}" alt="${item.produto.nome}">
+                                    <br>
+                                    ${item.produto.nome} - ${item.qtdProduto} x R$ ${item.valorUnitario.toFixed(2)} = R$ ${item.subTotal.toFixed(2)}
+                                    </li>
+                                    `;
           }).join('')}
-            </ul>`;
+                    </ul>
+
+                `;
           document.getElementById('modal-detalhes').style.display = 'block';
         });
     }

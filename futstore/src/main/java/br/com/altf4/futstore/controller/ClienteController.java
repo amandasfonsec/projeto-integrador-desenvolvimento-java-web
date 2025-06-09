@@ -62,17 +62,14 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     
-        // Atualiza os campos permitidos
         clienteExistente.setNome(cliente.getNome());
         clienteExistente.setDataNascimento(cliente.getDataNascimento());
         clienteExistente.setGenero(cliente.getGenero());
     
-        // Atualiza a senha, se fornecida
         
             clienteExistente.setSenha(cliente.getSenha());
         
     
-        // Mapeia os endereços existentes usando um HashMap (sem stream)
         Map<Long, Endereco> enderecosExistentesMap = new HashMap<>();
         List<Endereco> enderecosExistentes = clienteExistente.getEnderecos();
         if (enderecosExistentes != null) {
@@ -83,25 +80,21 @@ public class ClienteController {
             }
         }
     
-        // Limpa a lista existente, preservando a referência (evita erro do Hibernate)
         enderecosExistentes.clear();
     
         if (cliente.getEnderecos() != null) {
             for (Endereco endereco : cliente.getEnderecos()) {
                 if (endereco.getId_endereco() != null && enderecosExistentesMap.containsKey(endereco.getId_endereco())) {
-                    // Atualiza apenas o campo 'padrao'
                     Endereco existente = enderecosExistentesMap.get(endereco.getId_endereco());
                     existente.setEnderecoPadrao(endereco.isEnderecoPadrao());
                     enderecosExistentes.add(existente);
                 } else {
-                    // Novo endereço
                     endereco.setCliente(clienteExistente);
                     enderecosExistentes.add(endereco);
                 }
             }
         }
     
-        // Não precisa setar a lista novamente, pois foi atualizada por referência
     
         Cliente clienteAtualizado = clienteService.editarCliente(clienteExistente);
         return ResponseEntity.ok(clienteAtualizado);
@@ -121,7 +114,6 @@ public class ClienteController {
         return cliente != null ? ResponseEntity.ok(cliente) : ResponseEntity.notFound().build();
     }
 
-    //Listar os enderecos do usuario, usado para editar perfil
     @GetMapping("/{idCliente}/enderecos")
     public ResponseEntity<List<Map<String,String>>> listarEnderecosCliente(@PathVariable Long idCliente){
         try {

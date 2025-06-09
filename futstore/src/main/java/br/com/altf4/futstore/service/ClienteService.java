@@ -53,8 +53,7 @@ public class ClienteService {
             throw new IllegalArgumentException("Cliente inválido");
         }
     
-        // Se a senha ainda não estiver codificada (por exemplo, se ela foi alterada no Controller),
-        // encode aqui:
+        
         cliente.setSenha(passwordEncoder.encode(cliente.getSenha()));
     
         return clienteRepository.save(cliente);
